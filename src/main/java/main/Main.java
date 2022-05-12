@@ -16,3 +16,18 @@ public class Main {
     }
 
 }
+
+/* ----------------------------------------------------------------------------------
+ TO DO:
+ > Obiekt receptury
+ > Metoda odpowiedzialna za budowanie
+ > Metoda odpowiedzialna za ruch pioniera
+ > Metoda odpowiedzialna za wystąpienie zakłócenia
+ > Metoda odpowiedzialna za wyznaczenie prawodpodobieństwa zakłócenia w polu
+ > Layout okna edytora mapy
+ > Layout okna ekranu startowego symulacji
+ > Klasa zapisująca dane z symulacji do pliku na dysku
+ > Metoda wyznaczająca ścieżkę poruszania się pioniera
+ > Metoda symulująca produkcję
+ > Proste AI pioniera, pozwalające na wyznaczenie kolejki działań, które ten wykona
+---------------------------------------------------------------------------------- */
