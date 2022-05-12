@@ -1,5 +1,6 @@
 # From https://github.com/github/gitignore/blob/master/Gradle.gitignore
 .gradle
+.idea
 /build/
 
 # Ignore Gradle GUI config
@@ -104,4 +105,3 @@ Icon
 Network Trash Folder
 Temporary Items
 .apdisk
-/.gradle/
