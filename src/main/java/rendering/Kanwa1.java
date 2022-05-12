@@ -6,10 +6,10 @@ import java.awt.*;
 public class Kanwa1 extends JPanel {
 
     final int dimension = 600;
-    int rozmiar;
-    Kanwa1(int rozmiar){
+    int sizeOfGrid;
+    Kanwa1(int sizeOfGrid){
 
-        this.rozmiar=rozmiar;
+        this.sizeOfGrid =sizeOfGrid;
         this.setPreferredSize(new Dimension(dimension,dimension));
     }
 
@@ -17,10 +17,10 @@ public class Kanwa1 extends JPanel {
 
         Graphics2D rys1 = (Graphics2D) g;
 
-        for (int i=0;i<rozmiar;i++)
+        for (int i = 0; i< sizeOfGrid; i++)
         {
-            rys1.drawLine(dimension/rozmiar*i,0,dimension/rozmiar*i,dimension);
-            rys1.drawLine(0,dimension/rozmiar*i,dimension,dimension/rozmiar*i);
+            rys1.drawLine(dimension/ sizeOfGrid *i,0,dimension/ sizeOfGrid *i,dimension);
+            rys1.drawLine(0,dimension/ sizeOfGrid *i,dimension,dimension/ sizeOfGrid *i);
         }
 
     }
