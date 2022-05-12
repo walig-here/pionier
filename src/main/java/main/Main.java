@@ -4,10 +4,12 @@ import rendering.NFrame;
 
 public class Main {
 
-    public static void main(String[] args)
-    {
-        new NFrame(50);
+    static private NFrame window; // główne okno symulacji
+    static private int grid_size; // rozmiar planszy(w polach)
+
+    public static void main(String[] args) {
+        grid_size = 30;
+        window = new NFrame(grid_size);
     }
-    //Hello World
 
 }
