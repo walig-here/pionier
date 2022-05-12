@@ -5,11 +5,13 @@ import java.awt.*;
 
 public class Kanwa1 extends JPanel {
 
-    final int dimension = 900;
+
     int sizeOfGrid;
+    int dimension;
     Kanwa1(int sizeOfGrid){
 
         this.sizeOfGrid =sizeOfGrid;
+        dimension = 20*sizeOfGrid;
         this.setPreferredSize(new Dimension(dimension,dimension));
     }
 
