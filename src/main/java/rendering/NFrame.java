@@ -10,7 +10,7 @@ public class NFrame extends JFrame {
 
         kanwa= new Kanwa1(sizeOfGrid);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.setSize(600,600);
+        this.setSize(20*sizeOfGrid,20*sizeOfGrid);
         this.add(kanwa);
         this.pack();
         this.setLocationRelativeTo(null);
