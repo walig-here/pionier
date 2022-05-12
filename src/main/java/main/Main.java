@@ -9,5 +9,5 @@ public class Main {
         new NFrame(20);
     }
     //Hello World
-
+    // kocham dżawa
 }
