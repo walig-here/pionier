@@ -16,6 +16,4 @@ public class NFrame extends JFrame {
         this.setLocationRelativeTo(null);
         this.setVisible(true);
     }
-
-
 }
