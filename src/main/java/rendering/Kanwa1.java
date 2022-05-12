@@ -5,7 +5,7 @@ import java.awt.*;
 
 public class Kanwa1 extends JPanel {
 
-    final int dimension = 600;
+    final int dimension = 900;
     int sizeOfGrid;
     Kanwa1(int sizeOfGrid){
 
