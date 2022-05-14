@@ -9,7 +9,8 @@ import simulation.Pioneer;
  */
 public class GlitchSourceField extends Field {
 
-    private Glitch glitch; // zakłócenie generowane przez pole
+    private int glitchID; // ID zakłócenia generowanego przez pole
+    private int range; // zasięg zakłócenia
 
     // zmienia prawodpodobieństwa wystąpienia zakłócenia z tego pola w innych polach
     public void setProbabilities(Field[][] map)
