@@ -3,7 +3,6 @@ package main;
 import rendering.*;
 import simulation.*;
 import simulation.terrain.*;
-
 import java.util.ArrayList;
 
 public class Main {
