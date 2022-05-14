@@ -18,6 +18,12 @@ public class Pioneer {
     private int building_field[][]; // gdzie postawić budynek?
     private ArrayList<Integer[][]> path; // ścieżka po której porusza się pionier
 
+    // przemieszcza pioniera na pierwszą pozycję zapisaną w ścieżce path
+    public void walk()
+    {
+
+    }
+
     // buduje maszynę na danym polu
     public void buildMachine(Field[][] build_in) {
 
