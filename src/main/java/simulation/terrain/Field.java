@@ -25,8 +25,9 @@ public abstract class Field {
         this.coordinates = coordinates;
     }
 
+    // zwaraca koszt przejścia przez pole w punktach ruchu
+    abstract public int goThrough(Pioneer pioneer);
 
-    private int TerrainId;  //id terenu
     public int getTerrainId() {
         return TerrainId;
     }
@@ -35,8 +36,6 @@ public abstract class Field {
         TerrainId = terrainId;
     }
 
-
-    private int baseMovPoints; //punkty na początku rundy jeśli jest to pole startu
     public int getBaseMovPoints() {
         return baseMovPoints;
     }
@@ -45,8 +44,6 @@ public abstract class Field {
         this.baseMovPoints = baseMovPoints;
     }
 
-
-    private boolean canBuild;   //czy można na tym p[olu budować
     public boolean isCanBuild() {
         return canBuild;
     }
