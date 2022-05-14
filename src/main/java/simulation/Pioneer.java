@@ -4,6 +4,7 @@ import simulation.terrain.CentralField;
 import simulation.terrain.DepositField;
 import simulation.terrain.Field;
 
+import java.io.File;
 import java.util.ArrayList;
 
 import static java.lang.Math.abs;
