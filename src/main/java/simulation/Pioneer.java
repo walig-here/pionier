@@ -16,7 +16,7 @@ public class Pioneer {
 
     private int to_build; // jaką maszynę postawić(ID)?
     private int building_field[][]; // gdzie postawić budynek?
-    private ArrayList<Field> path; // ścieżka po której porusza się pionier
+    private ArrayList<Integer[][]> path; // ścieżka po której porusza się pionier
 
     // buduje maszynę na danym polu
     public void buildMachine(Field[][] build_in) {
