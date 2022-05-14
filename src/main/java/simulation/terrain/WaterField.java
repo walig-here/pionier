@@ -8,7 +8,7 @@ import simulation.Pioneer;
 public class WaterField extends Field {
 
     private static int sailing_time; // ilość tur potrzebna do przebycia pola wodnego
-    private int waiting_round_counter; // ilość tur już przeczakanych
+    private int waiting_round_counter; // ilość tur już przeczekanych
 
 
     @Override
