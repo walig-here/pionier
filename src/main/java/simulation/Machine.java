@@ -12,4 +12,19 @@ public class Machine {
     private Recipe cost; // lista obiektow potrzebnych do wybudowania/ulepszenia
     private String name; // nazwa
     private boolean active; // wskazuje czy maszyna działa
+    private int deactivation_turns_lef; // ile tur pozostało do ponownego aktywowania maszyna
+
+    // zmiana ilości przedmitów wynikła z produkcji
+    public void production(ArrayList<Item> inventory) {
+
+    }
+
+    // wpływ gitcha na maszyne
+    public void glitch(int gitchID) {
+
+    }
+
+    // próbuje ponownie włączyć maszyne po wystąpieniu glitcha
+    public void reactivationAttempt(){
+    }
 }
