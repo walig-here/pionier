@@ -1,6 +1,7 @@
 package simulation.terrain;
 
 import simulation.Glitch;
+import simulation.Pioneer;
 
 /**
  * Pole emitujące zakłócenie. Wypływa na inne pola w określonej odległości, zwiększając prawodpodobieństwo wystąpienia wnich zakłócenia.
@@ -8,5 +9,17 @@ import simulation.Glitch;
  */
 public class GlitchSourceField extends Field {
 
-    Glitch glitch; // zakłócenie generowane przez pole
+    private Glitch glitch; // zakłócenie generowane przez pole
+
+    // zmienia prawodpodobieństwa wystąpienia zakłócenia z tego pola w innych polach
+    public void setProbabilities(Field[][] map)
+    {
+
+    }
+
+    @Override
+    public int goThrough(Pioneer pioneer)
+    {
+        return 0;
+    }
 }
