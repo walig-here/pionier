@@ -7,28 +7,17 @@ import java.util.ArrayList;
  * */
 public class ComponentItem extends Item {
 
-    private ArrayList<Item> recipe; // lista obiektow potrzebnych do wytworzenia
-    private int machineId; // id maszyny produkujacej komponent
+    Recipe recipe; // receptura, którą trzeba wykonać, aby otrzymać ten obiekt
 
-    public ComponentItem(String name, int amount, double income, double productionTime, ArrayList<Item> recipe, int machineId) {
+    public ComponentItem(String name, int amount, double income, int productionTime, ArrayList<Item> recipe, int machineId) {
         super(name, amount, income, productionTime);
-        this.recipe = recipe;
-        this.machineId = machineId;
     }
 
-    public ArrayList<Item> getRecipe() {
+    public Recipe getRecipe() {
         return recipe;
     }
 
-    public void setRecipe(ArrayList<Item> recipe) {
+    public void Recipe(Recipe recipe) {
         this.recipe = recipe;
-    }
-
-    public int getMachineId() {
-        return machineId;
-    }
-
-    public void setMachineId(int machineId) {
-        this.machineId = machineId;
     }
 }

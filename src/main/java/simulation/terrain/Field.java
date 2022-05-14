@@ -2,16 +2,25 @@ package simulation.terrain;
 
 import rendering.GridSprite;
 import simulation.Machine;
+import simulation.Pioneer;
+
+import java.util.ArrayList;
 
 
 public abstract class Field {
 
 
-    private int[] coordinates =new int[2]; //koordynaty pola terenu
+    protected int[] coordinates =new int[2]; //koordynaty pola terenu
+    private int TerrainId;  //id terenu
+    private Machine machine; //maszyna stojąca na polu
+    private GridSprite gridSprite; //render pola
+    private int baseMovPoints; //punkty na początku rundy jeśli jest to pole startu
+    private ArrayList<Integer> ProbabilityOfGlitch; //szanse na zakłócenie
+    private boolean canBuild;   //czy można na tym polu budować
+
     public int[] getCoordinates() {
         return coordinates;
     }
-
     public void setCoordinates(int[] coordinates) {
         this.coordinates = coordinates;
     }
@@ -37,26 +46,6 @@ public abstract class Field {
     }
 
 
-    private int costOfMov;  //koszt wyjścia z pole
-    public int getCostOfMov() {
-        return costOfMov;
-    }
-
-    public void setCostOfMov(int costOfMov) {
-        this.costOfMov = costOfMov;
-    }
-
-
-    private int ProbabilityOfGlitch; //szansa na zakłócenie
-    public int getProbabilityOfGlitch() {
-        return ProbabilityOfGlitch;
-    }
-
-    public void setProbabilityOfGlitch(int probabilityOfGlitch) {
-        ProbabilityOfGlitch = probabilityOfGlitch;
-    }
-
-
     private boolean canBuild;   //czy można na tym p[olu budować
     public boolean isCanBuild() {
         return canBuild;
@@ -66,12 +55,8 @@ public abstract class Field {
         this.canBuild = canBuild;
     }
 
+    // odpowiada z wystąpienie glitcha
+    public void activateGlitch() {
 
-    private Machine machine; //maszyna stojąca na polu
-    private GridSprite gridSprite; //render pola
-
-
-
-
-
+    }
 }

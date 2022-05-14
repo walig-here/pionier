@@ -10,9 +10,9 @@ public class Item {
     private String name;
     private int amount; // ilość przedmiotu
     private double income; // przyrost na turę
-    private double productionTime; //bazowy czas produkcji przedmiotu (w sekundach)
+    private int productionTime; //bazowy czas produkcji przedmiotu (w turach)
 
-    public Item(String name, int amount, double income, double productionTime) {
+    public Item(String name, int amount, double income, int productionTime) {
         this.name = name;
         this.amount = amount;
         this.income = income;
@@ -51,7 +51,7 @@ public class Item {
         return productionTime;
     }
 
-    public void setProductionTime(double productionTime) {
+    public void setProductionTime(int productionTime) {
         this.productionTime = productionTime;
     }
 }
