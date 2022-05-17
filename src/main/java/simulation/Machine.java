@@ -12,6 +12,7 @@ public class Machine {
     private Recipe cost; // lista obiektow potrzebnych do wybudowania/ulepszenia
     private String name; // nazwa
     private Glitch glitch; // zakłócenie obecne w maszynie
+    private int ID; // ID maszyny
 
     // zmiana ilości przedmitów wynikła z produkcji
     public void production(ArrayList<Item> inventory) {
