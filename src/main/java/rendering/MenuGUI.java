@@ -9,11 +9,11 @@ import java.awt.event.ActionListener;
 ////////////////////////
 
 
-public class Kanwa3 extends JFrame implements ActionListener {
+public class MenuGUI extends JFrame implements ActionListener {
 
     JButton button1, button2, button3;
 
-    public Kanwa3(){
+    public MenuGUI(){
 
         ImageIcon logo = new ImageIcon("logo.png");
 
@@ -37,7 +37,7 @@ public class Kanwa3 extends JFrame implements ActionListener {
 
         this.setTitle("Pionier w \u015Bwiecie maszyn");
         this.setIconImage(logo.getImage());
-        this.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setResizable(false);
         this.setLocationRelativeTo(null);
         this.setLayout(null);
@@ -54,19 +54,28 @@ public class Kanwa3 extends JFrame implements ActionListener {
 
         if(e.getSource()==button1){
 
-            //otwiera edytor map
-            NFrame frame=new NFrame(20);
+            String answer = JOptionPane.showInputDialog("Podaj wielko\u015B\u0107 boku mapy");
+            try {
+                new MapEditorGUI(Integer.parseInt(answer));
+            }catch (NumberFormatException ex){
+                ex.printStackTrace();
+            }
             dispose();
         }
         if (e.getSource()==button2){
 
             //otwiera autoGenerator map
 
+            map.MapGenerator.generateMap();
+
             dispose();
         }
         if (e.getSource()==button3){
 
             //wczytuje zapisaną mapę
+
+            String answer = JOptionPane.showInputDialog("Podaj nazw\u0119 mapy");
+            map.MapLoader.loadMap(answer);
 
             dispose();
         }

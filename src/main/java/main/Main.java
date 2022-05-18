@@ -12,12 +12,12 @@ public class Main {
     static private Field[][] map; // plansza na której odbywa się symulacja
     static private int current_turn; // aktualna tura
     static private ArrayList<Integer> buildingOrder; // kolejka ID maszyn, które musi zbudować pionier aby wygrać
-    static private Kanwa3 menu;
+    static private MenuGUI menu;
 
     public static void main(String[] args) {
         grid_size = 30;
         //current_window = new NFrame(grid_size);
-        menu=new Kanwa3();
+        menu=new MenuGUI();
     }
 
     // ustala kolejkę budynków, które powinien zbudować pionier
