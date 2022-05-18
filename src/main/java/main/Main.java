@@ -25,8 +25,7 @@ public class Main {
     // pętla symulacji wykonująca się określoną ilość tur lub do osiągnięcia przez pioniera określonego celu
     private static void simulationLoop(int max_turns) {
 
-        for (;max_turns > 0; max_turns--)
-        {
+        for (;max_turns > 0; max_turns--) {
 
         }
     }
