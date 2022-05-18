@@ -8,8 +8,7 @@ import java.util.ArrayList;
 import static java.lang.Math.abs;
 
 public class Pioneer {
-
-    private int[] coordinates = {0,0}; // koordynaty pioniera
+    private int[] coordinates; // koordynaty pioniera
 
     private ArrayList<Item> inventory; // ekwipunek pioniera
     private int move_points; // dostępne punkty ruchu
@@ -19,6 +18,25 @@ public class Pioneer {
     private int to_build; // jaką maszynę postawić(ID)?
     private int building_field[][]; // gdzie postawić budynek?
     private ArrayList<Integer[]> path = new ArrayList<>(); // ścieżka po której porusza się pionier
+
+    // konstruktor
+    public Pioneer(Field spawn_filed){
+
+        // ustalenie pozycji na planszy
+        coordinates = new int[2];
+        coordinates[0] = spawn_filed.getCoordinates()[0];
+        coordinates[1] = spawn_filed.getCoordinates()[1];
+    }
+
+    // pobiera koordynaty
+    public int[] getCoordinates() {
+        return coordinates;
+    }
+
+    // pobiera ścieżkę pioniera
+    public ArrayList<Integer[]> getPath() {
+        return path;
+    }
 
     // przemieszcza pioniera na pierwszą pozycję zapisaną w ścieżce path
     public void walk()
@@ -65,8 +83,8 @@ public class Pioneer {
             int x_motion = (delta_x < 0 ? -1 : 1);
             for (int current_x = coordinates[0]+x_motion; current_x != destination.getCoordinates()[0]; current_x += x_motion) {
                 Integer[] field = new Integer[2];
-                field[0] = coordinates[1];
-                field[1] = current_x;
+                field[1] = coordinates[1];
+                field[0] = current_x;
                 path.add(field);
             }
 
