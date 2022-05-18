@@ -11,6 +11,11 @@ public class GlitchSourceField extends Field {
 
     private Glitch glitch; // zakłócenie generowane przez pole
 
+    // konstruktor
+    public GlitchSourceField(int x, int y){
+        super(x,y);
+    }
+
     // zmienia prawodpodobieństwa wystąpienia zakłócenia z tego pola w innych polach
     public void setProbabilities(Field[][] map)
     {

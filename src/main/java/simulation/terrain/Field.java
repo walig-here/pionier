@@ -10,7 +10,7 @@ import java.util.ArrayList;
 public abstract class Field {
 
 
-    protected int[] coordinates =new int[2]; //koordynaty pola terenu
+    protected int[] coordinates; //koordynaty pola terenu
     private int TerrainId;  //id terenu
     private Machine machine; //maszyna stojąca na polu
     private GridSprite gridSprite; //render pola
@@ -18,11 +18,21 @@ public abstract class Field {
     private ArrayList<Integer> ProbabilityOfGlitch; //szanse na zakłócenie
     private boolean canBuild;   //czy można na tym polu budować
 
+    // konstruktor
+    public Field(int x, int y){
+
+        // miejsce pola na planszy
+        coordinates = new int[2];
+        coordinates[0] = x;
+        coordinates[1] = y;
+    }
+
     public int[] getCoordinates() {
         return coordinates;
     }
-    public void setCoordinates(int[] coordinates) {
-        this.coordinates = coordinates;
+    public void setCoordinates(int x, int y) {
+       coordinates[0] = x;
+       coordinates[1] = y;
     }
 
 
