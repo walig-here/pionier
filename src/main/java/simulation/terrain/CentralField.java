@@ -9,6 +9,9 @@ import simulation.Pioneer;
  * */
 public class CentralField extends Field {
 
+    public CentralField(int x, int y){
+        super(x,y);
+    }
     @Override
     public int goThrough(Pioneer pioneer)
     {
