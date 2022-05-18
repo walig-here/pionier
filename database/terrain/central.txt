@@ -1,2 +1,2 @@
-"move points":10
+"move points":15
 "can build":false
