@@ -9,7 +9,7 @@ public class DepositField extends Field {
 
     // konstruktor
     public DepositField(int x, int y){
-        super(x,y);
+        super(x,y,2);
     }
 
     public void setCapacityOfDeposit(int capacityOfDeposit) {
@@ -26,8 +26,8 @@ public class DepositField extends Field {
     }
 
     @Override
-    public int goThrough(Pioneer pioneer)
+    public boolean goInto(Pioneer pioneer)
     {
-        return 0;
+        return true;
     }
 }

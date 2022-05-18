@@ -10,11 +10,11 @@ import simulation.Pioneer;
 public class CentralField extends Field {
 
     public CentralField(int x, int y){
-        super(x,y);
+        super(x,y,4);
     }
     @Override
-    public int goThrough(Pioneer pioneer)
+    public boolean goInto(Pioneer pioneer)
     {
-        return 0;
+        return true;
     }
 }

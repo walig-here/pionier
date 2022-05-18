@@ -12,12 +12,12 @@ public class WaterField extends Field {
 
     // konstruktor
     public WaterField(int x, int y){
-        super(x,y);
+        super(x,y,1);
     }
 
     @Override
-    public int goThrough(Pioneer pioneer)
+    public boolean goInto(Pioneer pioneer)
     {
-        return 0;
+        return true;
     }
 }
