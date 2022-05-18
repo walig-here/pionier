@@ -2,7 +2,10 @@ package map;
 
 public class MapGenerator {
 
-    public void generateMap(){
+    MapGenerator(){
+
+    }
+    public static void generateMap(){
 
     }
 }

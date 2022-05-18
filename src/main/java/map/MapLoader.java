@@ -5,7 +5,7 @@ public class MapLoader {
 
     }
 
-    static public void loadMap(){
+    static public void loadMap(String name){
 
     }
 }

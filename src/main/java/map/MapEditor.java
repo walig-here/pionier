@@ -1,4 +1,4 @@
-package rendering;
+package map;
 
 public class MapEditor {
 
