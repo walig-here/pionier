@@ -11,6 +11,21 @@ class PioneerTest {
 
     @Test
     void walk() {
+        Field[][] map = new Field[10][10];
+        for(int i = 0; i < 10; i++)
+            for (int j = 0; j < 10; j++)
+                map[i][j] = new SoilField(i,j);
+
+        Pioneer pioneer = new Pioneer(map[2][3]);
+        pioneer.calculatePath(map[5][0]);
+
+        System.out.println("Pozycja startu pioniera: " + pioneer.getCoordinates()[0] + ", " + pioneer.getCoordinates()[1]);
+        while (pioneer.getPath().size() > 0 && pioneer.getMove_points() != 0) {
+            System.out.println("Akutalna pozycja pioniera: " + pioneer.getCoordinates()[0] + ", " + pioneer.getCoordinates()[1]);
+            pioneer.walk(map);
+        }
+        System.out.println("Pozycja zatrzymania pioniera: " + pioneer.getCoordinates()[0] + ", " + pioneer.getCoordinates()[1]);
+        System.out.println("Pozostale punkty ruchu: " + pioneer.getMove_points());
     }
 
     @Test
