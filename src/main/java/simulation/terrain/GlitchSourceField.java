@@ -1,6 +1,5 @@
 package simulation.terrain;
 
-import simulation.Glitch;
 import simulation.Pioneer;
 
 /**
@@ -14,7 +13,7 @@ public class GlitchSourceField extends Field {
 
     // konstruktor
     public GlitchSourceField(int x, int y){
-        super(x,y);
+        super(x,y,3);
     }
 
     // zmienia prawodpodobieństwa wystąpienia zakłócenia z tego pola w innych polach
@@ -24,8 +23,8 @@ public class GlitchSourceField extends Field {
     }
 
     @Override
-    public int goThrough(Pioneer pioneer)
+    public boolean goInto(Pioneer pioneer)
     {
-        return 0;
+        return true;
     }
 }
