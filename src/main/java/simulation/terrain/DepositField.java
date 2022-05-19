@@ -7,6 +7,10 @@ public class DepositField extends Field {
     private int itemID; // ID wydobywanego stąd itemu
     private int CapacityOfDeposit; // maksymalna ilość surowca do wydobycia
 
+    // konstruktor
+    public DepositField(int x, int y){
+        super(x,y,2);
+    }
 
     public void setCapacityOfDeposit(int capacityOfDeposit) {
         CapacityOfDeposit = capacityOfDeposit;
@@ -22,8 +26,8 @@ public class DepositField extends Field {
     }
 
     @Override
-    public int goThrough(Pioneer pioneer)
+    public boolean goInto(Pioneer pioneer)
     {
-        return 0;
+        return true;
     }
 }
