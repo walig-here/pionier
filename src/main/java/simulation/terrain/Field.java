@@ -22,7 +22,6 @@ public abstract class Field {
     private boolean canBuild;   //czy można na tym polu budować
 
     /**
-     * KONSTRUKTOR:
      * Tworzy obiekt klasy Filed, znajdujący się w podanym punkcie planszy i zawierający w sobie typ terenu o określonym ID.
      * Reszta danych na temat pola wczytywana jest przez konstruktor z plików na dysku systemowym.
      *
