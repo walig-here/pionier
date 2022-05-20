@@ -52,6 +52,12 @@ public class Pioneer {
         return move_points;
     }
 
+    // ustala koordynaty
+    public void setCoordinates(int x, int y) {
+        this.coordinates[0] = x;
+        this.coordinates[1] = y;
+    }
+
     // pobiera koordynaty
     public int[] getCoordinates() {
         return coordinates;
