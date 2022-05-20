@@ -2,22 +2,20 @@ package simulation;
 import rendering.Sprite;
 import simulation.terrain.Field;
 
-import java.io.File;
 import java.util.ArrayList;
 
 import static java.lang.Math.abs;
 
 public class Pioneer {
     private int[] coordinates; // koordynaty pioniera
-
     private ArrayList<Item> inventory; // ekwipunek pioniera
+
     private int move_points; // dostępne punkty ruchu
     private Sprite sprite; // render pioniera na ekranie
     private boolean could_build; // wkazuje czy pionier może coś zbudować
-
     private int to_build; // jaką maszynę postawić(ID)?
-    private int building_field[][]; // gdzie postawić budynek?
-    private ArrayList<Integer[]> path = new ArrayList<>(); // ścieżka po której porusza się pionier
+    private int building_field[]; // gdzie postawić budynek?
+    private ArrayList<Integer[]> path; // ścieżka po której porusza się pionier
 
     // konstruktor
     public Pioneer(Field spawn_filed){
@@ -26,6 +24,32 @@ public class Pioneer {
         coordinates = new int[2];
         coordinates[0] = spawn_filed.getCoordinates()[0];
         coordinates[1] = spawn_filed.getCoordinates()[1];
+
+        // pobranie początkowych punktów ruchu
+        setStartMovePoints(spawn_filed);
+
+        // pionier przy zespawnowaniu może budować
+        could_build = true;
+
+        // ustawiamy pole kolejnej budowy ustalamy na wartość [-1;-1] co oznacza, że pionier nie wybrał żadnego pola pod budowę
+        building_field = new int[2];
+        building_field[0] =  -1;
+
+        // ustawiamy planowaną budowlę na wartość -1 co oznacza, że pionier nie wybrał żadnej budowli do postawienia
+        to_build = -1;
+
+        // stworzenie instancji dla reszty pól
+        path = new ArrayList<>();
+    }
+
+    // ustala punkty ruchu
+    public void setMove_points(int move_points) {
+        this.move_points = move_points;
+    }
+
+    //pobiera punkty ruchu
+    public int getMove_points() {
+        return move_points;
     }
 
     // pobiera koordynaty
@@ -38,10 +62,24 @@ public class Pioneer {
         return path;
     }
 
-    // przemieszcza pioniera na pierwszą pozycję zapisaną w ścieżce path
-    public void walk()
-    {
+    /**
+     * Przemieszcza pioniera o jedno pole znajdujące się na początku ścieżki, którą ten podąża.
+     *
+     * @param map plansza symulacji
+     * @param starting określa czy wywołana funkcja odpowiada pierwszemu ruchowi pioniera w tej turze
+     * **/
+    public void walk(Field[][] map, boolean starting) {
+        // Sprawdzamy czy pionier może wyjść z pola, na którym aktualnie stoi
+        if(!map[coordinates[0]][coordinates[1]].goOut(this, starting)) return;
 
+        // Wybieramy z mapy pole, na które chcemy wejść. Następnie próbujemy wkroczyć pionierem na pole.
+        // Jeżeli pionierowi nie uda się wejść na teren pola to nie przemieszcza się dalej w tej turze.
+        // Jeżeli pionierowi uda się wejść na teren pola to przemieszcza się, a pole na które wkracza zostaje usunięte ze ścieżki,
+        if(map[path.get(0)[0]][path.get(0)[1]].goInto(this)) {
+            coordinates[0] = path.get(0)[0];
+            coordinates[1] = path.get(0)[1];
+            path.remove(0);
+        }
     }
 
     // buduje maszynę na danym polu
@@ -144,9 +182,9 @@ public class Pioneer {
 
     }
 
-    // wyznacza bazowe punkty ruchu w zależności od pola na którym stoi
-    public void setMove_points(Field start_filed)
+    // wyznacza bazowe punkty ruchu w zależności od pola na którym stoi pionier
+    public void setStartMovePoints(Field start_filed)
     {
-        
+        move_points = start_filed.getBase_move_points();
     }
 }
