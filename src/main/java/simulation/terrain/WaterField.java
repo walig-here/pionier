@@ -85,6 +85,7 @@ public class WaterField extends Field {
      *
      * @return Wartość boolowska określająca czy pionier może wyjść z pola wodnego.
      */
+    @Override
     public boolean goOut(Pioneer pioneer, boolean starting_point) {
         int[] coords = {pioneer.getPath().get(0)[0], pioneer.getPath().get(0)[1]};
         boolean wentOut = goInto(pioneer);
