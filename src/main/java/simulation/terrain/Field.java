@@ -112,6 +112,21 @@ public abstract class Field {
         return base_move_points;
     }
 
+    /**
+     * Obsługuje mechanizm wyjścia pioniera z danego pola. Dla większości pól planszy przypisuje
+     * pionierowi punkty ruchu, które może wykorzystać w danej turze.
+     *
+     * @param pioneer wchodzący na pole pionier
+     * @param starting_point określa czy pole, z którego wychodzimy jest punktym startowym marszu pioniera w tej turze
+     *
+     * @return Wartość boolowska określająca czy pionier może wyjść z pola.
+     */
+    public boolean goOut(Pioneer pioneer, boolean starting_point) {
+        // dodajemy startowe punkty ruchu tylko wtedy, gdy pole jest polem startowym
+        if(starting_point) pioneer.setMove_points(base_move_points);
+        return true;
+    }
+
     public void setBase_move_points(int base_move_points) {
         this.base_move_points = base_move_points;
     }
