@@ -16,6 +16,8 @@ public class SoilField extends Field {
     @Override
     /**
      * Odbiera pionierowi określoną ilość punktów ruchu przy przejściu przez to pole.
+     *
+     * @param pioneer wchodzący na pole pionier
      * */
     public boolean goInto(Pioneer pioneer) {
 

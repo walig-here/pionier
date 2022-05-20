@@ -1,2 +1,3 @@
-"move points":1
+"move points":0
 "can build":false
+"sailing time":2

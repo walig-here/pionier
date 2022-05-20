@@ -66,12 +66,11 @@ public class Pioneer {
      * Przemieszcza pioniera o jedno pole znajdujące się na początku ścieżki, którą ten podąża.
      *
      * @param map plansza symulacji
+     * @param starting określa czy wywołana funkcja odpowiada pierwszemu ruchowi pioniera w tej turze
      * **/
-    public void walk(Field[][] map)
-    {
-        // Sprawdzamy czy pionierowi zostały jakiekolwiek punkty ruchu.
-        // Jeżeli nie posiada już żadnych to nie przemieszcza się.
-        if(move_points == 0) return;
+    public void walk(Field[][] map, boolean starting) {
+        // Sprawdzamy czy pionier może wyjść z pola, na którym aktualnie stoi
+        if(!map[coordinates[0]][coordinates[1]].goOut(this, starting)) return;
 
         // Wybieramy z mapy pole, na które chcemy wejść. Następnie próbujemy wkroczyć pionierem na pole.
         // Jeżeli pionierowi nie uda się wejść na teren pola to nie przemieszcza się dalej w tej turze.
