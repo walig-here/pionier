@@ -24,7 +24,7 @@ public class DepositField extends Field {
         // co wydobywamy na polu
         this.item_id = item_id;
 
-        // Tworzymy pomocnicze pole ziemi, z którego pobierzemy punkty ruchu potrzebne.
+        // Tworzymy pomocnicze pole ziemi, z którego pobierzemy punkty ruchu potrzebne do wejścia na pole.
         // Jeżeli wartość move_cost jest inna niż -1 to znaczy, że nie musimy już wczytywać tej wartości
         if(move_cost == -1) {
             SoilField temp = new SoilField(0,0);
