@@ -17,5 +17,6 @@ public class MapGenerator {
         Main.map=new Field[size][size];
 
 
+
     }
 }
