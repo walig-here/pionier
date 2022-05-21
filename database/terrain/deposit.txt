@@ -1,2 +1,3 @@
 "move points":2
 "can build":true
+"penalty":1.33
