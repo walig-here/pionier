@@ -1,2 +1,4 @@
 "move points":1
 "can build":true
+"max probability":67
+"distance modifier":2
