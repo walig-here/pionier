@@ -19,7 +19,7 @@ public abstract class Field {
     private GridSprite gridSprite; //render pola
     private int base_move_points; //punkty na początku rundy jeśli jest to pole startu
 
-    private ArrayList<Byte[]> glitch_probabilities; //szanse na zakłócenie, pierwsza komórka danej pozycji to ID zakłócenia, druga to szansa na jego wystąpienie na tym polu
+    private ArrayList<Byte[]> glitch_probabilities; // szanse na zakłócenie, pierwsza komórka danej pozycji to ID zakłócenia, druga to szansa na jego wystąpienie na tym polu
     private boolean canBuild;   //czy można na tym polu budować
 
     /**

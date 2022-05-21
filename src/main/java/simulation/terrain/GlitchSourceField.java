@@ -65,7 +65,7 @@ public class GlitchSourceField extends Field {
         }
     }
 
-    // zmienia prawodpodobieństwa wystąpienia zakłócenia z tego pola w innych polach
+    // zmienia prawodpodobieństwa wystąpienia zakłócenia z tego pola w innych polach planszy
     public void setProbabilities(Field[][] map)
     {
         int distance; // dystans między źródłem a analizowanym polem plnaszy
