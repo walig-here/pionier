@@ -2,6 +2,7 @@ package simulation;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import simulation.terrain.CentralField;
 import simulation.terrain.Field;
 import simulation.terrain.SoilField;
 import simulation.terrain.WaterField;
@@ -68,6 +69,41 @@ class PioneerTest {
             boolean starting;
 
             System.out.println("\nPRZEMIESZCZENIE PO MAPIE Z DODANYMI POLAMI WODNYMI");
+            System.out.println("Pozycja startu pioniera: " + pioneer.getCoordinates()[0] + ", " + pioneer.getCoordinates()[1]);
+            for (int i = 1; pioneer.getPath().size() > 0; i++) {
+                starting = true;
+                do
+                {
+                    pioneer.walk(map,starting);
+                    starting = false;
+                    System.out.print("Tura: " + i + "\tAkutalna pozycja pioniera: " + pioneer.getCoordinates()[0] + ", " + pioneer.getCoordinates()[1]);
+                    System.out.println("\t Punkty ruchu: " + pioneer.getMove_points());
+                } while (pioneer.getMove_points() != 0 && pioneer.getPath().size() > 0);
+            }
+        }
+
+        {
+            // MAPA
+            // S S S S
+            // S C W S
+            // S W S S
+            // S W S S
+            Field[][] map = new Field[4][4];
+            map[0][0] = new SoilField(0,0); map[1][0] = new SoilField(1,0); map[2][0] = new SoilField(2,0); map[3][0] = new SoilField(3,0);
+            map[0][1] = new SoilField(0,1); map[1][1] = new SoilField(1,1); map[2][1] = new WaterField(2,1); map[3][1] = new SoilField(3,1);
+            map[0][2] = new SoilField(0,2); map[1][2] = new WaterField(1,2); map[2][2] = new SoilField(2,2); map[3][2] = new SoilField(3,2);
+            map[0][3] = new SoilField(0,2); map[1][3] = new WaterField(1,2); map[2][3] = new SoilField(2,2); map[3][3] = new SoilField(3,3);
+
+            Integer[] start = {0,0};
+            Integer[] finish = {3,3};
+
+            Pioneer pioneer = new Pioneer(map[start[0]][start[1]]);
+            pioneer.calculatePath(map[finish[0]][finish[1]]);
+            map[1][1] = new CentralField(map[1][1]);
+
+            boolean starting;
+
+            System.out.println("\nPRZEMIESZCZENIE PO MAPIE Z DODANYMI POLAMI WODNYMI ORAZ POLEM CENTRALNYM");
             System.out.println("Pozycja startu pioniera: " + pioneer.getCoordinates()[0] + ", " + pioneer.getCoordinates()[1]);
             for (int i = 1; pioneer.getPath().size() > 0; i++) {
                 starting = true;

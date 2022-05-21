@@ -33,12 +33,12 @@ public class Main {
         for (;max_turns > 0; max_turns--) {
 
 
-            // pętla ruchu - wykonuje się dopóki pionierowi starcza punktów ruchu lub nie dotrze do celu
+            // pętla ruchu - wykonuje się dopóki pionierowi starcza punktów ruchu lub kiedy dotrze do celu
             {
                 boolean starting = true;
                 do{
                     pioneer.walk(map, starting);
-                    starting = false;
+                    if(starting) starting = false;
                 }while (pioneer.getMove_points() != 0 && pioneer.getPath().size() > 0);
             }
         }
