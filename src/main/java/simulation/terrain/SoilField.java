@@ -68,4 +68,9 @@ public class SoilField extends Field {
         pioneer.setMove_points(pioneer.getMove_points() - move_cost);
         return true;
     }
+
+    // pobiera koszt wejścia na pole
+    public static int getMove_cost() {
+        return move_cost;
+    }
 }

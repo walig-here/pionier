@@ -15,7 +15,7 @@ public abstract class Field {
 
     protected int[] coordinates; //koordynaty pola terenu
     private int terrain_id;  //id terenu
-    private Machine machine; //maszyna stojąca na polu
+    protected Machine machine; //maszyna stojąca na polu
     private GridSprite gridSprite; //render pola
     private int base_move_points; //punkty na początku rundy jeśli jest to pole startu
     private ArrayList<Integer> ProbabilityOfGlitch; //szanse na zakłócenie
