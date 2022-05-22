@@ -9,8 +9,8 @@ public class ComponentItem extends Item {
 
     Recipe recipe; // receptura, którą trzeba wykonać, aby otrzymać ten obiekt
 
-    public ComponentItem(String name, int amount, double income, int productionTime, ArrayList<Item> recipe, int machineId) {
-        super(name, amount, income, productionTime);
+    public ComponentItem(String name, int amount, double income, int productionTime, ArrayList<Item> recipe, int machineId, int id) {
+        super(id, amount,income);
     }
 
     public Recipe getRecipe() {

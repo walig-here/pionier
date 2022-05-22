@@ -1,0 +1,2 @@
+"name":Trybik
+"production time":10
