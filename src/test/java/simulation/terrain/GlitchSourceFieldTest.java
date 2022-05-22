@@ -19,12 +19,12 @@ class GlitchSourceFieldTest {
         if(map[4][4] instanceof GlitchSourceField){
             ((GlitchSourceField)map[4][4]).setProbabilities(map);
         }
-        map[8][6] = new GlitchSourceField(8,6,4,(byte)1);
+        map[8][6] = new GlitchSourceField(8,6,3,(byte)1);
         if(map[8][6] instanceof GlitchSourceField){
             ((GlitchSourceField)map[8][6]).setProbabilities(map);
         }
 
-        System.out.println("MAPA PRAWDOPODOBIENSTW WYSTAPENIA ZAKLOCENIA 1");
+        System.out.println("MAPA PRAWDOPODOBIENSTW WYSTAPENIA ZAKLOCENIA");
         for (Field[] fields : map) {
             for (int y = 0; y < fields.length; y++) {
                 if (fields[y].getGlitch_probabilities().size() != 0)
