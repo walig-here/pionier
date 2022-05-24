@@ -13,13 +13,13 @@ public class Main {
     static private ArrayList<Integer> buildingOrder; // kolejka ID maszyn, które musi zbudować pionier aby wygrać
     static private MenuGUI menu;
     static private Pioneer pioneer; // pionier
+    static private Item targetItem = new ComponentItem(16, 0, 0); // przedmiot, ktorego zdobycie, konczy symulacje (przedmiot docelowy)
+    static private ArrayList<Recipe> children = new ArrayList<>();
+    static private ArrayList<Integer> buildingQueue = new ArrayList<>();
 
     public static void main(String[] args) {
+        setBuildingOrder();
 
-        menu=new MenuGUI();
-
-        // główna pętkla symulacji
-        simulationLoop(100);
     }
 
     // pętla symulacji wykonująca się określoną ilość tur lub do osiągnięcia przez pioniera określonego celu
@@ -45,6 +45,42 @@ public class Main {
 
     // ustala kolejkę budynków, które powinien zbudować pionier
     private static void setBuildingOrder() {
+//moze sie przydac
+//        ArrayList<Item> neededItems = new ArrayList<>();
+//        ArrayList<Integer> idChecker = new ArrayList<>();
 
+        Recipe targetItemRecipe = ((ComponentItem) targetItem).getRecipe();
+
+        ArrayList<Recipe> relatedRecipes = getRecipeChildren(targetItemRecipe);
+        relatedRecipes.add(targetItemRecipe);
+//TODO: moze sie przydac
+        //        for (Recipe relatedRecipe : relatedRecipes) {
+//            for (int j = 0; j < relatedRecipe.getInput().size(); j++) {
+//                Item currentItem = relatedRecipe.getInput().get(j);
+//                int currentItemId = currentItem.getID();
+//                if (!idChecker.contains(currentItemId)) neededItems.add(currentItem);
+//                idChecker.add(currentItemId);
+//            }
+//        }
+
+
+        for (Recipe relatedRecipe : relatedRecipes) {
+            buildingQueue.add(relatedRecipe.getMachine());
+        }
+        System.out.println(buildingQueue);
+    }
+
+    //Rekurencyjnie zaczyna od docelowego przedmiotu, "rozwija" jego recepty i tak dochodzi do podstawowych przedmiotów
+    private static ArrayList<Recipe> getRecipeChildren(Recipe recipe) {
+        for (int i=0; i < recipe.getInput().size(); i++) {
+            Item childItem = recipe.getInput().get(i);
+            if (childItem instanceof ComponentItem) {
+                Recipe childItemRecipe = ((ComponentItem) childItem).getRecipe();
+                getRecipeChildren(childItemRecipe);
+                children.add(childItemRecipe);
+            }
+        }
+
+        return children;
     }
 }
