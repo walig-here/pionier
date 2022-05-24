@@ -40,12 +40,33 @@ public class Machine {
             case 4: path += "oil_pump.txt";
 
             case 5: path += "refinery.txt";
+
+            case 6: path += "battery_factory.txt";
+
+            case 7: path += "cable_factory.txt";
+
+            case 8: path += "cpu_factory.txt";
+
+            case 9: path += "diamond_saw_factory.txt";
+
+            case 10: path += "supercomputer_factory.txt";
+
+            case 11: path += "casing_factory.txt";
+
+            case 12: path += "cog_factory.txt";
+
+            case 13: path += "electronic_circuit_factory.txt";
+
+            case 14: path += "engine_factory.txt";
+
+            case 15: path += "production_belt_factory.txt";
+
         }
         try {
             Item item = new Item(produced_item, 0, 0);
             //ustalamy jaki przedmiot wylatuje po weryfikacji (oddelegowanie do klasy Item) czy ten przedmiot istnieje
             this.produced_item = produced_item;
-        } catch (Exception e) {} ;
+        } catch (Exception e) {}
 
         try{
             InputStream file_stream = new FileInputStream(path);
@@ -69,7 +90,6 @@ public class Machine {
         catch (Exception e) {
             e.printStackTrace();
             System.out.println("Blad wczytywania danych dla przedmiotu o ID " + ID + "! Nie udalo sie uzyskac dostepu do pliku z danymi!");
-            return;
         }
     }
 
