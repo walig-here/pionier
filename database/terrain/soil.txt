@@ -1,2 +1,3 @@
 "move points":5
 "can build":true
+"move cost":1

@@ -8,15 +8,14 @@ import java.util.ArrayList;
 public class Main {
 
     static private NFrame current_window; // akutalne okno symulacji
-    static private int grid_size; // rozmiar planszy(w polach) z przedziału [???]
-    static private Field[][] map; // plansza na której odbywa się symulacja
+    static public int map_size; // rozmiar planszy(w polach) z przedziału [???]
+    static public Field[][] map; // plansza na której odbywa się symulacja
     static private ArrayList<Integer> buildingOrder; // kolejka ID maszyn, które musi zbudować pionier aby wygrać
     static private MenuGUI menu;
     static private Pioneer pioneer; // pionier
 
     public static void main(String[] args) {
-        grid_size = 30;
-        //current_window = new NFrame(grid_size);
+
         menu=new MenuGUI();
 
         // główna pętkla symulacji
@@ -33,12 +32,12 @@ public class Main {
         for (;max_turns > 0; max_turns--) {
 
 
-            // pętla ruchu - wykonuje się dopóki pionierowi starcza punktów ruchu lub nie dotrze do celu
+            // pętla ruchu - wykonuje się dopóki pionierowi starcza punktów ruchu lub kiedy dotrze do celu
             {
                 boolean starting = true;
                 do{
                     pioneer.walk(map, starting);
-                    starting = false;
+                    if(starting) starting = false;
                 }while (pioneer.getMove_points() != 0 && pioneer.getPath().size() > 0);
             }
         }

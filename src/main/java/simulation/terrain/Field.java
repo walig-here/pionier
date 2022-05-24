@@ -15,10 +15,11 @@ public abstract class Field {
 
     protected int[] coordinates; //koordynaty pola terenu
     private int terrain_id;  //id terenu
-    private Machine machine; //maszyna stojąca na polu
+    protected Machine machine; //maszyna stojąca na polu
     private GridSprite gridSprite; //render pola
     private int base_move_points; //punkty na początku rundy jeśli jest to pole startu
-    private ArrayList<Integer> ProbabilityOfGlitch; //szanse na zakłócenie
+
+    private ArrayList<Byte[]> glitch_probabilities; // szanse na zakłócenie, pierwsza komórka danej pozycji to ID zakłócenia, druga to szansa na jego wystąpienie na tym polu
     private boolean canBuild;   //czy można na tym polu budować
 
     /**
@@ -38,6 +39,9 @@ public abstract class Field {
 
         // ustalamy ID terenu
         this.terrain_id = terrain_id;
+
+        // rezerwujemy miejsce pod listę zakłóceń
+        glitch_probabilities = new ArrayList<>();
 
         // na podstawie typu terenu dobieramy blik z którego wczytane zostaną dane
         String path = "database\\terrain\\";
@@ -94,6 +98,16 @@ public abstract class Field {
     public void setCoordinates(int x, int y) {
        coordinates[0] = x;
        coordinates[1] = y;
+    }
+
+
+    // pobiera listę prawdopodobieństw wystąpienia zakłóceń
+    public ArrayList<Byte[]> getGlitch_probabilities() {
+        return glitch_probabilities;
+    }
+
+    public void setGlitch_probabilities(ArrayList<Byte[]> glitch_probabilities) {
+        this.glitch_probabilities = glitch_probabilities;
     }
 
     // ustala wpływ pola na wchodzącego na nie pioniera oraz zwraca informacje czy udało mu się wkroczyć na jego teren

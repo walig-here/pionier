@@ -1,2 +1,3 @@
 "move points":15
 "can build":false
+"move bonus":1.5

@@ -1,0 +1,2 @@
+"machine":0
+"component":0:1

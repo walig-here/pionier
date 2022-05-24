@@ -1,0 +1,2 @@
+"name":Złoto
+"production time":1
