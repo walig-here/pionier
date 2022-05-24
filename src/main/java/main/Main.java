@@ -57,7 +57,6 @@ public class Main {
         for (Recipe relatedRecipe : relatedRecipes) {
             buildingQueue.add(relatedRecipe.getMachine());
         }
-        System.out.println(buildingQueue);
     }
 
     //Rekurencyjnie zaczyna od docelowego przedmiotu, "rozwija" jego recepty i tak dochodzi do podstawowych przedmiotów
