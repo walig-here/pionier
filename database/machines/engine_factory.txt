@@ -1,0 +1,2 @@
+"name": Fabryka silników
+"output": 10
