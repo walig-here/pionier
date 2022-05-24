@@ -28,7 +28,7 @@ public class Item {
 
         // Resztę danych pobieramy z baz danych na dysku systemowych.
         // Plik z danymi ustalamy na podstawie ID przedmiotu.
-        String path = "database\\items\\";
+        String path = "database/items/";
         switch (id){
             // 0 - energia
             case 0: path += "energy.txt"; break;
@@ -39,7 +39,7 @@ public class Item {
             // 2 - drewno
             case 2: path += "wood.txt"; break;
 
-            // 3 - drewno
+            // 3 - miedź
             case 3: path += "copper.txt"; break;
 
             // 4 - ropa
@@ -54,7 +54,7 @@ public class Item {
             // 7 - diament
             case 7: path += "diamond.txt"; break;
 
-            // 8 - diament
+            // 8 - benzyna
             case 8: path += "petrol.txt"; break;
 
             // 9 - sztabka miedzi
@@ -66,7 +66,7 @@ public class Item {
             // 11 - stal
             case 11: path += "steel.txt"; break;
 
-            // 12 - stal
+            // 12 - plastik
             case 12: path += "plastic.txt"; break;
 
             // 13 - kwas
@@ -101,6 +101,9 @@ public class Item {
 
             // 23 - superkomputer
             case 23: path += "supercomputer.txt"; break;
+
+            // 10 - sztabka żelaza
+            case 24: path += "iron_ingot.txt"; break;
         }
 
         // Pobieramy dane
@@ -128,7 +131,6 @@ public class Item {
         catch (Exception e) {
             e.printStackTrace();
             System.out.println("Blad wczytywania danych dla przedmiotu o ID " + ID + "! Nie udalo sie uzyskac dostepu do pliku z danymi!");
-            return;
         }
     }
 
