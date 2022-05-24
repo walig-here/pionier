@@ -18,8 +18,12 @@ public class Main {
     static private ArrayList<Integer> buildingQueue = new ArrayList<>();
 
     public static void main(String[] args) {
+        
         setBuildingOrder();
-
+        
+        menu=new MenuGUI();
+        // główna pętkla symulacji
+        simulationLoop(100);
     }
 
     // pętla symulacji wykonująca się określoną ilość tur lub do osiągnięcia przez pioniera określonego celu
@@ -45,24 +49,10 @@ public class Main {
 
     // ustala kolejkę budynków, które powinien zbudować pionier
     private static void setBuildingOrder() {
-//moze sie przydac
-//        ArrayList<Item> neededItems = new ArrayList<>();
-//        ArrayList<Integer> idChecker = new ArrayList<>();
-
         Recipe targetItemRecipe = ((ComponentItem) targetItem).getRecipe();
 
         ArrayList<Recipe> relatedRecipes = getRecipeChildren(targetItemRecipe);
         relatedRecipes.add(targetItemRecipe);
-//TODO: moze sie przydac
-        //        for (Recipe relatedRecipe : relatedRecipes) {
-//            for (int j = 0; j < relatedRecipe.getInput().size(); j++) {
-//                Item currentItem = relatedRecipe.getInput().get(j);
-//                int currentItemId = currentItem.getID();
-//                if (!idChecker.contains(currentItemId)) neededItems.add(currentItem);
-//                idChecker.add(currentItemId);
-//            }
-//        }
-
 
         for (Recipe relatedRecipe : relatedRecipes) {
             buildingQueue.add(relatedRecipe.getMachine());
