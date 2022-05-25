@@ -14,6 +14,7 @@ public class Machine {
     private String name; // nazwa
     private int produced_item; // ID produkowanego przedmitou
     private int output; // ilość przedmiotów produkowanych na turę
+
     private Recipe cost; // lista obiektow potrzebnych do wybudowania/ulepszenia
 
     private Glitch glitch; // zakłócenie obecne w maszynie
@@ -107,5 +108,9 @@ public class Machine {
     // włączenie gitcha w maszynie
     public void activateGlitch(int gitchID) {
 
+    }
+
+    public Recipe getCost() {
+        return cost;
     }
 }
