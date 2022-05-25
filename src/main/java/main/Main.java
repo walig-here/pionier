@@ -33,7 +33,7 @@ public class Main {
         pioneer = new Pioneer(f);
 
         // pętla główna
-        for (;max_turns > 0; max_turns--) {
+        for (int turn = 0; turn < max_turns; turn++) {
 
 
             // pętla ruchu - wykonuje się dopóki pionierowi starcza punktów ruchu lub kiedy dotrze do celu

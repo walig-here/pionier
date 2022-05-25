@@ -15,6 +15,7 @@ public class Machine {
     private int produced_item; // ID produkowanego przedmitou
     private int output; // ilość przedmiotów produkowanych na turę
     private Recipe cost; // lista obiektow potrzebnych do wybudowania/ulepszenia
+
     private Glitch glitch; // zakłócenie obecne w maszynie
     private int ID; // ID maszyny
 
@@ -26,40 +27,40 @@ public class Machine {
         // Resztę danych pobieramy z niezawodnych baz danych na dysku systemowym.
         // Plik z danymi ustalamy na podstawie nazwy maszyny
 
-        String path = "database\\items\\";
+        String path = "database\\machines\\";
         switch (ID) {
             // 0 - elektrownia
-            case 0: path += "powerplant.txt";
+            case 0: path += "powerplant.txt"; break;
 
-            case 1: path += "sawmill.txt";
+            case 1: path += "sawmill.txt"; break;
 
-            case 2: path += "mining_machine.txt";
+            case 2: path += "mining_machine.txt"; break;
 
-            case 3: path += "furnace.txt";
+            case 3: path += "furnace.txt"; break;
 
-            case 4: path += "oil_pump.txt";
+            case 4: path += "oil_pump.txt"; break;
 
-            case 5: path += "refinery.txt";
+            case 5: path += "refinery.txt"; break;
 
-            case 6: path += "battery_factory.txt";
+            case 6: path += "battery_factory.txt"; break;
 
-            case 7: path += "cable_factory.txt";
+            case 7: path += "cable_factory.txt"; break;
 
-            case 8: path += "cpu_factory.txt";
+            case 8: path += "cpu_factory.txt"; break;
 
-            case 9: path += "diamond_saw_factory.txt";
+            case 9: path += "diamond_saw_factory.txt"; break;
 
-            case 10: path += "supercomputer_factory.txt";
+            case 10: path += "supercomputer_factory.txt"; break;
 
-            case 11: path += "casing_factory.txt";
+            case 11: path += "casing_factory.txt"; break;
 
-            case 12: path += "cog_factory.txt";
+            case 12: path += "cog_factory.txt"; break;
 
-            case 13: path += "electronic_circuit_factory.txt";
+            case 13: path += "electronic_circuit_factory.txt"; break;
 
-            case 14: path += "engine_factory.txt";
+            case 14: path += "engine_factory.txt"; break;
 
-            case 15: path += "production_belt_factory.txt";
+            case 15: path += "production_belt_factory.txt"; break;
 
         }
         try {
@@ -89,8 +90,13 @@ public class Machine {
         // zwracamy wyjątek gdy pliku nie udało się otworzyć
         catch (Exception e) {
             e.printStackTrace();
-            System.out.println("Blad wczytywania danych dla przedmiotu o ID " + ID + "! Nie udalo sie uzyskac dostepu do pliku z danymi!");
+            System.out.println("Blad wczytywania danych dla maszyny o ID " + ID + "! Nie udalo sie uzyskac dostepu do pliku z danymi!");
         }
+    }
+
+
+    public Glitch getGlitch() {
+        return glitch;
     }
 
         // zmiana ilości przedmitów wynikła z produkcji
