@@ -16,6 +16,7 @@ public abstract class Field {
 
     protected int[] coordinates; //koordynaty pola terenu
     private int terrain_id;  //id terenu
+
     protected Machine machine = new Machine(1,1); //maszyna stojąca na polu
     private GridSprite gridSprite; //render pola
     private int base_move_points; //punkty na początku rundy jeśli jest to pole startu
@@ -102,6 +103,10 @@ public abstract class Field {
     }
 
 
+    public void setMachine(Machine machine) {
+        this.machine = machine;
+    }
+
     // pobiera listę prawdopodobieństw wystąpienia zakłóceń
     public ArrayList<Byte[]> getGlitch_probabilities() {
         return glitch_probabilities;
@@ -170,7 +175,6 @@ public abstract class Field {
             // Przy jego wystąpieniu wywołujemy w maszynie stojącej na polu zakłócenie
             if(glitch[1] >= rng.nextInt(99) + 1){
                 machine.activateGlitch(glitch[0]);
-                System.out.println("GLITCH!(" + glitch[1] + "%) - " + coordinates[0] + " " + coordinates[1]);
                 break;
             }
         }

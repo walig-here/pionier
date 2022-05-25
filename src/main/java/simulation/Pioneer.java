@@ -13,7 +13,7 @@ public class Pioneer {
     private int move_points; // dostępne punkty ruchu
     private Sprite sprite; // render pioniera na ekranie
     private boolean could_build; // wkazuje czy pionier może coś zbudować
-    private int to_build; // jaką maszynę postawić(ID)?
+    private int to_build ; // produkt, który ma być produkowany przez budynek(w produkcie jesy receptura a w recepturze maszyna, którą trzeba zbudować)
     private int building_field[]; // gdzie postawić budynek?
     private ArrayList<Integer[]> path; // ścieżka po której porusza się pionier
 
@@ -36,7 +36,7 @@ public class Pioneer {
         building_field[0] =  -1;
 
         // ustawiamy planowaną budowlę na wartość -1 co oznacza, że pionier nie wybrał żadnej budowli do postawienia
-        to_build = -1;
+        to_build =- 1;
 
         // stworzenie instancji dla reszty pól
         path = new ArrayList<>();
@@ -89,8 +89,28 @@ public class Pioneer {
     }
 
     // buduje maszynę na danym polu
-    public void buildMachine(Field[][] build_in) {
+    public void buildMachine(Field[][] map, ArrayList<Integer> buildingOrder) {
 
+        // Sprawdzamy czy pionier może jeszcze coś zbudować
+        if(!could_build) return;
+
+        // Ustawiamy na polu maszyne na podstawie receptury itemu, który chcemy zacząć wytwarzać
+        Item start_producting;
+        if(to_build > 0){
+            start_producting = new ComponentItem(to_build, 0, 0);
+            map[building_field[0]][building_field[1]].setMachine(new ProductionMachine(((ComponentItem)start_producting).getRecipe().getMachine(),to_build));
+        }
+        else map[building_field[0]][building_field[1]].setMachine(new Machine(0, to_build));
+
+
+        // Resetujemy wybór budowy
+        to_build = -1;
+
+        // Usuwamy maszynę z kolejki budowy symulacji
+        buildingOrder.remove(0);
+
+        // Pionier nie może już w tej turze budować
+        could_build = false;
     }
 
     // wyznacza ścieżkę po której porusza się pionier
@@ -185,7 +205,8 @@ public class Pioneer {
     // wyznacza jaki budynek postawi pionier jako nastepny
     public void setNextBuilding(ArrayList<Integer> buildingOrder)
     {
-
+        // Pobieramy ID produkowanego przez maszynę przedmiotu
+        to_build = buildingOrder.get(0);
     }
 
     // wyznacza bazowe punkty ruchu w zależności od pola na którym stoi pionier

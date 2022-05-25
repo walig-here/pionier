@@ -38,7 +38,7 @@ public class Recipe{
                     // Sprawdzamy czy można wczytać z pliku ilość przedmiotu.
                     // Jeżeli można to dodajemy składnik do receptury.
                     // Jeżeli nie można to pomijamy składnik
-                    //Jesli itemem jest energia, ejst tworzony item. Jak cos innego to componentitem
+                    // Jeśli itemem jest energia, jest tworzony item. Jak cos innego to componentitem
                     if(line_scanner.hasNextInt() && ID != 0) input.add(new ComponentItem(ID,line_scanner.nextInt(),0));
                     else if(line_scanner.hasNextInt()) input.add(new Item(ID,line_scanner.nextInt(),0));
                 }
