@@ -169,6 +169,7 @@ public abstract class Field {
             // Losujemy liczbę, która zdeterminuje wystąpienie zakłócenia
             // Przy jego wystąpieniu wywołujemy w maszynie stojącej na polu zakłócenie
             if(glitch[1] >= rng.nextInt(99) + 1){
+                machine.activateGlitch(glitch[0]);
                 System.out.println("GLITCH!(" + glitch[1] + "%) - " + coordinates[0] + " " + coordinates[1]);
                 break;
             }
