@@ -71,9 +71,23 @@ public class DepositField extends Field {
     }
 
     // metoda uszczuplająca złoże wraz z działaniem maszyny
-    public void extract()
-    {
+    public void extract() {
+        // Sprawdzamy czy na tym polu jest jeszcze cokolwiek do wydobycia
+        if(deposit_capacity <= 0) return;
 
+        // Jeżeli na polu jest maszyna wydobywająca surowiec lub generująca prąd to wyczerpuje ona zasoby.
+        // Sprawdzamy czy pole zawiera maszyne.
+        if(machine == null) return;
+
+        // Sprawdzamy czy ta maszyna jest odpowiedniego typu
+        if(machine.getProduced_item() != 0 && machine.getProduced_item() != item_id) return;
+
+        // Maszyna wydobywa tyle jednostek surowca ile generuje produktu wyjściowego
+        deposit_capacity -= machine.getOutput();
+    }
+
+    public int getItem_id() {
+        return item_id;
     }
 
     /**
@@ -83,8 +97,7 @@ public class DepositField extends Field {
      * @param pioneer wchodzący na pole pionier
      * */
     @Override
-    public boolean goInto(Pioneer pioneer)
-    {
+    public boolean goInto(Pioneer pioneer) {
         // Jeżeli na polu nie stoi maszyna to koszt wejścia na pole nie zmienia się
         int move_cost = DepositField.move_cost;
         // Jeżeli na polu stoi maszyna to koszt wejścia na pole jest zmieniany przez modyfikator excavation_penalty

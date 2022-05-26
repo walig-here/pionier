@@ -54,8 +54,7 @@ public class WaterField extends Field {
     }
 
     @Override
-    public boolean goInto(Pioneer pioneer)
-    {
+    public boolean goInto(Pioneer pioneer) {
         // Sprawdzamy czy pionier już odczekał odpowiednią ilość tur na tym polu, aby przejść dalej.
         // Jeżeli tak jest, zerujemy licznik i pozwalamy mu przejść na drugi brzeg.
         if(waited_rounds == sailing_time) {

@@ -12,12 +12,15 @@ import java.util.Scanner;
 public class Machine {
 
     private String name; // nazwa
+
     private int produced_item; // ID produkowanego przedmitou
+
     private int output; // ilość przedmiotów produkowanych na turę
 
     private Recipe cost; // lista obiektow potrzebnych do wybudowania/ulepszenia
 
     private Glitch glitch; // zakłócenie obecne w maszynie
+
     private int ID; // ID maszyny
 
 
@@ -95,6 +98,13 @@ public class Machine {
         }
     }
 
+    public int getOutput() {
+        return output;
+    }
+
+    public int getProduced_item() {
+        return produced_item;
+    }
 
     public Glitch getGlitch() {
         return glitch;
@@ -103,6 +113,10 @@ public class Machine {
         // zmiana ilości przedmitów wynikła z produkcji
     public void production(ArrayList<Item> inventory) {
 
+    }
+
+    public int getID() {
+        return ID;
     }
 
     // włączenie gitcha w maszynie

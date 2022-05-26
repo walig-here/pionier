@@ -1,6 +1,7 @@
 package simulation;
 import rendering.Sprite;
 import simulation.terrain.CentralField;
+import simulation.terrain.DepositField;
 import simulation.terrain.Field;
 
 import java.util.ArrayList;
@@ -10,7 +11,6 @@ import static java.lang.Math.abs;
 public class Pioneer {
     private int[] coordinates; // koordynaty pioniera
     private ArrayList<Item> inventory; // ekwipunek pioniera
-
     private int move_points; // dostępne punkty ruchu
     private Sprite sprite; // render pioniera na ekranie
     private boolean could_build; // wkazuje czy pionier może coś zbudować
@@ -121,8 +121,11 @@ public class Pioneer {
             if(!owns_item) return;
         }
 
-        // Stawiamy maszynę na polu
+        // Stawiamy maszynę na polu.
         map[building_field[0]][building_field[1]].setMachine(new_building);
+
+        // Na tym polu nie można już nic wybudować
+        map[building_field[0]][building_field[1]].setCanBuild(false);
 
         // Resetujemy wybór budowy
         to_build = -1;
@@ -220,16 +223,151 @@ public class Pioneer {
 
     // wylicza pole pod następną budowę
     private void findBuildingPlace(Field[][] map) {
-        building_field[0] = building_field[1] = 0;
+
+        ArrayList<Integer[]> potential_fields = new ArrayList<>();  // zbiór potencjalnych miejsc pod budowę
+                                                                    // komórka 1 i 2 - koordynaty pola
+                                                                    // komórka 3 - waga pola
+
+        // Zbieramy potencjalnie miejsca pod budowę.
+        // Sprawdzamy czy pole jest w dopuszczalnej minimalnej odległości od niezbędnych maszyn lub zawiera niezbędny do działania maszyny zasób.
+        for (Field[] row : map)
+        {
+            for(Field field : row){
+                Integer[] potential_field = {-1, -1, -1};
+
+                // Sprawdzamy czy pole jest zdatne pod budowę
+                if(!field.isCanBuild()) continue;
+
+                // Elektrownie, tartaki, pompy ropy i maszyny wydobywcze potrzebują do działania stać na odpowiednim polu złoża
+                if(to_build == 0 || to_build  == 2 || to_build == 4 || to_build == 1)
+                {
+                    // Jeżeli pole nie jest polem zasobów lub jego zasoby się wyczerpały to na pewno nie nadaje się pod taką budowę
+                    if(!(field instanceof DepositField) || ((DepositField)field).getCapacityOfDeposit() <= 0)
+                        continue;
+
+                    // Elektrownia - potrzebuje węgiel lub rope lub drewno
+                    if(to_build == 0){
+                        if(((DepositField)field).getItem_id() != 1 && ((DepositField)field).getItem_id() != 2 && ((DepositField)field).getItem_id() != 4)
+                            continue;
+                    }
+
+                    // Dowolna inna maszyna wydobywcza - potrzebuje surowca, który ma wydobywać
+                    else if(((DepositField)field).getItem_id() != to_build)
+                        continue;
+                }
+
+                // Reszta maszyn potrzebuje być w otoczeniu maszyn wytwarzających ich materiały wejściowe
+                else{
+
+                    // Sprawdzamy jakich maszyn potrzebujemy
+                    ArrayList<Integer> needed_machines = new ArrayList<>();
+                    {
+                        ComponentItem item = new ComponentItem(to_build, 0,0); // item, który chcemy wyprodukować
+                        for(Item input_item : item.getRecipe().getInput()){
+
+                            // Sprawdzamy czy przedmiot wejściowy jest wytwarzany przez jakąś maszynę
+                            if(!(input_item instanceof ComponentItem)) continue;
+
+                            // Sprawdzamy jaka maszyna wytwarza ten przedmiot wejściowy
+                            // Dodajemy te maszynę do wymaganych w okolicy budowanej akutalnie budowanej maszyny
+                            needed_machines.add(((ComponentItem)input_item).getRecipe().getMachine());
+                        }
+                    }
+
+                    // Szukamy pól mapy, które są oddalone o co najwyżej range
+                    final int RANGE = 5; // maksymalne oddalenie maszyny od maszyn wytwarzających jej materiały wejściowe
+                    for(int x = 0; x < map.length; x++) {
+                        for(int y = 0; y < map[x].length; y++){
+
+                            // Sprawdzamy czy pole nie jest za daleko
+                            {
+                                int distance = (int)Math.floor(Math.sqrt( Math.pow(field.getCoordinates()[0] - x, 2) + Math.pow(field.getCoordinates()[1]-y,2) ));
+                                if(distance > RANGE) continue;
+                            }
+
+                            // Sprawdzamy czy pole ma w sobie interesującą nas maszynę
+                            for(int i = 0; i < needed_machines.size(); i++){
+                                // Jeżeli taką zawiera to nie usuwamy maszynę z listy potrzebnych maszyn - nie musimy już jej szukać w innych polach
+                                if(map[x][y].getMachine().getID() == needed_machines.get(i)) {
+                                    needed_machines.remove(i);
+                                    break;
+                                }
+                            }
+                        }
+                    }
+
+                    // Jeżeli nie znaleziono w okolicy wszystkich potrzebnych maszyn to pole nie nadaje się pod budowę
+                    if(needed_machines.size() > 0) continue;
+                }
+
+                // Dodajemy pole do puli potencjalnych miejsc pod budowę
+                potential_field[0] = field.getCoordinates()[0]; // koordynat x
+                potential_field[1] = field.getCoordinates()[1]; // koordynat y
+                potential_field[2] = 0; // waga
+                potential_fields.add(potential_field);
+            }
+        }
+
+        // Ustalenie wag pól budowlanych na podstawie ich odległości od pola centralnego
+        {
+            // Szukamy pola centralnego
+            int[] central = new int[2]; // koordyanty pola centralnego
+            {
+                boolean central_found = false;
+                for (Field[] row : map){
+                    for(Field field : row){
+                        if(field instanceof CentralField){
+                            central[0] = field.getCoordinates()[0];
+                            central[1] = field.getCoordinates()[1];
+                            central_found = true;
+                            break;
+                        }
+                    }
+                    if(central_found) break;
+                }
+            }
+
+            for(Integer[] field : potential_fields){
+                int distance = (int)Math.floor(Math.sqrt( Math.pow(field[0] - central[0], 2) + Math.pow(field[1] - central[1],2) ));
+                field[2] += distance;
+            }
+        }
+
+        // Ustalenie wag pól budowlanych na podstawie prawdopodobieństw wystąpienia w nich zakłóceń
+        for(Integer[] field : potential_fields){
+            for (Byte[] probability : map[field[0]][field[1]].getGlitch_probabilities())
+                field[2] += probability[1];
+        }
+
+        // Wybieramy pod budowę pole o najmniejszej wadze
+        // komórka 1 i 2 - koordynaty pola o minimalnej wadze
+        // komórka 3 - minimalna waga
+        Integer[] min = {potential_fields.get(0)[0], potential_fields.get(0)[1], potential_fields.get(0)[2]};
+        for(Integer[] field : potential_fields)
+            if(field[2] < min[2]) min = field;
+        building_field[0] = min[0]; building_field[1] = min[1];
     }
 
     // wyznacza jaki budynek postawi pionier jako nastepny
-    public void setNextBuilding(ArrayList<Integer> buildingOrder, Field[][] map)
-    {
+    public void setNextBuilding(ArrayList<Integer> buildingOrder, Field[][] map) {
         // Sprawdzamy czy pionier zakończył już ostatnią budowę
         if(to_build != -1) return;
 
-        // Pobieramy ID produkowanego przez maszynę przedmiotu
+        // Sprawdzamy czy nie zaczyna brakować pionierowi przedmiotu, który nie został uwzględniony w kolejce budowy
+        for(Item eq_item : inventory){
+            if(eq_item.getIncome() < 0){
+                boolean included = false;
+
+                for(Integer order_item : buildingOrder)
+                    if(order_item == eq_item.getID())
+                        included = true;
+
+                // Jeżeli przedmiotu zaczyna brakować, a nie ma w planach zbudowania produkującej do maszyny to dodajemy taką na początek kolejki
+                if(!included) buildingOrder.add(eq_item.getID());
+            }
+        }
+
+        // Pobieramy ID produkowanego przez następną potrzebną maszynę przedmiotu
         to_build = buildingOrder.get(0);
 
         // Najpierw pionier musi udać się do magazynu po materiały, wyznaczamy mu ścieżkę/

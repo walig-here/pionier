@@ -102,7 +102,6 @@ public abstract class Field {
        coordinates[1] = y;
     }
 
-
     public void setMachine(Machine machine) {
         this.machine = machine;
     }
