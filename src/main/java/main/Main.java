@@ -36,20 +36,21 @@ public class Main {
         for (int turn = 0; turn < max_turns; turn++) {
 
             // Pętla działań wywoływanych co turę na kafelkach planszy
-            {
-                for (Field[] row : map)
-                {
-                    for(Field field : row){
+            for (Field[] row : map) {
+                for(Field field : row){
 
-                        // Ustalamy czy w tej turze na polu wystąpiło zakłócenie
-                        field.activateGlitch();
-                    }
+                    // Ustalamy czy w tej turze na polu wystąpiło zakłócenie
+                    field.activateGlitch();
+
+                    // Dla każdego pola z surowcem preprowadzamy proces wydobycia
+                    if(field instanceof DepositField) ((DepositField)field).extract();
                 }
             }
 
+
             // Pętla ruchu - wykonuje się dopóki pionierowi starcza punktów ruchu lub kiedy dotrze do celu
             {
-                boolean starting = true;
+                boolean starting = true; // true - jest to pierwszy ruch pioniera w tej turze
                 do{
                     pioneer.walk(map, starting);
                     if(starting) starting = false;
@@ -83,6 +84,9 @@ public class Main {
         return children;
     }
 
+    // Wykomentowane bo to zwracało ID maszyny, jaką chcemy zbudować. To było bezsensu bo nie mówiło nam to jaki przedmiot taka maszyna miałaby produkować.
+    // Na górze przepisałem identyczne funkcje, ale zwracają one ID przedmiotów, do których odpowiednie maszyny dobiera potem pionier.
+
     // ustala kolejkę budynków, które powinien zbudować pionier
     /*private static void setBuildingOrder() {
         Recipe targetItemRecipe = ((ComponentItem) targetItem).getRecipe();
@@ -94,7 +98,6 @@ public class Main {
             buildingQueue.add(relatedRecipe.getMachine());
         }
     }
-
     //Rekurencyjnie zaczyna od docelowego przedmiotu, "rozwija" jego recepty i tak dochodzi do podstawowych przedmiotów
     private static ArrayList<Recipe> getRecipeChildren(Recipe recipe) {
         for (int i=0; i < recipe.getInput().size(); i++) {
