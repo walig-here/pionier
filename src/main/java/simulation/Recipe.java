@@ -8,7 +8,6 @@ import java.util.Scanner;
 public class Recipe{
 
     private ArrayList<Item> input; // lista składników wejściowych
-
     private int machine; // ID maszyny produkującej
 
     // konstruktor
@@ -56,11 +55,9 @@ public class Recipe{
         }
     }
 
-
     public ArrayList<Item> getInput() {
         return input;
     }
-
 
     public int getMachine() {
         return machine;

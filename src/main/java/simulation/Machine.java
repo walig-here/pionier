@@ -98,8 +98,6 @@ public class Machine {
         }
     }
 
-
-
     public int getOutput() {
         return output;
     }

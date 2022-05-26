@@ -66,8 +66,7 @@ public class GlitchSourceField extends Field {
     }
 
     // zmienia prawodpodobieństwa wystąpienia zakłócenia z tego pola w innych polach planszy
-    public void setProbabilities(Field[][] map)
-    {
+    public void setProbabilities(Field[][] map) {
         int distance; // dystans między źródłem a analizowanym polem plnaszy
 
         // Sprawdzamy kolejne pola na planszy
@@ -137,8 +136,7 @@ public class GlitchSourceField extends Field {
      * @param pioneer wchodzący na pole pionier
      * */
     @Override
-    public boolean goInto(Pioneer pioneer)
-    {
+    public boolean goInto(Pioneer pioneer) {
         boolean walked_in;
 
         // Sprawdzamy czy pionier ma odpowiednią ilość punktów ruchu.
