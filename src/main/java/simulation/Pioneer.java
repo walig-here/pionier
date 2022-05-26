@@ -11,7 +11,6 @@ import static java.lang.Math.abs;
 public class Pioneer {
     private int[] coordinates; // koordynaty pioniera
     private ArrayList<Item> inventory; // ekwipunek pioniera
-
     private int move_points; // dostępne punkty ruchu
     private Sprite sprite; // render pioniera na ekranie
     private boolean could_build; // wkazuje czy pionier może coś zbudować
@@ -122,7 +121,7 @@ public class Pioneer {
             if(!owns_item) return;
         }
 
-        // Stawiamy maszynę na polu
+        // Stawiamy maszynę na polu.
         map[building_field[0]][building_field[1]].setMachine(new_building);
 
         // Na tym polu nie można już nic wybudować
@@ -350,8 +349,7 @@ public class Pioneer {
     }
 
     // wyznacza jaki budynek postawi pionier jako nastepny
-    public void setNextBuilding(ArrayList<Integer> buildingOrder, Field[][] map)
-    {
+    public void setNextBuilding(ArrayList<Integer> buildingOrder, Field[][] map) {
         // Sprawdzamy czy pionier zakończył już ostatnią budowę
         if(to_build != -1) return;
 

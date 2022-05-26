@@ -71,8 +71,7 @@ public class DepositField extends Field {
     }
 
     // metoda uszczuplająca złoże wraz z działaniem maszyny
-    public void extract()
-    {
+    public void extract() {
         // Sprawdzamy czy na tym polu jest jeszcze cokolwiek do wydobycia
         if(deposit_capacity <= 0) return;
 
@@ -98,8 +97,7 @@ public class DepositField extends Field {
      * @param pioneer wchodzący na pole pionier
      * */
     @Override
-    public boolean goInto(Pioneer pioneer)
-    {
+    public boolean goInto(Pioneer pioneer) {
         // Jeżeli na polu nie stoi maszyna to koszt wejścia na pole nie zmienia się
         int move_cost = DepositField.move_cost;
         // Jeżeli na polu stoi maszyna to koszt wejścia na pole jest zmieniany przez modyfikator excavation_penalty
