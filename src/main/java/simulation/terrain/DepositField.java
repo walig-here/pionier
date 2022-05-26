@@ -36,7 +36,7 @@ public class DepositField extends Field {
         if(excavation_penalty == 0.0f)
         {
             try{
-                InputStream file_stream = new FileInputStream("database\\terrain\\deposit.txt");
+                InputStream file_stream = new FileInputStream("database/terrain/deposit.txt");
                 Scanner file = new Scanner(file_stream);
 
                 while (file.hasNextLine())

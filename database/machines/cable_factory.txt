@@ -1,2 +1,2 @@
-"name": Fabryka kabli
-"output": 10
+"name":Fabryka kabli
+"output":10
