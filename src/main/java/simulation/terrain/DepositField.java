@@ -73,7 +73,18 @@ public class DepositField extends Field {
     // metoda uszczuplająca złoże wraz z działaniem maszyny
     public void extract()
     {
+        // Sprawdzamy czy na tym polu jest jeszcze cokolwiek do wydobycia
+        if(deposit_capacity <= 0) return;
 
+        // Jeżeli na polu jest maszyna wydobywająca surowiec lub generująca prąd to wyczerpuje ona zasoby.
+        // Sprawdzamy czy pole zawiera maszyne.
+        if(machine == null) return;
+
+        // Sprawdzamy czy ta maszyna jest odpowiedniego typu
+        if(machine.getProduced_item() != 0 && machine.getProduced_item() != item_id) return;
+
+        // Maszyna wydobywa tyle jednostek surowca ile generuje produktu wyjściowego
+        deposit_capacity -= machine.getOutput();
     }
 
     public int getItem_id() {

@@ -12,7 +12,9 @@ import java.util.Scanner;
 public class Machine {
 
     private String name; // nazwa
+
     private int produced_item; // ID produkowanego przedmitou
+
     private int output; // ilość przedmiotów produkowanych na turę
 
     private Recipe cost; // lista obiektow potrzebnych do wybudowania/ulepszenia
@@ -96,6 +98,15 @@ public class Machine {
         }
     }
 
+
+
+    public int getOutput() {
+        return output;
+    }
+
+    public int getProduced_item() {
+        return produced_item;
+    }
 
     public Glitch getGlitch() {
         return glitch;
