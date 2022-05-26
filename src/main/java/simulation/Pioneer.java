@@ -355,7 +355,21 @@ public class Pioneer {
         // Sprawdzamy czy pionier zakończył już ostatnią budowę
         if(to_build != -1) return;
 
-        // Pobieramy ID produkowanego przez maszynę przedmiotu
+        // Sprawdzamy czy nie zaczyna brakować pionierowi przedmiotu, który nie został uwzględniony w kolejce budowy
+        for(Item eq_item : inventory){
+            if(eq_item.getIncome() < 0){
+                boolean included = false;
+
+                for(Integer order_item : buildingOrder)
+                    if(order_item == eq_item.getID())
+                        included = true;
+
+                // Jeżeli przedmiotu zaczyna brakować, a nie ma w planach zbudowania produkującej do maszyny to dodajemy taką na początek kolejki
+                if(!included) buildingOrder.add(eq_item.getID());
+            }
+        }
+
+        // Pobieramy ID produkowanego przez następną potrzebną maszynę przedmiotu
         to_build = buildingOrder.get(0);
 
         // Najpierw pionier musi udać się do magazynu po materiały, wyznaczamy mu ścieżkę/
