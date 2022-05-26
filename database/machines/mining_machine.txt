@@ -1,2 +1,2 @@
-"name": Maszyna wydobywcza
-"output": 10
+"name":Maszyna wydobywcza
+"output":10

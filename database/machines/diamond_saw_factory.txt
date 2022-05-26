@@ -1,2 +1,2 @@
-"name": Fabryka pił diamentowych
-"output": 10
+"name":Fabryka pił diamentowych
+"output":10

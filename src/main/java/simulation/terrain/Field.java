@@ -46,7 +46,7 @@ public abstract class Field {
         glitch_probabilities = new ArrayList<>();
 
         // na podstawie typu terenu dobieramy blik z którego wczytane zostaną dane
-        String path = "database\\terrain\\";
+        String path = "database/terrain/";
         switch (terrain_id)
         {
             // ID 0 - pole z ziemią

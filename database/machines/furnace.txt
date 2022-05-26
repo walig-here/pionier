@@ -1,2 +1,2 @@
-"name": Piec
-"output": 10
+"name":Piec
+"output":10

@@ -1,2 +1,2 @@
-"name": Fabryka superkomputerów
-"output": 10
+"name":Fabryka superkomputerów
+"output":10

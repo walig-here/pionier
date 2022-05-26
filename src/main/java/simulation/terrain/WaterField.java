@@ -27,7 +27,7 @@ public class WaterField extends Field {
         if(sailing_time == -1)
         {
             try{
-                InputStream file_stream = new FileInputStream("database\\terrain\\water.txt");
+                InputStream file_stream = new FileInputStream("database/terrain/water.txt");
                 Scanner file = new Scanner(file_stream);
 
                 while (file.hasNextLine())

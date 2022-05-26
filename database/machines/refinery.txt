@@ -1,2 +1,2 @@
-"name": Rafineria
-"output": 10
+"name":Rafineria
+"output":10

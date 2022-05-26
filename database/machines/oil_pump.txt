@@ -1,2 +1,2 @@
-"name": Pompa
-"output": 10
+"name":Pompa
+"output":10

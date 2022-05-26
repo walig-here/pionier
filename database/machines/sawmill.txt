@@ -1,2 +1,2 @@
-"name": Tartak automatyczny
-"output": 10
+"name":Tartak automatyczny
+"output":10

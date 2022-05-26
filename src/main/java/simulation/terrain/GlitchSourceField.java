@@ -38,7 +38,7 @@ public class GlitchSourceField extends Field {
         // pobieramy dane z zadanego pliku(jeżeli nie zostały uprzednio załadowane)
         if(distance_modifier == -1 || generated_glitch_probability == -1){
             try{
-                InputStream file_stream = new FileInputStream("database\\terrain\\glitch.txt");
+                InputStream file_stream = new FileInputStream("database/terrain/glitch.txt");
                 Scanner file = new Scanner(file_stream);
 
                 while (file.hasNextLine())

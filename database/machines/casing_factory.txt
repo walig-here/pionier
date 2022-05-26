@@ -1,2 +1,2 @@
-"name": Fabryka obudów
-"output": 10
+"name":Fabryka obudów
+"output":10
