@@ -10,7 +10,7 @@ public class ProductionMachine extends Machine {
         super(ID, produced_item);
 
         //tworzy item, bierze jego nazwy i szuka takiej recepty
-        Recipe input = new Recipe(new Item(produced_item, 0, 0.0).getName());
+         input = new ComponentItem(produced_item, 0, 0.0).getRecipe().getInput();
 
     }
 
@@ -18,5 +18,9 @@ public class ProductionMachine extends Machine {
     public void production(ArrayList<Item> inventory) {
 
 
+    }
+
+    public ArrayList<Item> getInput() {
+        return input;
     }
 }
