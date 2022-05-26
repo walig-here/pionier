@@ -1,5 +1,6 @@
 package simulation;
 import rendering.Sprite;
+import simulation.terrain.CentralField;
 import simulation.terrain.Field;
 
 import java.util.ArrayList;
@@ -13,7 +14,7 @@ public class Pioneer {
     private int move_points; // dostępne punkty ruchu
     private Sprite sprite; // render pioniera na ekranie
     private boolean could_build; // wkazuje czy pionier może coś zbudować
-    private int to_build; // jaką maszynę postawić(ID)?
+    private int to_build ; // produkt, który ma być produkowany przez budynek(w produkcie jesy receptura a w recepturze maszyna, którą trzeba zbudować)
     private int building_field[]; // gdzie postawić budynek?
     private ArrayList<Integer[]> path; // ścieżka po której porusza się pionier
 
@@ -36,7 +37,7 @@ public class Pioneer {
         building_field[0] =  -1;
 
         // ustawiamy planowaną budowlę na wartość -1 co oznacza, że pionier nie wybrał żadnej budowli do postawienia
-        to_build = -1;
+        to_build =- 1;
 
         // stworzenie instancji dla reszty pól
         path = new ArrayList<>();
@@ -89,8 +90,48 @@ public class Pioneer {
     }
 
     // buduje maszynę na danym polu
-    public void buildMachine(Field[][] build_in) {
+    public void buildMachine(Field[][] map, ArrayList<Integer> buildingOrder) {
 
+        // Sprawdzamu czy pionier ma w ogóle zamiar cokolwiek zbudować
+        if(to_build == -1) return;
+
+        // Sprawdzamy czy pionier może jeszcze coś zbudować
+        if(!could_build) return;
+
+        // Ustawiamy na polu maszyne na podstawie receptury itemu, który chcemy zacząć wytwarzać
+        Item start_producting;
+        Machine new_building;
+        if(to_build > 0){
+            start_producting = new ComponentItem(to_build, 0, 0);
+            new_building = new ProductionMachine(((ComponentItem)start_producting).getRecipe().getMachine(),to_build);
+        }
+        else new_building= new Machine(0, to_build);
+
+        // Sprawdzamy czy pionier ma wystarczająco materiałów do zbudowania tej maszyny
+        for(Item item_cost : new_building.getCost().getInput()){
+            boolean owns_item = false;
+            for(Item item_eq : inventory){
+                if(item_cost.getID() == item_eq.getID())
+                {
+                    if(item_eq.getAmount() - item_eq.getAmount() < 0) return;
+                    owns_item = true;
+                }
+            }
+            // Jeżeli pionier wcale nie posiada potrzebnego itemu to również nie zbuduje maszyny
+            if(!owns_item) return;
+        }
+
+        // Stawiamy maszynę na polu
+        map[building_field[0]][building_field[1]].setMachine(new_building);
+
+        // Resetujemy wybór budowy
+        to_build = -1;
+
+        // Usuwamy maszynę z kolejki budowy symulacji
+        buildingOrder.remove(0);
+
+        // Pionier nie może już w tej turze budować
+        could_build = false;
     }
 
     // wyznacza ścieżkę po której porusza się pionier
@@ -178,14 +219,42 @@ public class Pioneer {
     }
 
     // wylicza pole pod następną budowę
-    public void findBuildingPlace(Field[][] map) {
-
+    private void findBuildingPlace(Field[][] map) {
+        building_field[0] = building_field[1] = 0;
     }
 
     // wyznacza jaki budynek postawi pionier jako nastepny
-    public void setNextBuilding(ArrayList<Integer> buildingOrder)
+    public void setNextBuilding(ArrayList<Integer> buildingOrder, Field[][] map)
     {
+        // Sprawdzamy czy pionier zakończył już ostatnią budowę
+        if(to_build != -1) return;
 
+        // Pobieramy ID produkowanego przez maszynę przedmiotu
+        to_build = buildingOrder.get(0);
+
+        // Najpierw pionier musi udać się do magazynu po materiały, wyznaczamy mu ścieżkę/
+        // Szukamy zatem koordynatów pola centralnego.
+        {
+            boolean central_found = false;
+            for (Field[] row : map)
+            {
+                for(Field field : row){
+                    if(field instanceof CentralField)
+                    {
+                        calculatePath(field);
+                        central_found = true;
+                        break;
+                    }
+                }
+                if(central_found) break;
+            }
+        }
+
+        // Szukamy idealnego miejsca pod budowę wybranego obiektu.
+        findBuildingPlace(map);
+
+        // Następnie wyznaczamy do niego ścieżkę
+        calculatePath(map[building_field[0]][building_field[1]]);
     }
 
     // wyznacza bazowe punkty ruchu w zależności od pola na którym stoi pionier

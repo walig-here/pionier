@@ -14,7 +14,7 @@ public class Main {
     static private MenuGUI menu;
     static private Pioneer pioneer; // pionier
     static private Item targetItem = new ComponentItem(16, 0, 0); // przedmiot, ktorego zdobycie, konczy symulacje (przedmiot docelowy)
-    static private ArrayList<Recipe> children = new ArrayList<>();
+    static private ArrayList<Item> children = new ArrayList<>();
     static private ArrayList<Integer> buildingQueue = new ArrayList<>();
 
     public static void main(String[] args) {
@@ -35,8 +35,19 @@ public class Main {
         // pętla główna
         for (int turn = 0; turn < max_turns; turn++) {
 
+            // Pętla działań wywoływanych co turę na kafelkach planszy
+            {
+                for (Field[] row : map)
+                {
+                    for(Field field : row){
 
-            // pętla ruchu - wykonuje się dopóki pionierowi starcza punktów ruchu lub kiedy dotrze do celu
+                        // Ustalamy czy w tej turze na polu wystąpiło zakłócenie
+                        field.activateGlitch();
+                    }
+                }
+            }
+
+            // Pętla ruchu - wykonuje się dopóki pionierowi starcza punktów ruchu lub kiedy dotrze do celu
             {
                 boolean starting = true;
                 do{
@@ -47,8 +58,33 @@ public class Main {
         }
     }
 
-    // ustala kolejkę budynków, które powinien zbudować pionier
     private static void setBuildingOrder() {
+        Recipe targetItemRecipe = ((ComponentItem) targetItem).getRecipe();
+
+        ArrayList<Item> relatedItems = getItemChildren(targetItemRecipe);
+        relatedItems.add(targetItem);
+
+        for (Item relatedItem : relatedItems) {
+            buildingQueue.add(relatedItem.getID());
+        }
+    }
+
+    //Rekurencyjnie zaczyna od docelowego przedmiotu, "rozwija" jego recepty i tak dochodzi do podstawowych przedmiotów
+    private static ArrayList<Item> getItemChildren(Recipe recipe) {
+        for (int i=0; i < recipe.getInput().size(); i++) {
+            Item childItem = recipe.getInput().get(i);
+            if (childItem instanceof ComponentItem) {
+                Recipe childItemRecipe = ((ComponentItem) childItem).getRecipe();
+                getItemChildren(childItemRecipe);
+                children.add(childItem);
+            }
+        }
+
+        return children;
+    }
+
+    // ustala kolejkę budynków, które powinien zbudować pionier
+    /*private static void setBuildingOrder() {
         Recipe targetItemRecipe = ((ComponentItem) targetItem).getRecipe();
 
         ArrayList<Recipe> relatedRecipes = getRecipeChildren(targetItemRecipe);
@@ -71,5 +107,5 @@ public class Main {
         }
 
         return children;
-    }
+    }*/
 }

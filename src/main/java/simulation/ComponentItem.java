@@ -10,7 +10,7 @@ import java.util.Scanner;
  * */
 public class ComponentItem extends Item {
 
-    Recipe recipe; // receptura, którą trzeba wykonać, aby otrzymać ten obiekt
+    private Recipe recipe; // receptura, którą trzeba wykonać, aby otrzymać ten obiekt
 
     public ComponentItem(int id, int amount, double income) {
 
