@@ -76,6 +76,10 @@ public class DepositField extends Field {
 
     }
 
+    public int getItem_id() {
+        return item_id;
+    }
+
     /**
      * Spowalnia znacząco barziej pioniera, jeżeli na polu prowadzone prace wydobywcze(na polu stoi maszyna).
      * W przeciwnym wypadku pionier przemieszcza się po polu jak po zwykłym polu z ziemią.

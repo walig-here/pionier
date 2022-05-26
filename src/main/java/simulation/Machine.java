@@ -18,6 +18,7 @@ public class Machine {
     private Recipe cost; // lista obiektow potrzebnych do wybudowania/ulepszenia
 
     private Glitch glitch; // zakłócenie obecne w maszynie
+
     private int ID; // ID maszyny
 
 
@@ -103,6 +104,10 @@ public class Machine {
         // zmiana ilości przedmitów wynikła z produkcji
     public void production(ArrayList<Item> inventory) {
 
+    }
+
+    public int getID() {
+        return ID;
     }
 
     // włączenie gitcha w maszynie
