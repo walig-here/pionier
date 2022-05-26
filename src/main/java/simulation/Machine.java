@@ -31,7 +31,7 @@ public class Machine {
         // Resztę danych pobieramy z niezawodnych baz danych na dysku systemowym.
         // Plik z danymi ustalamy na podstawie nazwy maszyny
 
-        String path = "database\\machines\\";
+        String path = "database/machines/";
         switch (ID) {
             // 0 - elektrownia
             case 0: path += "powerplant.txt"; break;
@@ -92,9 +92,10 @@ public class Machine {
             file.close();
         }
         // zwracamy wyjątek gdy pliku nie udało się otworzyć
-        catch (Exception e) {
+        catch (FileNotFoundException e) {
             e.printStackTrace();
             System.out.println("Blad wczytywania danych dla maszyny o ID " + ID + "! Nie udalo sie uzyskac dostepu do pliku z danymi!");
+            this.produced_item=-1;
         }
     }
 
@@ -126,5 +127,9 @@ public class Machine {
 
     public Recipe getCost() {
         return cost;
+    }
+
+    public String getName() {
+        return name;
     }
 }
