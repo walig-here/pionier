@@ -9,16 +9,47 @@ import java.util.ArrayList;
 import static java.lang.Math.abs;
 
 public class Pioneer {
-    private int[] coordinates; // koordynaty pioniera
-    private ArrayList<Item> inventory; // ekwipunek pioniera
-    private int move_points; // dostępne punkty ruchu
-    private Sprite sprite; // render pioniera na ekranie
-    private boolean could_build; // wkazuje czy pionier może coś zbudować
-    private int to_build ; // produkt, który ma być produkowany przez budynek(w produkcie jesy receptura a w recepturze maszyna, którą trzeba zbudować)
-    private int building_field[]; // gdzie postawić budynek?
-    private ArrayList<Integer[]> path; // ścieżka po której porusza się pionier
+    /**
+     * Tablica liczb całkowitych. W pierwszej komórce przechowuje pozycję x pioniera na planszy. W drugiej przechowuje pozycję y pioniera na planszy.
+     * */
+    private int[] coordinates;
+    /**
+     * Lista przedmiotów posiadanych przez pioniera.
+     * */
+    private ArrayList<Item> inventory;
+    /**
+     * Punkty ruchu posiadane przez pioniera. Determinują one ilośc pól, jaką ten może się przemieścić.
+     * */
+    private int move_points;
+    /**
+     * Obiekt przechowujący dane o graficznej reprezentacji pioniera w oknie symulacji.
+     * */
+    private Sprite sprite;
+    /**
+     * Zmienna zawierająca informację co do możliwości zbudowania kolejnej maszyny przez pioniera w tej turze.
+     * */
+    private boolean could_build;
+    /**
+     * Przechowuje ID przedmiotu, którego maszynę go produkującą pionier ma zamiar postawić przy najbliżeszj okazji.
+     * */
+    private int to_build ;
+    /**
+     * Tablica liczb całkowitych przechowująca koordynaty pola, na którym pionier dokona najbliższej konstrukcji.
+     * Pierwsza komórka odpowiada za współrzędną x, druga za współrzędną y.
+     * */
+    private int building_field[];
+    /**
+     * Lista dwuelementowych tablic, zawierających koordynaty pól, tworzących ścieżkę, po której będzie poruszał się pionier.
+     * */
+    private ArrayList<Integer[]> path;
 
-    // konstruktor
+
+    /**
+     * Konstruktor klasy pionier. Na podstawie danych pola, na którym na początku symulacji stoi pionier ustala część z jego parametrów.
+     * Nadaje także wartości początkowe wszystkim innym polom klasy.
+     *
+     * @param spawn_filed pole, na którym na początku symulacji pojawił się pionier
+     * */
     public Pioneer(Field spawn_filed){
 
         // ustalenie pozycji na planszy
@@ -41,39 +72,70 @@ public class Pioneer {
 
         // stworzenie instancji dla reszty pól
         path = new ArrayList<>();
+        inventory = new ArrayList<>();
     }
 
-    // ustala punkty ruchu
+
+    /**
+     * Setter. Ustala punkty ruchu posiadane przez pioniera w danej turze.
+     *
+     * @param move_points nowa ilość punktów ruchu
+     * */
     public void setMove_points(int move_points) {
         this.move_points = move_points;
     }
 
-    //pobiera punkty ruchu
+
+    /**
+     * Getter. Pobiera liczbę punktów ruchu posiadanych przez pioniera.
+     *
+     * @return ilość punktów ruchu posiadaną przez pioniera
+     * */
     public int getMove_points() {
         return move_points;
     }
 
-    // ustala koordynaty
+
+    /**
+     * Setter. Ustala położenie pioniera na planszy.
+     *
+     * @param x nowa pozycja x pioniera na planszy
+     * @param y nowa pozycja y pioniera na planszy
+     * */
     public void setCoordinates(int x, int y) {
         this.coordinates[0] = x;
         this.coordinates[1] = y;
     }
 
-    // pobiera koordynaty
+
+    /**
+     * Getter. Pobiera koordynaty pioniera.
+     *
+     * @return Dwuelementową tablicę liczb całkowitych. Pierwszy element zawiera pozycję x pioniera, drugi pozycję y pioniera.
+     * */
     public int[] getCoordinates() {
         return coordinates;
     }
 
-    // pobiera ścieżkę pioniera
+
+    /**
+     * Getter. Pobiera obraną przez pioniera ścieżkę przemarszu.
+     *
+     * @return Listę dwuelementowych tablic zawierającą liczby całkowite. Pierwszy element każdej tablicy zawiera pozycję x, drugi pozycję y pola, należącego do ścieżki przemarszu pioniera.
+     * */
     public ArrayList<Integer[]> getPath() {
         return path;
     }
 
+
     /**
-     * Przemieszcza pioniera o jedno pole znajdujące się na początku ścieżki, którą ten podąża.
+     * Odpowiada za mechanikę poruszania się pioniera po planszy. Pobiera pierwsze pole ze ścieżki przemarszu i próbuje przemieścić na nie pioniera.
+     * Wywołuje przy tym odpowiednie mechanizmy, odpowiadające za wkroczenie pioniera na określony typ pola
+     * W przypadku, gdy parametr starting przyjmie wartość 'ture' metoda będzie symulować pierwszy ruch pioniera w danej turze.
+     * Wywoła ona wówczas odpowiednie mechanizmy odpowiadające za symulowanie wymarszu pioniera z pola, na którym aktualnie się znajduje.
      *
-     * @param map plansza symulacji
-     * @param starting określa czy wywołana funkcja odpowiada pierwszemu ruchowi pioniera w tej turze
+     * @param map zbiór pól składających się na planszę symulacji
+     * @param starting wartość logiczna określająca czy wykonywany ruch będzie pierwszym w tej turze
      * **/
     public void walk(Field[][] map, boolean starting) {
         // Sprawdzamy czy pionier może wyjść z pola, na którym aktualnie stoi
@@ -89,7 +151,16 @@ public class Pioneer {
         }
     }
 
-    // buduje maszynę na danym polu
+
+    /**
+     * Odpowiada za wybudowanie maszyny produkującej przedmiot o ID, zawartym w polu 'to_build', na wcześniej wybranym polu, o koordynatach zawartych w polu 'build_in'.
+     * Konstrukcja polega na stworzeniu obiektu klasy 'Machine' wewnątrz odpowiedniego pola terenu zawartego na planszy symulacji.
+     * Po pomyślnym wykonaniu konstrukcji funkcja usuwa z ekwipunku pioniera odpowiednią ilość przedmiotów reprezentujących niezbędne materiały budowlane.
+     * Usuwa także z kolejki budowlanej 'buildingOrder' dokonaną właśnie konstrukcję.
+     *
+     * @param map zbiór pól składających się na planszę symulacji
+     * @param buildingOrder lista określająca kolejność konstrukcji, których ma podjąć się pionier
+     * */
     public void buildMachine(Field[][] map, ArrayList<Integer> buildingOrder) {
 
         // Sprawdzamu czy pionier ma w ogóle zamiar cokolwiek zbudować
@@ -137,7 +208,14 @@ public class Pioneer {
         could_build = false;
     }
 
-    // wyznacza ścieżkę po której porusza się pionier
+
+    /**
+     * Wyznacza ścieżkę przemarszu pioniera, prowadzącą od jego aktualnego położenia do pola zawartego w parametrze 'destination'.
+     * Tworzona ścieżka jest zapisywana w polu 'path' i składa się z dwuelementowych tablic, zawierających koordynaty kolejnych pól tworzących sieżkę.
+     * Koordynaty te leżą na prostej łączącej punkt początkowy i końcowy ścieżki, wyrażonej odpowiednią funkcją liniową.
+     *
+     * @param destination pole planszy, do którego ma prowadzić ścieżka
+     * */
     public void calculatePath(Field destination) {
 
         // Sprawdzamy różnice między koordynatami x oraz y celu względem pioniera
@@ -221,7 +299,12 @@ public class Pioneer {
         path.add(field);
     }
 
-    // wylicza pole pod następną budowę
+
+    /**
+     * Wyznacza najlepsze pod względem prawdopodobieństwa wystąpienia zakłóceń oraz odległości od pola centralnego miejsce budowlane.
+     *
+     * @param map plansza symulacji
+     * */
     private void findBuildingPlace(Field[][] map) {
 
         ArrayList<Integer[]> potential_fields = new ArrayList<>();  // zbiór potencjalnych miejsc pod budowę
@@ -348,7 +431,16 @@ public class Pioneer {
         building_field[0] = min[0]; building_field[1] = min[1];
     }
 
-    // wyznacza jaki budynek postawi pionier jako nastepny
+
+    /**
+     * Ustala jaką maszynę pionier powinien zbudować jako pierwszą. Korzysta w tym celu z kolejki konstrukcji.
+     * Funkcja może jednak wymusić na pionierze postawienie maszyny, produkującej przedmiot, którego zapasy znajduja się na wyczerpaniu.
+     * Po wyborze nowego celu budowy, funkcja wyznacza miejsce pod nią.
+     * Następnie wysyła pioniera do magazynu, symulując "zebranie niezbędnych przedmiotów", skąd ma udać się później do miejsca budowy.
+     *
+     * @param buildingOrder główna kolejka konstrukcji
+     * @param map plansza symulacji
+     * */
     public void setNextBuilding(ArrayList<Integer> buildingOrder, Field[][] map) {
         // Sprawdzamy czy pionier zakończył już ostatnią budowę
         if(to_build != -1) return;
@@ -395,8 +487,14 @@ public class Pioneer {
         calculatePath(map[building_field[0]][building_field[1]]);
     }
 
-    // wyznacza bazowe punkty ruchu w zależności od pola na którym stoi pionier
-    public void setStartMovePoints(Field start_filed)
+
+    /**
+     * Setter. Ustala punkty ruchu pioniera, którymi dysponuje na początku tury.
+     * Są one przyznawane na podstawie typu i danych pola 'start_field', na którymn znajduje się pionier.
+     *
+     * @param start_filed pole, które posłuży do wyznaczenia przyznanych punktów ruchu
+     * */
+    private void setStartMovePoints(Field start_filed)
     {
         move_points = start_filed.getBase_move_points();
     }
