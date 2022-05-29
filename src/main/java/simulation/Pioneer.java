@@ -108,7 +108,7 @@ public class Pioneer {
         else new_building= new Machine(0, to_build);
 
         // Sprawdzamy czy pionier ma wystarczająco materiałów do zbudowania tej maszyny
-        for(Item item_cost : new_building.getCost().getInput()){
+        for(Item item_cost : new_building.getCost()){
             boolean owns_item = false;
             for(Item item_eq : inventory){
                 if(item_cost.getID() == item_eq.getID())

@@ -11,4 +11,8 @@ public abstract class Glitch {
 
     // wpływ glitcha na maszyne
     abstract void glitchImpact(Machine impacting);
+
+    public float getIntensity() {
+        return intensity;
+    }
 }

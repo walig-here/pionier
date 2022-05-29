@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class MachineTest {
@@ -30,4 +31,25 @@ public class MachineTest {
             Scanner file = new Scanner(file_stream);
         });
     }
+
+    @Test
+    void testItStartsProduction() {
+        ArrayList<Item> inventory = new ArrayList<>();
+        inventory.add(new Item(0, 25, 27));
+        //output dla tej maszyny wynosi 10
+        Machine machine = new Machine(0, 0);
+        machine.startProduction(inventory);
+        Assertions.assertEquals(37, inventory.get(0).getIncome());
+
+    }
+    @Test
+    void testItProducesItems() {
+        ArrayList<Item> inventory = new ArrayList<>();
+        inventory.add(new Item(0, 25, 25));
+        //output dla tej maszyny wynosi 10
+        Machine machine = new Machine(0, 0);
+        machine.production(inventory);
+        Assertions.assertEquals(35, inventory.get(0).getAmount());
+    }
+
 }
