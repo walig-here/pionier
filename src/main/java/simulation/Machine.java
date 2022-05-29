@@ -13,11 +13,11 @@ public class Machine {
 
     private String name; // nazwa
 
-    private int produced_item; // ID produkowanego przedmitou
+    private int produced_item; // ID produkowanego przedmiotu
 
     private int output; // ilość przedmiotów produkowanych na turę
 
-    private ArrayList<Item> cost; // lista obiektow potrzebnych do wybudowania/ulepszenia
+    private ArrayList<Item> cost; // lista obiektów potrzebnych do wybudowania/ulepszenia
 
     private Glitch glitch; // zakłócenie obecne w maszynie
 
