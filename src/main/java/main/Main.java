@@ -11,7 +11,6 @@ public class Main {
     static public int map_size; // rozmiar planszy(w polach) z przedziału [???]
     static public Field[][] map; // plansza na której odbywa się symulacja
 
-
     static private ArrayList<Integer> buildingOrder; // kolejka ID maszyn, które musi zbudować pionier aby wygrać
     static private MenuGUI menu;
     static private Pioneer pioneer; // pionier
