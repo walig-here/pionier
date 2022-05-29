@@ -153,7 +153,7 @@ public class Pioneer {
 
 
     /**
-     * Odpowiada za wybudowanie maszyny produkującej przedmiot o ID, zawartym w polu 'to_build', na wcześniej wybranym polu, o koordynatach zawartych w polu 'build_in'.
+     * Odpowiada za wybudowanie maszyny produkującej przedmiot o ID, zawartym w polu 'to_build', na wcześniej wybranym polu, o koordynatach zawartych w polu 'building_field'.
      * Konstrukcja polega na stworzeniu obiektu klasy 'Machine' wewnątrz odpowiedniego pola terenu zawartego na planszy symulacji.
      * Po pomyślnym wykonaniu konstrukcji funkcja usuwa z ekwipunku pioniera odpowiednią ilość przedmiotów reprezentujących niezbędne materiały budowlane.
      * Usuwa także z kolejki budowlanej 'buildingOrder' dokonaną właśnie konstrukcję.
@@ -162,6 +162,9 @@ public class Pioneer {
      * @param buildingOrder lista określająca kolejność konstrukcji, których ma podjąć się pionier
      * */
     public void buildMachine(Field[][] map, ArrayList<Integer> buildingOrder) {
+
+        // Sprawdzamy czy pionier znajduje się na placu budowy w polu building_field
+        if(coordinates[0] != building_field[0] || coordinates[1] != building_field[1]) return;
 
         // Sprawdzamu czy pionier ma w ogóle zamiar cokolwiek zbudować
         if(to_build == -1) return;
@@ -184,7 +187,7 @@ public class Pioneer {
             for(Item item_eq : inventory){
                 if(item_cost.getID() == item_eq.getID())
                 {
-                    if(item_eq.getAmount() - item_eq.getAmount() < 0) return;
+                    if(item_eq.getAmount() - item_cost.getAmount() < 0) return;
                     owns_item = true;
                 }
             }

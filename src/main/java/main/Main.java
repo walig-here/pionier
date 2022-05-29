@@ -47,13 +47,19 @@ public class Main {
                 }
             }
 
+            // Pionier podejmuje decyzję co do kolejnej budowy
+            pioneer.setNextBuilding(buildingOrder,map);
 
-            // Pętla ruchu - wykonuje się dopóki pionierowi starcza punktów ruchu lub kiedy dotrze do celu
+            // Pętla ruchu - wykonuje się dopóki pionierowi starcza punktów ruchu lub aż dotrze do celu
             {
                 boolean starting = true; // true - jest to pierwszy ruch pioniera w tej turze
                 do{
+                    // Przemieszczenie na pole
                     pioneer.walk(map, starting);
                     if(starting) starting = false;
+
+                    // Pionier próbuje na aktualnie zajmowanym polu coś zbudować
+                    pioneer.buildMachine(map, buildingOrder);
                 }while (pioneer.getMove_points() != 0 && pioneer.getPath().size() > 0);
             }
         }
