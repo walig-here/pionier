@@ -1,4 +1,5 @@
-package simulation;
+package simulation;        // Plik z danymi ustalamy na podstawie nazwy maszyny
+
 
 import org.junit.jupiter.api.Test;
 

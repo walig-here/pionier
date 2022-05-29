@@ -14,10 +14,40 @@ public class ProductionMachine extends Machine {
 
     }
 
-    // zmiana ilości przedmitów wynikła z produkcji
+    //rozpoczyna produkcję, zwieksza income produktow, zmniejsza income itemow potrzevbnych do wytworzenia produktu
+    public void startProduction(ArrayList<Item> inventory) {
+        for (Item inventoryItem : inventory) {
+            if (inventoryItem.getID() != getProduced_item()) continue;
+            inventoryItem.setIncome((inventoryItem.getIncome() + getOutput()));
+            break;
+        }
+
+        for (Item inputItem : input) {
+            for (Item inventoryItem : inventory) {
+                if (inputItem.getID() != inventoryItem.getID()) continue;
+                inventoryItem.setIncome(inventoryItem.getIncome() - inputItem.getAmount());
+                break;
+            }
+        }
+    }
+
+    // zmiana ilości przedmitów (amount) wynikła z produkcji
     public void production(ArrayList<Item> inventory) {
+        //przeszukuje ekwipunek w poszukiwaniu itemu produkowanego przez maszyne i zwieksza jego ilsoc
+        for (Item item : inventory) {
+            if (item.getID() != getProduced_item()) continue;
+            item.setAmount(item.getAmount() + getOutput());
+            break;
+        }
 
-
+        //przeszukuje ekwipunek w poszukiwaniu przedmiotow potrzebnych do wyprodukowania produktu i zmniejsza ich ilosc
+        for (Item inputItem : input) {
+            for (Item inventoryItem : inventory) {
+                if (inputItem.getID() != inventoryItem.getID()) continue;
+                inventoryItem.setAmount(inventoryItem.getAmount() - inputItem.getAmount());
+                break;
+            }
+        }
     }
 
     public ArrayList<Item> getInput() {

@@ -17,7 +17,7 @@ public class Machine {
 
     private int output; // ilość przedmiotów produkowanych na turę
 
-    private Recipe cost; // lista obiektow potrzebnych do wybudowania/ulepszenia
+    private ArrayList<Item> cost; // lista obiektow potrzebnych do wybudowania/ulepszenia
 
     private Glitch glitch; // zakłócenie obecne w maszynie
 
@@ -25,6 +25,7 @@ public class Machine {
 
 
     public Machine(int ID, int produced_item) {
+        cost = new ArrayList<Item>();
         //id podany do szukania w plikach
         this.ID = ID;
 
@@ -87,6 +88,18 @@ public class Machine {
                 if(line.contains("\"name\":") && line_scanner.hasNext()) name = line_scanner.next();
                 // linia zawierająca informację na temat ilosci produkowanych przedmiotow na ture
                 else if(line.contains("\"output\":") && line_scanner.hasNextInt()) output = line_scanner.nextInt();
+
+                else if(line.contains("\"cost\":") && line_scanner.hasNextInt()) {
+                    // Wczytujemy ID składnika
+                    int productID = line_scanner.nextInt();
+
+                    // Sprawdzamy czy można wczytać z pliku ilość przedmiotu.
+                    // Jeżeli można to dodajemy składnik do receptury.
+                    // Jeżeli nie można to pomijamy składnik
+                    // Jeśli itemem jest energia, jest tworzony item. Jak cos innego to componentitem
+                    if(line_scanner.hasNextInt() && productID != 0) cost.add(new ComponentItem(productID,line_scanner.nextInt(),0));
+                    else if(line_scanner.hasNextInt()) cost.add(new Item(productID,line_scanner.nextInt(),0));
+                }
                 line_scanner.close();
             }
             file.close();
@@ -111,9 +124,26 @@ public class Machine {
         return glitch;
     }
 
+    //rozpoczyna produkcję, zwieksza income produktow
+    public void startProduction(ArrayList<Item> inventory) {
+        for (Item inventoryItem : inventory) {
+            if (inventoryItem.getID() != getProduced_item()) continue;
+            inventoryItem.setIncome((inventoryItem.getIncome() + output));
+            break;
+        }
+    }
+
         // zmiana ilości przedmitów wynikła z produkcji
     public void production(ArrayList<Item> inventory) {
-
+        if(getGlitch() instanceof TurnOffGlitch) {
+            return;
+        }
+        //przeszukuje ekwipunek w poszukiwaniu itemu produkowanego przez maszyne i zwieksza jego ilsoc
+        for (Item inventoryItem : inventory) {
+            if (inventoryItem.getID() != getProduced_item()) continue;
+            inventoryItem.setAmount(inventoryItem.getAmount() + output);
+            break;
+        }
     }
 
     public int getID() {
@@ -125,7 +155,7 @@ public class Machine {
 
     }
 
-    public Recipe getCost() {
+    public ArrayList<Item> getCost() {
         return cost;
     }
 

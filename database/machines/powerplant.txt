@@ -1,2 +1,4 @@
 "name":Elektrownia
 "output":10
+"cost":0:1
+"cost":2:10

@@ -2,11 +2,11 @@ package simulation;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.function.Executable;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class ProductionMachineTest {
@@ -40,4 +40,47 @@ public class ProductionMachineTest {
             Scanner file = new Scanner(file_stream);
         });
     }
+
+    @Test
+    void testItStartsProduction() {
+        ArrayList<Item> inventory = new ArrayList<>();
+        inventory.add(new Item(0, 25, 23)); //energia
+        inventory.add(new ComponentItem(3, 25, 22)); //miedz
+        inventory.add(new ComponentItem(1, 25, 21)); //wegiel
+        ComponentItem copperIngot = new ComponentItem(9, 25, 20);
+        inventory.add(copperIngot);
+
+        Recipe copperIngotRecipe = copperIngot.getRecipe();
+        ProductionMachine furnace = new ProductionMachine(copperIngotRecipe.getMachine(), copperIngot.getID());
+        furnace.startProduction(inventory);
+
+        Assertions.assertEquals(22, inventory.get(0).getIncome());
+        Assertions.assertEquals(21, inventory.get(1).getIncome());
+        Assertions.assertEquals(20, inventory.get(2).getIncome());
+        Assertions.assertEquals(30, inventory.get(3).getIncome());
+
+
+    }
+
+    @Test
+    void testItProducesItems() {
+        ArrayList<Item> inventory = new ArrayList<>();
+        inventory.add(new Item(0, 25, 25)); //energia
+        inventory.add(new ComponentItem(3, 25, 25)); //miedz
+        inventory.add(new ComponentItem(1, 25, 25)); //wegiel
+        ComponentItem copperIngot = new ComponentItem(9, 25, 20);
+        inventory.add(copperIngot);
+
+        Recipe copperIngotRecipe = copperIngot.getRecipe();
+        ProductionMachine furnace = new ProductionMachine(copperIngotRecipe.getMachine(), copperIngot.getID());
+        furnace.production(inventory);
+
+        //koszt sztabki miedzi to  po 1 sztuce wegla, energii i miedzi
+        Assertions.assertEquals(24, inventory.get(0).getAmount());
+        Assertions.assertEquals(24, inventory.get(1).getAmount());
+        Assertions.assertEquals(24, inventory.get(2).getAmount());
+        Assertions.assertEquals(35, inventory.get(3).getAmount());
+    }
+
 }
+
