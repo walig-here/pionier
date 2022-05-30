@@ -13,15 +13,17 @@ public class Machine {
 
     private String name; // nazwa
 
-    private int produced_item; // ID produkowanego przedmiotu
+    protected int produced_item; // ID produkowanego przedmiotu
 
     private int output; // ilość przedmiotów produkowanych na turę
 
     private ArrayList<Item> cost; // lista obiektów potrzebnych do wybudowania/ulepszenia
 
-    private Glitch glitch; // zakłócenie obecne w maszynie
+    protected Glitch glitch; // zakłócenie obecne w maszynie
 
     private int ID; // ID maszyny
+
+    protected int production_turn; // ile tur minęło od rozpoczęcia produkcji
 
 
     public Machine(int ID, int produced_item) {
@@ -131,13 +133,31 @@ public class Machine {
             inventoryItem.setIncome((inventoryItem.getIncome() + output));
             break;
         }
+
+        // ustalamy licznik tur produkcyjnych
+        production_turn = 0;
     }
 
         // zmiana ilości przedmitów wynikła z produkcji
     public void production(ArrayList<Item> inventory) {
-        if(getGlitch() instanceof TurnOffGlitch) {
+        if(glitch instanceof TurnOffGlitch) {
             return;
         }
+
+        // produkcja trwa kolejną turę
+        production_turn++;
+
+        // sprawdzamy czy minęła już odpowiednia ilość tur, niezbędnych do wyprodukowania przedmiotu
+        {
+            Item temp = new Item(produced_item, 0,0);
+
+            // jeżeli taka ilość czasu jeszcze nie minęła to produkcja trwa dalej
+            if(temp.getProductionTime() > production_turn) return;
+
+            // jeżeli taka ilość czasu już minęła to resetujemy timer produkcji
+            production_turn = 0;
+        }
+
         //przeszukuje ekwipunek w poszukiwaniu itemu produkowanego przez maszyne i zwieksza jego ilsoc
         for (Item inventoryItem : inventory) {
             if (inventoryItem.getID() != getProduced_item()) continue;

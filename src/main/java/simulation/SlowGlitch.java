@@ -12,6 +12,6 @@ public class SlowGlitch extends Glitch {
     // wpływ glitcha na maszyne
     @Override
     void glitchImpact(Machine impacting) {
-
+        
     }
 }

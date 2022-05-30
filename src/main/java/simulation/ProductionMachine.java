@@ -33,6 +33,24 @@ public class ProductionMachine extends Machine {
 
     // zmiana ilości przedmitów (amount) wynikła z produkcji
     public void production(ArrayList<Item> inventory) {
+        if(glitch instanceof TurnOffGlitch) {
+            return;
+        }
+
+        // produkcja trwa kolejną turę
+        production_turn++;
+
+        // sprawdzamy czy minęła już odpowiednia ilość tur, niezbędnych do wyprodukowania przedmiotu
+        {
+            Item temp = new Item(produced_item, 0,0);
+
+            // jeżeli taka ilość czasu jeszcze nie minęła to produkcja trwa dalej
+            if(temp.getProductionTime() > production_turn) return;
+
+            // jeżeli taka ilość czasu już minęła to resetujemy timer produkcji
+            production_turn = 0;
+        }
+
         //przeszukuje ekwipunek w poszukiwaniu itemu produkowanego przez maszyne i zwieksza jego ilsoc
         for (Item item : inventory) {
             if (item.getID() != getProduced_item()) continue;
