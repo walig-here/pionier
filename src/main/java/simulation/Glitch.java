@@ -5,8 +5,9 @@ public abstract class Glitch {
     private float intensity; // natężenie zakłócenia(w %)
     private int glitchID; // ID glitcha
 
-    public Glitch(int range, float intensity) {
+    public Glitch(int ID, float intensity) {
         this.intensity = intensity;
+        glitchID = ID;
     }
 
     // wpływ glitcha na maszyne
