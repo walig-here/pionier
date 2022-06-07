@@ -62,8 +62,7 @@ public class CentralField extends Field {
      * @param pioneer wchodzący na pole pionier
      * */
     @Override
-    public boolean goInto(Pioneer pioneer)
-    {
+    public boolean goInto(Pioneer pioneer) {
         // jeżeli pionier nie ma punktów ruchu to nie może wejść na pole
         if(pioneer.getMove_points() == 0) return false;
 

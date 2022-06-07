@@ -13,6 +13,9 @@ public class ProductionMachine extends Machine {
          input = new ComponentItem(produced_item, 0, 0.0).getRecipe().getInput();
 
     }
+    public ProductionMachine(ProductionMachine copy){
+        this(copy.getID(),copy.produced_item);
+    }
 
     //rozpoczyna produkcję, zwieksza income produktow, zmniejsza income itemow potrzevbnych do wytworzenia produktu
     public void startProduction(ArrayList<Item> inventory) {

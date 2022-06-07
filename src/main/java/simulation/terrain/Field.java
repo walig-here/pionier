@@ -3,6 +3,7 @@ package simulation.terrain;
 import rendering.GridSprite;
 import simulation.Machine;
 import simulation.Pioneer;
+import simulation.ProductionMachine;
 
 import java.io.FileInputStream;
 import java.io.InputStream;
@@ -17,7 +18,7 @@ public abstract class Field {
     protected int[] coordinates; //koordynaty pola terenu
     private int terrain_id;  //id terenu
 
-    protected Machine machine = new Machine(1,1); //maszyna stojąca na polu
+    protected Machine machine; //maszyna stojąca na polu
     private GridSprite gridSprite; //render pola
     private int base_move_points; //punkty na początku rundy jeśli jest to pole startu
 
@@ -103,7 +104,8 @@ public abstract class Field {
     }
 
     public void setMachine(Machine machine) {
-        this.machine = machine;
+        if(machine instanceof Machine) this.machine = new Machine(machine);
+        else this.machine = new ProductionMachine((ProductionMachine)machine);
     }
 
     // pobiera listę prawdopodobieństw wystąpienia zakłóceń

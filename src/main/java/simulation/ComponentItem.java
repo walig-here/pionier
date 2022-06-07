@@ -91,6 +91,9 @@ public class ComponentItem extends Item {
 
             // 23 - superkomputer
             case 23: recipe_name += "supercomputer.txt"; break;
+
+            // 24 - sztabka żelaza
+            case 24: recipe_name += "iron_ingot.txt"; break;
         }
         recipe = new Recipe(recipe_name);
     }

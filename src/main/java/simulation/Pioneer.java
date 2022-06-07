@@ -13,6 +13,7 @@ public class Pioneer {
      * Tablica liczb całkowitych. W pierwszej komórce przechowuje pozycję x pioniera na planszy. W drugiej przechowuje pozycję y pioniera na planszy.
      * */
     private int[] coordinates;
+
     /**
      * Lista przedmiotów posiadanych przez pioniera.
      * */
@@ -141,6 +142,9 @@ public class Pioneer {
         // Sprawdzamy czy pionier może wyjść z pola, na którym aktualnie stoi
         if(!map[coordinates[0]][coordinates[1]].goOut(this, starting)) return;
 
+        // Sprawdzamy czy ścieżka nie jest pusta
+        if(path.size() == 0) return;
+
         // Wybieramy z mapy pole, na które chcemy wejść. Następnie próbujemy wkroczyć pionierem na pole.
         // Jeżeli pionierowi nie uda się wejść na teren pola to nie przemieszcza się dalej w tej turze.
         // Jeżeli pionierowi uda się wejść na teren pola to przemieszcza się, a pole na które wkracza zostaje usunięte ze ścieżki,
@@ -189,6 +193,7 @@ public class Pioneer {
                 {
                     if(item_eq.getAmount() - item_cost.getAmount() < 0) return;
                     owns_item = true;
+                    break;
                 }
             }
             // Jeżeli pionier wcale nie posiada potrzebnego itemu to również nie zbuduje maszyny
@@ -218,12 +223,13 @@ public class Pioneer {
      * Koordynaty te leżą na prostej łączącej punkt początkowy i końcowy ścieżki, wyrażonej odpowiednią funkcją liniową.
      *
      * @param destination pole planszy, do którego ma prowadzić ścieżka
+     * @param start pole planszy, do którego ma prowadzić ścieżka
      * */
-    public void calculatePath(Field destination) {
+    public void calculatePath(Field start, Field destination) {
 
         // Sprawdzamy różnice między koordynatami x oraz y celu względem pioniera
-        int delta_x = destination.getCoordinates()[0] - coordinates[0];
-        int delta_y = destination.getCoordinates()[1] - coordinates[1];
+        int delta_x = destination.getCoordinates()[0] - start.getCoordinates()[0];
+        int delta_y = destination.getCoordinates()[1] - start.getCoordinates()[1];
 
         // Jeżeli różnice między oboma koordynatami wynoszą zero, oznacza to, że pionier nie musi się przemieszczać i nie potrzebuje ścieżki
         if(delta_x == 0 && delta_y == 0) return;
@@ -235,9 +241,9 @@ public class Pioneer {
             // Jeżeli różnica w koordynatach y jest dodatnia to idziemy naprzód na osi OY o 1 jednostkę do momentu, aż osiągniemy koordynat y równy y_celu
             // W czasie poruszania się dodajemy do ścieżki przemierzane pola o równaniu (x_pioniera, y)
             int y_motion = (delta_y < 0 ? -1 : 1);
-            for (int current_y = coordinates[1]+y_motion; current_y != destination.getCoordinates()[1]; current_y += y_motion){
+            for (int current_y = start.getCoordinates()[1]+y_motion; current_y != destination.getCoordinates()[1]; current_y += y_motion){
                 Integer[] field = new Integer[2];
-                field[0] = coordinates[0];
+                field[0] = start.getCoordinates()[0];
                 field[1] = current_y;
                 path.add(field);
             }
@@ -250,9 +256,9 @@ public class Pioneer {
             // Jeżeli różnica w koordynatach x jest dodatnia to idziemy naprzód na osi OX o 1 jednostkę do momentu, aż osiągniemy koordynat x równy x_celu
             // W czasie poruszania się dodajemy do ścieżki przemierzane pola o równaniu (x, y_pioniera)
             int x_motion = (delta_x < 0 ? -1 : 1);
-            for (int current_x = coordinates[0]+x_motion; current_x != destination.getCoordinates()[0]; current_x += x_motion) {
+            for (int current_x = start.getCoordinates()[0]+x_motion; current_x != destination.getCoordinates()[0]; current_x += x_motion) {
                 Integer[] field = new Integer[2];
-                field[1] = coordinates[1];
+                field[1] = start.getCoordinates()[1];
                 field[0] = current_x;
                 path.add(field);
             }
@@ -262,8 +268,8 @@ public class Pioneer {
         // > Gdy wartość bezwzględna różnicy y jest większa od różnicy x to funkcja ścieżki przyjmie postać x(y) = podłoga( (y-b)/a )
         // > Gdy wartość bezwzględna różnicy x jest większa/równa od różnicy y to funkcja ścieżki przyjmie postać y(x) = podłoga( ax + b )
         else {
-            double a = ((double)coordinates[1] - destination.getCoordinates()[1])/(coordinates[0]-destination.getCoordinates()[0]);
-            double b = coordinates[1] - coordinates[0] * a;
+            double a = ((double)start.getCoordinates()[1] - destination.getCoordinates()[1])/(start.getCoordinates()[0]-destination.getCoordinates()[0]);
+            double b = start.getCoordinates()[1] - start.getCoordinates()[0] * a;
 
             if(Math.abs(delta_x) >= Math.abs(delta_y)) {
 
@@ -271,7 +277,7 @@ public class Pioneer {
                 // Jeżeli różnica w koordynatach x jest dodatnia to idziemy naprzód na osi OX o 1 jednostkę do momentu, aż osiągniemy koordynat x równy x_celu
                 // W czasie poruszania się dodajemy do ścieżki przemierzane pola o równaniu (x, podłoga( ax + b ))
                 int x_motion = (delta_x < 0 ? -1 : 1);
-                for (int current_x = coordinates[0]+x_motion; current_x != destination.getCoordinates()[0]; current_x += x_motion){
+                for (int current_x = start.getCoordinates()[0]+x_motion; current_x != destination.getCoordinates()[0]; current_x += x_motion){
                     Integer[] field = new Integer[2];
                     field[1] = (int)Math.floor( current_x*a + b );
                     field[0] = current_x;
@@ -285,7 +291,7 @@ public class Pioneer {
                 // Jeżeli różnica w koordynatach y jest dodatnia to idziemy naprzód na osi OY o 1 jednostkę do momentu, aż osiągniemy koordynat y równy y_celu
                 // W czasie poruszania się dodajemy do ścieżki przemierzane pola o równaniu (x, podłoga( (y-b)/a ))
                 int y_motion = (delta_y < 0 ? -1 : 1);
-                for (int current_y = coordinates[1]+y_motion; current_y != destination.getCoordinates()[1]; current_y += y_motion){
+                for (int current_y = start.getCoordinates()[1]+y_motion; current_y != destination.getCoordinates()[1]; current_y += y_motion){
                     Integer[] field = new Integer[2];
                     field[1] = current_y;
                     field[0] = (int)Math.floor( (current_y - b) / a);
@@ -361,7 +367,7 @@ public class Pioneer {
                     }
 
                     // Szukamy pól mapy, które są oddalone o co najwyżej range
-                    final int RANGE = 5; // maksymalne oddalenie maszyny od maszyn wytwarzających jej materiały wejściowe
+                    final int RANGE = 3; // maksymalne oddalenie maszyny od maszyn wytwarzających jej materiały wejściowe
                     for(int x = 0; x < map.length; x++) {
                         for(int y = 0; y < map[x].length; y++){
 
@@ -370,6 +376,9 @@ public class Pioneer {
                                 int distance = (int)Math.floor(Math.sqrt( Math.pow(field.getCoordinates()[0] - x, 2) + Math.pow(field.getCoordinates()[1]-y,2) ));
                                 if(distance > RANGE) continue;
                             }
+
+                            // Sprawdzamy czy pole zawiera jakąkolwiek maszynę
+                            if(map[x][y].getMachine() == null) continue;
 
                             // Sprawdzamy czy pole ma w sobie interesującą nas maszynę
                             for(int i = 0; i < needed_machines.size(); i++){
@@ -465,7 +474,10 @@ public class Pioneer {
         // Pobieramy ID produkowanego przez następną potrzebną maszynę przedmiotu
         to_build = buildingOrder.get(0);
 
-        // Najpierw pionier musi udać się do magazynu po materiały, wyznaczamy mu ścieżkę/
+        // Szukamy idealnego miejsca pod budowę wybranego obiektu.
+        findBuildingPlace(map);
+
+        // Najpierw pionier musi udać się do magazynu po materiały, wyznaczamy mu ścieżkę do magazynu i z magazynu na plac budowy
         // Szukamy zatem koordynatów pola centralnego.
         {
             boolean central_found = false;
@@ -474,7 +486,8 @@ public class Pioneer {
                 for(Field field : row){
                     if(field instanceof CentralField)
                     {
-                        calculatePath(field);
+                        calculatePath(map[coordinates[0]][coordinates[1]],field);
+                        calculatePath(field, map[building_field[0]][building_field[1]]);
                         central_found = true;
                         break;
                     }
@@ -482,12 +495,6 @@ public class Pioneer {
                 if(central_found) break;
             }
         }
-
-        // Szukamy idealnego miejsca pod budowę wybranego obiektu.
-        findBuildingPlace(map);
-
-        // Następnie wyznaczamy do niego ścieżkę
-        calculatePath(map[building_field[0]][building_field[1]]);
     }
 
 
@@ -500,5 +507,15 @@ public class Pioneer {
     private void setStartMovePoints(Field start_filed)
     {
         move_points = start_filed.getBase_move_points();
+    }
+
+
+
+    public void setCould_build(boolean could_build) {
+        this.could_build = could_build;
+    }
+
+    public ArrayList<Item> getInventory() {
+        return inventory;
     }
 }

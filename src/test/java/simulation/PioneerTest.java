@@ -46,9 +46,9 @@ class PioneerTest {
         to_build.add(0);
         to_build.add(1);
 
+
         pioneer.setNextBuilding(to_build,map);
         pioneer.buildMachine(map,to_build);
-        System.out.println("DONE SKONCZONE!");
     }
 
     @Test

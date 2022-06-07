@@ -149,4 +149,9 @@ public class GlitchSourceField extends Field {
         pioneer.setMove_points(0);
         return walked_in;
     }
+
+
+    public byte getGlitch_id() {
+        return glitch_id;
+    }
 }

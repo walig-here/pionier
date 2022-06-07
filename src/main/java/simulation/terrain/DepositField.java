@@ -91,7 +91,7 @@ public class DepositField extends Field {
     }
 
     /**
-     * Spowalnia znacząco barziej pioniera, jeżeli na polu prowadzone prace wydobywcze(na polu stoi maszyna).
+     * Spowalnia znacząco bardziej pioniera, jeżeli na polu prowadzone prace wydobywcze(na polu stoi maszyna).
      * W przeciwnym wypadku pionier przemieszcza się po polu jak po zwykłym polu z ziemią.
      *
      * @param pioneer wchodzący na pole pionier
