@@ -1,2 +1,3 @@
-"name": Piec
-"output": 10
+"name":Piec
+"output":10
+"cost":0:1

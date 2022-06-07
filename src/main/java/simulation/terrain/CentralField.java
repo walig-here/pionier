@@ -26,7 +26,7 @@ public class CentralField extends Field {
         if(move_bonus == 0.0f)
         {
             try{
-                InputStream file_stream = new FileInputStream("database\\terrain\\central.txt");
+                InputStream file_stream = new FileInputStream("database/terrain/central.txt");
                 Scanner file = new Scanner(file_stream);
 
                 while (file.hasNextLine())
@@ -62,8 +62,7 @@ public class CentralField extends Field {
      * @param pioneer wchodzący na pole pionier
      * */
     @Override
-    public boolean goInto(Pioneer pioneer)
-    {
+    public boolean goInto(Pioneer pioneer) {
         // jeżeli pionier nie ma punktów ruchu to nie może wejść na pole
         if(pioneer.getMove_points() == 0) return false;
 

@@ -27,7 +27,7 @@ public class WaterField extends Field {
         if(sailing_time == -1)
         {
             try{
-                InputStream file_stream = new FileInputStream("database\\terrain\\water.txt");
+                InputStream file_stream = new FileInputStream("database/terrain/water.txt");
                 Scanner file = new Scanner(file_stream);
 
                 while (file.hasNextLine())
@@ -54,8 +54,7 @@ public class WaterField extends Field {
     }
 
     @Override
-    public boolean goInto(Pioneer pioneer)
-    {
+    public boolean goInto(Pioneer pioneer) {
         // Sprawdzamy czy pionier już odczekał odpowiednią ilość tur na tym polu, aby przejść dalej.
         // Jeżeli tak jest, zerujemy licznik i pozwalamy mu przejść na drugi brzeg.
         if(waited_rounds == sailing_time) {

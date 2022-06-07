@@ -1,0 +1,3 @@
+"name":Fabryka pił diamentowych
+"output":10
+"cost":0:1

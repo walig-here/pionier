@@ -10,13 +10,68 @@ public class ProductionMachine extends Machine {
         super(ID, produced_item);
 
         //tworzy item, bierze jego nazwy i szuka takiej recepty
-        Recipe input = new Recipe(new Item(produced_item, 0, 0.0).getName());
+         input = new ComponentItem(produced_item, 0, 0.0).getRecipe().getInput();
 
     }
+    public ProductionMachine(ProductionMachine copy){
+        this(copy.getID(),copy.produced_item);
+    }
 
-    // zmiana ilości przedmitów wynikła z produkcji
+    //rozpoczyna produkcję, zwieksza income produktow, zmniejsza income itemow potrzevbnych do wytworzenia produktu
+    public void startProduction(ArrayList<Item> inventory) {
+        for (Item inventoryItem : inventory) {
+            if (inventoryItem.getID() != getProduced_item()) continue;
+            inventoryItem.setIncome((inventoryItem.getIncome() + getOutput()));
+            break;
+        }
+
+        for (Item inputItem : input) {
+            for (Item inventoryItem : inventory) {
+                if (inputItem.getID() != inventoryItem.getID()) continue;
+                inventoryItem.setIncome(inventoryItem.getIncome() - inputItem.getAmount());
+                break;
+            }
+        }
+    }
+
+    // zmiana ilości przedmitów (amount) wynikła z produkcji
     public void production(ArrayList<Item> inventory) {
+        if(glitch instanceof TurnOffGlitch) {
+            return;
+        }
 
+        // produkcja trwa kolejną turę
+        production_turn++;
 
+        // sprawdzamy czy minęła już odpowiednia ilość tur, niezbędnych do wyprodukowania przedmiotu
+        {
+            Item temp = new Item(produced_item, 0,0);
+
+            // jeżeli taka ilość czasu jeszcze nie minęła to produkcja trwa dalej
+            if(temp.getProductionTime() > production_turn) return;
+
+            // jeżeli taka ilość czasu już minęła to resetujemy timer produkcji
+            production_turn = 0;
+        }
+
+        //przeszukuje ekwipunek w poszukiwaniu itemu produkowanego przez maszyne i zwieksza jego ilsoc
+        for (Item item : inventory) {
+            if (item.getID() != getProduced_item()) continue;
+            item.setAmount(item.getAmount() + getOutput());
+            break;
+        }
+
+        //przeszukuje ekwipunek w poszukiwaniu przedmiotow potrzebnych do wyprodukowania produktu i zmniejsza ich ilosc
+        for (Item inputItem : input) {
+            for (Item inventoryItem : inventory) {
+                if (inputItem.getID() != inventoryItem.getID()) continue;
+                inventoryItem.setAmount(inventoryItem.getAmount() - inputItem.getAmount());
+                break;
+            }
+        }
+    }
+
+    public ArrayList<Item> getInput() {
+        return input;
     }
 }

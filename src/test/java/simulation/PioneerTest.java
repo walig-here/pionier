@@ -4,9 +4,52 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import simulation.terrain.*;
 
+import java.util.ArrayList;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class PioneerTest {
+
+
+    @Test
+    void test_findBuildingPlace() {
+
+        /*
+        *  C S S S S S S S S S
+        *  S S S S S S S S S S
+        *  S S S S S S S S S S
+        *  S S S D S S G S S S
+        *  S S S S S S S S S S
+        *  S S S S S S S S S S
+        *  S S S S S S S S S S
+        *  S S S S S S S S S S
+        *  S S S S S S D S S S
+        *  S S S S S S S S S S
+        * */
+
+        // Mapa
+        Field[][] map = new Field[10][10];
+        for(int i = 0; i < 10; i++)
+            for (int j = 0; j < 10; j++)
+                map[i][j] = new SoilField(i,j);
+        map[3][3] = new DepositField(3,3,100,1);
+        map[6][8] = new DepositField(6,8,100,2);
+
+        map[6][3] = new GlitchSourceField(6,3,10,(byte)1);
+        ((GlitchSourceField)map[6][3]).setProbabilities(map);
+
+        map[0][0] = new CentralField(0,0);
+
+        // Pionier
+        Pioneer pioneer = new Pioneer(map[0][0]);
+        ArrayList<Integer> to_build = new ArrayList<>();
+        to_build.add(0);
+        to_build.add(1);
+
+
+        pioneer.setNextBuilding(to_build,map);
+        pioneer.buildMachine(map,to_build);
+    }
 
     @Test
     void walk() {

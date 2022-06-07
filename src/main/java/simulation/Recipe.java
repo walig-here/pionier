@@ -5,10 +5,9 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class Recipe {
+public class Recipe{
 
     private ArrayList<Item> input; // lista składników wejściowych
-
     private int machine; // ID maszyny produkującej
 
     // konstruktor
@@ -19,7 +18,7 @@ public class Recipe {
 
         // Z bazy danych wczytujemy dane o recepturze
         try{
-            InputStream file_stream = new FileInputStream("database\\recipes\\" + filename);
+            InputStream file_stream = new FileInputStream("database/recipes/" + filename);
             Scanner file = new Scanner(file_stream);
 
             while (file.hasNextLine())
@@ -38,7 +37,9 @@ public class Recipe {
                     // Sprawdzamy czy można wczytać z pliku ilość przedmiotu.
                     // Jeżeli można to dodajemy składnik do receptury.
                     // Jeżeli nie można to pomijamy składnik
-                    if(line_scanner.hasNextInt()) input.add(new Item(ID,line_scanner.nextInt(),0));
+                    // Jeśli itemem jest energia, jest tworzony item. Jak cos innego to componentitem
+                    if(line_scanner.hasNextInt() && ID != 0) input.add(new ComponentItem(ID,line_scanner.nextInt(),0));
+                    else if(line_scanner.hasNextInt()) input.add(new Item(ID,line_scanner.nextInt(),0));
                 }
                 // linia zawierająca informację na temat ID maszyny wykonującej tę recepturę
                 else if(line.contains("\"machine\":") && line_scanner.hasNextInt()) machine = line_scanner.nextInt();
@@ -51,15 +52,12 @@ public class Recipe {
         catch (Exception e) {
             e.printStackTrace();
             System.out.println("Blad wczytywania danych dla receptury '" + filename + "'! Nie udalo sie uzyskac dostepu do pliku z danymi!");
-            return;
         }
     }
-
 
     public ArrayList<Item> getInput() {
         return input;
     }
-
 
     public int getMachine() {
         return machine;

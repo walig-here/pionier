@@ -38,7 +38,7 @@ public class GlitchSourceField extends Field {
         // pobieramy dane z zadanego pliku(jeżeli nie zostały uprzednio załadowane)
         if(distance_modifier == -1 || generated_glitch_probability == -1){
             try{
-                InputStream file_stream = new FileInputStream("database\\terrain\\glitch.txt");
+                InputStream file_stream = new FileInputStream("database/terrain/glitch.txt");
                 Scanner file = new Scanner(file_stream);
 
                 while (file.hasNextLine())
@@ -66,8 +66,7 @@ public class GlitchSourceField extends Field {
     }
 
     // zmienia prawodpodobieństwa wystąpienia zakłócenia z tego pola w innych polach planszy
-    public void setProbabilities(Field[][] map)
-    {
+    public void setProbabilities(Field[][] map) {
         int distance; // dystans między źródłem a analizowanym polem plnaszy
 
         // Sprawdzamy kolejne pola na planszy
@@ -120,7 +119,7 @@ public class GlitchSourceField extends Field {
                         map[x][y].getGlitch_probabilities().get(q)[1] = prob;
 
                         // Jeżeli prawdopodobieństwo przekroczyło w wyniku tych operacji wartość 100 to ustalamy jego wartość na 100
-                        if(map[x][y].getGlitch_probabilities().get(q)[1] > 100)
+                        if(map[x][y].getGlitch_probabilities().get(q)[1] > 100 || map[x][y].getGlitch_probabilities().get(q)[1] < 0)
                             map[x][y].getGlitch_probabilities().get(q)[1] = 100;
 
                         break;
@@ -137,8 +136,7 @@ public class GlitchSourceField extends Field {
      * @param pioneer wchodzący na pole pionier
      * */
     @Override
-    public boolean goInto(Pioneer pioneer)
-    {
+    public boolean goInto(Pioneer pioneer) {
         boolean walked_in;
 
         // Sprawdzamy czy pionier ma odpowiednią ilość punktów ruchu.
@@ -150,5 +148,10 @@ public class GlitchSourceField extends Field {
         // Bez względu na to czy pionier wkroczył na pole to traci swoje punkty ruchu
         pioneer.setMove_points(0);
         return walked_in;
+    }
+
+
+    public byte getGlitch_id() {
+        return glitch_id;
     }
 }

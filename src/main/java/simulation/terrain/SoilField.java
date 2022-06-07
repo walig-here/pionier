@@ -22,7 +22,7 @@ public class SoilField extends Field {
         // Jeżeli te informacje zostały już cześniej wczytane do klasy(są różne od 0) to nie musimy ich wczytywać drugi raz.
         if(move_cost == 0) {
             try {
-                InputStream file_stream = new FileInputStream("database\\terrain\\soil.txt");
+                InputStream file_stream = new FileInputStream("database/terrain/soil.txt");
                 Scanner file = new Scanner(file_stream);
 
                 while (file.hasNextLine()) {

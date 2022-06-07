@@ -13,8 +13,7 @@ public class TurnOffGlitch extends Glitch {
 
     // wpływ glitcha na maszyne
     @Override
-    void glitchImpact(Machine impacting)
-    {
+    void glitchImpact(Machine impacting) {
 
     }
 }
