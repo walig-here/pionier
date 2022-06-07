@@ -24,6 +24,15 @@ public abstract class Field {
 
     private ArrayList<Byte[]> glitch_probabilities; // szanse na zakłócenie, pierwsza komórka danej pozycji to ID zakłócenia, druga to szansa na jego wystąpienie na tym polu
     private boolean canBuild;   //czy można na tym polu budować
+    public int getOre_type() {
+        return ore_type;
+    }
+
+    public void setOre_type(int ore_type) {
+        this.ore_type = ore_type;
+    }
+
+    private int ore_type;
 
     /**
      * Tworzy obiekt klasy Filed, znajdujący się w podanym punkcie planszy i zawierający w sobie typ terenu o określonym ID.
@@ -80,7 +89,7 @@ public abstract class Field {
 
                 // linia zawierająca informację o bazowych punktach ruchu
                 if(line.contains("\"move points\":") && line_scanner.hasNextInt()) base_move_points = line_scanner.nextInt();
-                // linia zawierająca informację na temat zdatności pod zabudowę
+                    // linia zawierająca informację na temat zdatności pod zabudowę
                 else if(line.contains("\"can build\":") && line_scanner.hasNextBoolean()) canBuild = line_scanner.nextBoolean();
 
                 line_scanner.close();
@@ -99,8 +108,8 @@ public abstract class Field {
         return coordinates;
     }
     public void setCoordinates(int x, int y) {
-       coordinates[0] = x;
-       coordinates[1] = y;
+        coordinates[0] = x;
+        coordinates[1] = y;
     }
 
     public void setMachine(Machine machine) {

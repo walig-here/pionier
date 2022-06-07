@@ -9,6 +9,10 @@ import java.util.Scanner;
 
 public class DepositField extends Field {
 
+    public int getItem_id() {
+        return item_id;
+    }
+
     private int item_id; // ID wydobywanego stąd itemu
     private int deposit_capacity; // maksymalna ilość surowca do wydobycia
     private static int move_cost = -1; // punkty ruchu odbierane pionierowi przy wejściu na niezabudowane pole tego typu
@@ -17,6 +21,7 @@ public class DepositField extends Field {
     // konstruktor
     public DepositField(int x, int y, int capacity, int item_id){
         super(x,y,2);
+        setOre_type(item_id);
 
         // ustalamy wielkość złoża
         deposit_capacity = capacity;
@@ -36,7 +41,7 @@ public class DepositField extends Field {
         if(excavation_penalty == 0.0f)
         {
             try{
-                InputStream file_stream = new FileInputStream("database/terrain/deposit.txt");
+                InputStream file_stream = new FileInputStream("database\\terrain\\deposit.txt");
                 Scanner file = new Scanner(file_stream);
 
                 while (file.hasNextLine())
@@ -71,33 +76,20 @@ public class DepositField extends Field {
     }
 
     // metoda uszczuplająca złoże wraz z działaniem maszyny
-    public void extract() {
-        // Sprawdzamy czy na tym polu jest jeszcze cokolwiek do wydobycia
-        if(deposit_capacity <= 0) return;
+    public void extract()
+    {
 
-        // Jeżeli na polu jest maszyna wydobywająca surowiec lub generująca prąd to wyczerpuje ona zasoby.
-        // Sprawdzamy czy pole zawiera maszyne.
-        if(machine == null) return;
-
-        // Sprawdzamy czy ta maszyna jest odpowiedniego typu
-        if(machine.getProduced_item() != 0 && machine.getProduced_item() != item_id) return;
-
-        // Maszyna wydobywa tyle jednostek surowca ile generuje produktu wyjściowego
-        deposit_capacity -= machine.getOutput();
-    }
-
-    public int getItem_id() {
-        return item_id;
     }
 
     /**
-     * Spowalnia znacząco bardziej pioniera, jeżeli na polu prowadzone prace wydobywcze(na polu stoi maszyna).
+     * Spowalnia znacząco barziej pioniera, jeżeli na polu prowadzone prace wydobywcze(na polu stoi maszyna).
      * W przeciwnym wypadku pionier przemieszcza się po polu jak po zwykłym polu z ziemią.
      *
      * @param pioneer wchodzący na pole pionier
      * */
     @Override
-    public boolean goInto(Pioneer pioneer) {
+    public boolean goInto(Pioneer pioneer)
+    {
         // Jeżeli na polu nie stoi maszyna to koszt wejścia na pole nie zmienia się
         int move_cost = DepositField.move_cost;
         // Jeżeli na polu stoi maszyna to koszt wejścia na pole jest zmieniany przez modyfikator excavation_penalty
