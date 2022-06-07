@@ -104,8 +104,9 @@ public abstract class Field {
     }
 
     public void setMachine(Machine machine) {
-        if(machine instanceof Machine) this.machine = new Machine(machine);
-        else this.machine = new ProductionMachine((ProductionMachine)machine);
+        if(machine instanceof ProductionMachine) this.machine = new ProductionMachine((ProductionMachine)machine);
+        else this.machine = new Machine(machine);
+        canBuild = false;
     }
 
     // pobiera listę prawdopodobieństw wystąpienia zakłóceń

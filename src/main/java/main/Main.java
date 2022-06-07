@@ -26,37 +26,18 @@ public class Main {
         
         //menu=new MenuGUI();
         // główna pętla symulacji
-        simulationLoop(50);
+        switch (simulationLoop(100)){
+            case -1: System.out.println("PORAŻKA!\nPionier nie ma już gdzie zbudować niezbędnych maszyn."); break;
+            case -2: System.out.println("PORAŻKA!\nPionier nie zdążył wyprodukować pożądanego przedmiotu w danym mu czasie!"); break;
+            case 0: System.out.println("ZWYCIESTWO!"); break;
+        }
     }
 
     // pętla symulacji wykonująca się określoną ilość tur lub do osiągnięcia przez pioniera określonego celu
-    private static void simulationLoop(int max_turns) {
+    private static int simulationLoop(int max_turns) {
 
-        // tymaczasowa mapa i eq
-        map = new Field[10][10];
-        Random rng = new Random();
-        for(int x = 0; x < map.length; x++){
-            for(int y = 0; y < map[x].length; y++){
-                int ID = rng.nextInt(3);
-                switch (ID){
-                    case 0: map[x][y] = new SoilField(x,y); break;
-                    case 1: map[x][y] = new WaterField(x,y); break;
-                    case 2: map[x][y] = new DepositField(x,y, rng.nextInt(100)+1, rng.nextInt(7)); break;
-                    case 3: map[x][y] = new GlitchSourceField(x,y,rng.nextInt(10)+1, (byte)rng.nextInt(1)); break;
-                }
-            }
-        }
-        int central_x = rng.nextInt(9);
-        int central_y = rng.nextInt(9);
-        map[central_x][central_y] = new CentralField(central_x,central_y);
-        pioneer = new Pioneer(map[0][0]);
-        for(int i = 0; i <= 24; i++) {
-            Item new_item;
-            if(i == 0) new_item = new Item(i,100,0);
-            else new_item = new ComponentItem(i,100,0);
-            pioneer.getInventory().add(new_item);
-        }
 
+        simulation_debug_start(15);
 
         // wyświetlanie
         debug_simulation_preview();
@@ -80,30 +61,78 @@ public class Main {
 
             // Pionier podejmuje decyzję co do kolejnej budowy
             pioneer.setCould_build(true);
-            pioneer.setNextBuilding(buildingQueue,map);
+            if(pioneer.setNextBuilding(buildingQueue,map) == -1) return -1;
 
             // Pętla ruchu - wykonuje się dopóki pionierowi starcza punktów ruchu lub aż dotrze do celu
             {
                 boolean starting = true; // true - jest to pierwszy ruch pioniera w tej turze
                 do{
+                    try {
+                        TimeUnit.MILLISECONDS.sleep(900);
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
+
                     // Przemieszczenie na pole
                     pioneer.walk(map, starting);
                     if(starting) starting = false;
 
                     // Pionier próbuje na aktualnie zajmowanym polu coś zbudować
                     pioneer.buildMachine(map, buildingQueue);
+
+                    debug_simulation_preview();
                 }while (pioneer.getMove_points() != 0 && pioneer.getPath().size() > 0);
             }
 
-            debug_simulation_preview();
-
-            try {
-                TimeUnit.MILLISECONDS.sleep(100);
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
-
             if(buildingQueue.size() == 0) break;
+        }
+
+        if(buildingQueue.size() != 0) return -2;
+        return 0;
+    }
+
+    private static void simulation_debug_start(int map_size){
+        // tymaczasowa mapa i eq
+        map = new Field[map_size][map_size];
+        Random rng = new Random();
+        for(int x = 0; x < map.length; x++){
+            for(int y = 0; y < map[x].length; y++){
+                int ID = rng.nextInt(4);
+                switch (ID){
+                    case 0: map[x][y] = new SoilField(x,y); break;
+                    case 1: map[x][y] = new WaterField(x,y); break;
+                   case 2: map[x][y] = new DepositField(x,y, rng.nextInt(100)+1, rng.nextInt(7)); break;
+                    case 3: map[x][y] = new GlitchSourceField(x,y,rng.nextInt(3), (byte)rng.nextInt(1)); break;
+                }
+            }
+        }
+        int central_x = rng.nextInt(map_size);
+        int central_y = rng.nextInt(map_size);
+        map[central_x][central_y] = new CentralField(central_x,central_y);
+        pioneer = new Pioneer(map[rng.nextInt(map_size)][rng.nextInt(map_size)]);
+        for(int i = 0; i <= 24; i++) {
+            Item new_item;
+            if(i == 0) new_item = new Item(i,100,0);
+            else new_item = new ComponentItem(i,100,0);
+            pioneer.getInventory().add(new_item);
+        }
+        for(int x = 0; x < map.length; x++){
+            for(int y = 0; y < map[x].length; y++){
+                if(map[x][y] instanceof GlitchSourceField)
+                    ((GlitchSourceField)map[x][y]).setProbabilities(map);
+            }
+        }
+
+        for(int x = 0; x < map.length; x++){
+            for(int y = 0; y < map[x].length; y++){
+                if(map[x][y].getGlitch_probabilities().size() != 0)
+                {
+                    Byte p = map[x][y].getGlitch_probabilities().get(0)[1];
+                    System.out.printf("%-3d ", p.intValue());
+                }
+                else System.out.printf("0   ");
+            }
+            System.out.println();
         }
     }
 
@@ -111,47 +140,44 @@ public class Main {
         System.out.println("MAPA:");
         for(int x = 0; x < map.length; x++){
             for(int y = 0; y < map[x].length; y++){
-                System.out.print("{");
 
-                // CZY ŚCIEŻKA
-                for(Integer[] filed : pioneer.getPath()){
-                    if(x == filed[0] && y == filed[1]) {
-                        System.out.print("#");
+                //TEREN
+                String tile_fx = "";
+                if(map[x][y] instanceof WaterField)  tile_fx = "~~~~~";
+                else if(map[x][y] instanceof CentralField) tile_fx = "[   ]";
+                else if(map[x][y] instanceof GlitchSourceField) tile_fx = "*****";
+                else if(map[x][y] instanceof DepositField) tile_fx = "=====";
+                else tile_fx= "-----";
+                char[] tile = tile_fx.toCharArray();
+
+                // PIONIER
+                if(x == pioneer.getCoordinates()[0] && y == pioneer.getCoordinates()[1])
+                    tile[2] = 'P';
+
+                // ŚCIEŻKA
+                for(Integer[] filed : pioneer.getPath()) {
+                    if (x == filed[0] && y == filed[1]) {
+                        tile[2] = 'x';
                         break;
                     }
                 }
 
-                // PIONIER
-                if(pioneer.getCoordinates()[0] == x && pioneer.getCoordinates()[1] == y) System.out.print(" @");
-                else System.out.print(" ");
-                System.out.print("|");
-
                 // MASZYNA
-                if(map[x][y].getMachine() != null) System.out.print(" " + map[x][y].getMachine().getID() + "|");
-                else System.out.print("  |");
 
-                // GLITCH
-                if(map[x][y].getMachine() != null && map[x][y].getMachine().getGlitch() != null) System.out.print(" " + map[x][y].getMachine().getGlitch().getGlitchID() + "|");
-                else System.out.print("  |");
+                if(map[x][y].getMachine() != null) {
+                    Integer machine = map[x][y].getMachine().getID();
+                    tile[0] = machine.toString().charAt(0);
+                    if(machine > 9) tile[1] = machine.toString().charAt(1);
+                }
 
-                //TEREN
-                if(map[x][y] instanceof WaterField) System.out.print("~~");
-                else if(map[x][y] instanceof CentralField) System.out.print("CF");
-                else if(map[x][y] instanceof GlitchSourceField) System.out.print("*" + ((GlitchSourceField)map[x][y]).getGlitch_id());
-                else if(map[x][y] instanceof DepositField) System.out.print("$" + ((DepositField)map[x][y]).getItem_id());
-                else System.out.print("__");
-
-                System.out.print("}  ");
+                // KONIEC
+                tile_fx = "";
+                for(int i = 0; i < tile.length; i++) tile_fx += tile[i];
+                tile_fx += "   ";
+                System.out.print(tile_fx);
             }
             System.out.println("");
         }
-
-        System.out.println("KOLEJKA BUDOWY:");
-        for(Integer building : buildingQueue) System.out.print(building + "\t");
-        System.out.println();
-        System.out.println("ŚCIEŻKA(PR " + pioneer.getMove_points() + "):");
-        for(Integer[] filed : pioneer.getPath()) System.out.print("(" + filed[0] + "," + filed[1] + ")\t");
-        System.out.println();
     }
 
     private static void setBuildingOrder() {
