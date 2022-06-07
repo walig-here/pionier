@@ -203,6 +203,17 @@ public class Pioneer {
         // Stawiamy maszynę na polu.
         map[building_field[0]][building_field[1]].setMachine(new_building);
 
+        // Odejmujemy zasoby, które były potrzebne do budowy
+        for(Item item_cost : new_building.getCost()){
+            for(Item item_eq : inventory){
+                if(item_cost.getID() == item_eq.getID())
+                {
+                    item_eq.setAmount(item_eq.getAmount() - item_cost.getAmount());
+                    break;
+                }
+            }
+        }
+
         // Resetujemy wybór budowy
         to_build = -1;
 
@@ -368,7 +379,7 @@ public class Pioneer {
                     }
 
                     // Szukamy pól mapy, które są oddalone o co najwyżej range
-                    final int RANGE = 1; // maksymalne oddalenie maszyny od maszyn wytwarzających jej materiały wejściowe
+                    final int RANGE = 2; // maksymalne oddalenie maszyny od maszyn wytwarzających jej materiały wejściowe
                     for(int x = 0; x < map.length; x++) {
                         for(int y = 0; y < map[x].length; y++){
 
