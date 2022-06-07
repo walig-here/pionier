@@ -9,9 +9,6 @@ import java.util.Scanner;
 
 public class DepositField extends Field {
 
-    public int getItem_id() {
-        return item_id;
-    }
 
     private int item_id; // ID wydobywanego stąd itemu
     private int deposit_capacity; // maksymalna ilość surowca do wydobycia
@@ -21,7 +18,6 @@ public class DepositField extends Field {
     // konstruktor
     public DepositField(int x, int y, int capacity, int item_id){
         super(x,y,2);
-        setOre_type(item_id);
 
         // ustalamy wielkość złoża
         deposit_capacity = capacity;
