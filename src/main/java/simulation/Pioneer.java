@@ -201,7 +201,7 @@ public class Pioneer {
         }
 
         // Stawiamy maszynę na polu.
-        map[building_field[0]][building_field[1]].setMachine(new_building);
+        map[building_field[0]][building_field[1]].setMachine(new_building, inventory);
 
         // Odejmujemy zasoby, które były potrzebne do budowy
         for(Item item_cost : new_building.getCost()){

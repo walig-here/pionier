@@ -135,7 +135,7 @@ public class Machine {
     public void startProduction(ArrayList<Item> inventory) {
         for (Item inventoryItem : inventory) {
             if (inventoryItem.getID() != getProduced_item()) continue;
-            inventoryItem.setIncome((inventoryItem.getIncome() + output));
+            inventoryItem.setIncome((inventoryItem.getIncome() + (double)output/inventoryItem.getProductionTime()));
             break;
         }
 
@@ -166,7 +166,7 @@ public class Machine {
         //przeszukuje ekwipunek w poszukiwaniu itemu produkowanego przez maszyne i zwieksza jego ilsoc
         for (Item inventoryItem : inventory) {
             if (inventoryItem.getID() != getProduced_item()) continue;
-            inventoryItem.setAmount(inventoryItem.getAmount() + output);
+            inventoryItem.setAmount(inventoryItem.getAmount() + output/inventoryItem.getProductionTime());
             break;
         }
     }

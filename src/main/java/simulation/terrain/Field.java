@@ -103,9 +103,15 @@ public abstract class Field {
         coordinates[1] = y;
     }
 
-    public void setMachine(Machine machine) {
-        if(machine instanceof ProductionMachine) this.machine = new ProductionMachine((ProductionMachine)machine);
-        else this.machine = new Machine(machine);
+    public void setMachine(Machine machine, ArrayList<Item> inventory) {
+        if(machine instanceof ProductionMachine) {
+            this.machine = new ProductionMachine((ProductionMachine)machine);
+            ((ProductionMachine)machine).startProduction(inventory);
+        }
+        else {
+            this.machine = new Machine(machine);
+            machine.startProduction(inventory);
+        }
         canBuild = false;
         Machine.count++;
     }
