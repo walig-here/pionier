@@ -106,11 +106,11 @@ public abstract class Field {
     public void setMachine(Machine machine, ArrayList<Item> inventory) {
         if(machine instanceof ProductionMachine) {
             this.machine = new ProductionMachine((ProductionMachine)machine);
-            ((ProductionMachine)machine).startProduction(inventory);
+            ((ProductionMachine)this.machine).startProduction(inventory);
         }
         else {
             this.machine = new Machine(machine);
-            machine.startProduction(inventory);
+            this.machine.startProduction(inventory);
         }
         canBuild = false;
         Machine.count++;

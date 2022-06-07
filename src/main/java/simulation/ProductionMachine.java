@@ -18,6 +18,7 @@ public class ProductionMachine extends Machine {
     }
 
     //rozpoczyna produkcję, zwieksza income produktow, zmniejsza income itemow potrzevbnych do wytworzenia produktu
+    @Override
     public void startProduction(ArrayList<Item> inventory) {
         for (Item inventoryItem : inventory) {
             if (inventoryItem.getID() != getProduced_item()) continue;
@@ -32,10 +33,41 @@ public class ProductionMachine extends Machine {
                 break;
             }
         }
+        super.setActive(true);
+    }
+
+    @Override
+    public void stopProduction(ArrayList<Item> inventory){
+        for (Item inventoryItem : inventory) {
+            if (inventoryItem.getID() != getProduced_item()) continue;
+            inventoryItem.setIncome((inventoryItem.getIncome() - (double)getOutput()/inventoryItem.getProductionTime()));
+            break;
+        }
+
+        for (Item inputItem : input) {
+            for (Item inventoryItem : inventory) {
+                if (inputItem.getID() != inventoryItem.getID()) continue;
+                inventoryItem.setIncome(inventoryItem.getIncome() + (double) inputItem.getAmount()/inventoryItem.getProductionTime());
+                break;
+            }
+        }
+        super.setActive(false);
     }
 
     // zmiana ilości przedmitów (amount) wynikła z produkcji
+    @Override
     public void production(ArrayList<Item> inventory) {
+
+        if(!super.getActive()) return;
+
+        //przeszukuje ekwipunek w poszukiwaniu przedmiotow potrzebnych do wyprodukowania produktu i zmniejsza ich ilosc
+        for (Item inputItem : input) {
+            for (Item inventoryItem : inventory) {
+                if (inputItem.getID() != inventoryItem.getID()) continue;
+                inventoryItem.setAmount(inventoryItem.getAmount() - inputItem.getAmount()/inventoryItem.getProductionTime());
+                break;
+            }
+        }
 
         // produkcja trwa kolejną turę
         production_turn++;
@@ -56,15 +88,6 @@ public class ProductionMachine extends Machine {
             if (item.getID() != getProduced_item()) continue;
             item.setAmount(item.getAmount() + getOutput()/item.getProductionTime());
             break;
-        }
-
-        //przeszukuje ekwipunek w poszukiwaniu przedmiotow potrzebnych do wyprodukowania produktu i zmniejsza ich ilosc
-        for (Item inputItem : input) {
-            for (Item inventoryItem : inventory) {
-                if (inputItem.getID() != inventoryItem.getID()) continue;
-                inventoryItem.setAmount(inventoryItem.getAmount() - inputItem.getAmount()/inventoryItem.getProductionTime());
-                break;
-            }
         }
     }
 

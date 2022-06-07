@@ -41,20 +41,20 @@ public class Main {
             System.out.println("TURA " + (turn+1));
 
             // Pętla działań wywoływanych co turę na kafelkach planszy
-            for (Field[] row : map) {
-                for(Field field : row){
+            for (int x = 0; x < map.length; x++) {
+                for(int y = 0; y < map[x].length; y++){
 
                     // Ustalamy czy w tej turze na polu wystąpiło zakłócenie
-                    field.activateGlitch();
+                    map[x][y].activateGlitch();
 
                     // Na każdym polu posiadającym maszynę odbywa sie produkcja lub wydobycie
-                    if(field.getMachine() != null){
+                    if(map[x][y].getMachine() != null){
                         // Dla każdego pola z surowcem preprowadzamy proces wydobycia
-                        if(field instanceof DepositField) ((DepositField)field).extract();
+                        if(map[x][y] instanceof DepositField) ((DepositField)map[x][y]).extract(pioneer.getInventory());
 
                         // Każde inne pole z maszyną produkuje przedmioty
-                        if(field.getMachine() instanceof ProductionMachine) ((ProductionMachine)field.getMachine()).production(pioneer.getInventory());
-                        else field.getMachine().production(pioneer.getInventory());
+                        if(map[x][y].getMachine() instanceof ProductionMachine) ((ProductionMachine)map[x][y].getMachine()).production(pioneer.getInventory());
+                        else map[x][y].getMachine().production(pioneer.getInventory());
                     }
                 }
             }
