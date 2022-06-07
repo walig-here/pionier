@@ -113,6 +113,9 @@ public class Machine {
             this.produced_item=-1;
         }
     }
+    public Machine(Machine copy){
+        this(copy.ID,copy.produced_item);
+    }
 
     public int getOutput() {
         return output;
@@ -134,7 +137,7 @@ public class Machine {
             break;
         }
 
-        // ustalamy licznik tur produkcyjnych
+        // resetujemy licznik tur produkcyjnych
         production_turn = 0;
     }
 

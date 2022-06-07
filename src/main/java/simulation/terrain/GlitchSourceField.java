@@ -27,4 +27,9 @@ public class GlitchSourceField extends Field {
     {
         return 0;
     }
+
+
+    public byte getGlitch_id() {
+        return glitch_id;
+    }
 }

@@ -3,6 +3,7 @@ package simulation;
 public abstract class Glitch {
 
     private float intensity; // natężenie zakłócenia(w %)
+
     private int glitchID; // ID glitcha
 
     public Glitch(int ID, float intensity) {
@@ -15,5 +16,9 @@ public abstract class Glitch {
 
     public float getIntensity() {
         return intensity;
+    }
+
+    public int getGlitchID() {
+        return glitchID;
     }
 }
