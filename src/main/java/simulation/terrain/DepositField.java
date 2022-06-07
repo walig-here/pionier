@@ -1,9 +1,12 @@
 package simulation.terrain;
 
+import simulation.Item;
 import simulation.Pioneer;
+import simulation.ProductionMachine;
 
 import java.io.FileInputStream;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Scanner;
 
@@ -72,13 +75,19 @@ public class DepositField extends Field {
     }
 
     // metoda uszczuplająca złoże wraz z działaniem maszyny
-    public void extract() {
-        // Sprawdzamy czy na tym polu jest jeszcze cokolwiek do wydobycia
-        if(deposit_capacity <= 0) return;
+    public void extract(ArrayList<Item> inventory) {
 
         // Jeżeli na polu jest maszyna wydobywająca surowiec lub generująca prąd to wyczerpuje ona zasoby.
         // Sprawdzamy czy pole zawiera maszyne.
         if(machine == null) return;
+
+        // Sprawdzamy czy na tym polu jest jeszcze cokolwiek do wydobycia
+        // Jeżeli nie ma to maszyna się zatrzymuje
+        if(deposit_capacity <= 0) {
+            if(machine instanceof ProductionMachine) ((ProductionMachine)machine).stopProduction(inventory);
+            else machine.stopProduction(inventory);
+            return;
+        }
 
         // Sprawdzamy czy ta maszyna jest odpowiedniego typu
         if(machine.getProduced_item() != 0 && machine.getProduced_item() != item_id) return;

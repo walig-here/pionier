@@ -27,9 +27,20 @@ public class Machine {
 
     static public int count = 0; // ilość maszyn
 
+    private Boolean active;
+
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+
+    public boolean getActive() {
+        return active;
+    }
 
     public Machine(int ID, int produced_item) {
         cost = new ArrayList<Item>();
+        active = false;
         //id podany do szukania w plikach
         this.ID = ID;
 
@@ -143,11 +154,17 @@ public class Machine {
         production_turn = 0;
     }
 
+    public void stopProduction(ArrayList<Item> inventory){
+        for (Item inventoryItem : inventory) {
+            if (inventoryItem.getID() != getProduced_item()) continue;
+            inventoryItem.setIncome((inventoryItem.getIncome() - (double)output/inventoryItem.getProductionTime()));
+            break;
+        }
+    }
+
         // zmiana ilości przedmitów wynikła z produkcji
     public void production(ArrayList<Item> inventory) {
-        if(glitch instanceof TurnOffGlitch) {
-            return;
-        }
+        if(!active) return;
 
         // produkcja trwa kolejną turę
         production_turn++;
