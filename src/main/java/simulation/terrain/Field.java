@@ -15,6 +15,16 @@ public abstract class Field {
 
     protected int[] coordinates; //koordynaty pola terenu
     private int terrain_id;  //id terenu
+
+    public int getOre_type() {
+        return ore_type;
+    }
+
+    public void setOre_type(int ore_type) {
+        this.ore_type = ore_type;
+    }
+
+    private int ore_type;
     protected Machine machine; //maszyna stojąca na polu
     private GridSprite gridSprite; //render pola
     private int base_move_points; //punkty na początku rundy jeśli jest to pole startu

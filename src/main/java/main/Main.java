@@ -12,25 +12,34 @@ public class Main {
     static public Field[][] map; // plansza na której odbywa się symulacja
     static private ArrayList<Integer> buildingOrder; // kolejka ID maszyn, które musi zbudować pionier aby wygrać
     static private MenuGUI menu;
-    static private Pioneer pioneer; // pionier
+    static public Pioneer pioneer; // pionier
 
     public static void main(String[] args) {
 
         menu=new MenuGUI();
 
+        //current_window = new NFrame();
+
         // główna pętkla symulacji
-        simulationLoop(100);
+        //simulationLoop(100);    przeniesione do MapGenerator
     }
 
     // pętla symulacji wykonująca się określoną ilość tur lub do osiągnięcia przez pioniera określonego celu
-    private static void simulationLoop(int max_turns) {
+    public static void simulationLoop(int max_turns) {
 
         Field f = new SoilField(0,0);
         pioneer = new Pioneer(f);
+        current_window=new NFrame();
 
         // pętla główna
         for (;max_turns > 0; max_turns--) {
-
+            /*try{Thread.sleep(5000);}
+            catch(InterruptedException ex)
+            {
+                ex.printStackTrace();
+            }*/
+            //pioneer.setCoordinates(5,5);
+           // current_window.repaint();
 
             // pętla ruchu - wykonuje się dopóki pionierowi starcza punktów ruchu lub kiedy dotrze do celu
             {

@@ -1,6 +1,7 @@
 package map;
 
 import main.Main;
+import rendering.NFrame;
 import simulation.terrain.*;
 
 import java.util.Random;
@@ -53,29 +54,45 @@ public class MapGenerator {
                         break;
                     case 3:
                         Main.map[i][j]=new DepositField(i,j, random.nextInt(maxDepositSize-minDepositSize)+1+minDepositSize, 1);
+                        Main.map[i][j].setOre_type(1);
                         break;
                     case 4:
                         Main.map[i][j]=new DepositField(i,j, random.nextInt(maxDepositSize-minDepositSize)+1+minDepositSize, 2);
+                        Main.map[i][j].setOre_type(2);
                         break;
                     case 5:
                         Main.map[i][j]=new DepositField(i,j, random.nextInt(maxDepositSize-minDepositSize)+1+minDepositSize, 3);
+                        Main.map[i][j].setOre_type(3);
                         break;
                     case 6:
                         Main.map[i][j]=new DepositField(i,j, random.nextInt(maxDepositSize-minDepositSize)+1+minDepositSize, 4);
+                        Main.map[i][j].setOre_type(4);
                         break;
                     case 7:
                         Main.map[i][j]=new DepositField(i,j, random.nextInt(maxDepositSize-minDepositSize)+1+minDepositSize, 5);
+                        Main.map[i][j].setOre_type(5);
                         break;
                     case 8:
                         Main.map[i][j]=new DepositField(i,j, random.nextInt(maxDepositSize-minDepositSize)+1+minDepositSize, 6);
+                        Main.map[i][j].setOre_type(6);
                         break;
                     case 9:
                         Main.map[i][j]=new DepositField(i,j, random.nextInt(maxDepositSize-minDepositSize)+1+minDepositSize, 7);
+                        Main.map[i][j].setOre_type(7);
                         break;
                 }
 
             }
         }
+
+        System.out.println("");
+        for (int i=0;i<size;i++){
+            for(int j=0;j<size;j++){
+                System.out.print(Main.map[i][j].getTerrainId());
+            }
+        }
+        //NFrame klatka =new NFrame();
+        Main.simulationLoop(100);
 
     }
 }
