@@ -47,8 +47,15 @@ public class Main {
                     // Ustalamy czy w tej turze na polu wystąpiło zakłócenie
                     field.activateGlitch();
 
-                    // Dla każdego pola z surowcem preprowadzamy proces wydobycia
-                    if(field instanceof DepositField) ((DepositField)field).extract();
+                    // Na każdym polu posiadającym maszynę odbywa sie produkcja lub wydobycie
+                    if(field.getMachine() != null){
+                        // Dla każdego pola z surowcem preprowadzamy proces wydobycia
+                        if(field instanceof DepositField) ((DepositField)field).extract();
+
+                        // Każde inne pole z maszyną produkuje przedmioty
+                        if(field.getMachine() instanceof ProductionMachine) ((ProductionMachine)field.getMachine()).production(pioneer.getInventory());
+                        else field.getMachine().production(pioneer.getInventory());
+                    }
                 }
             }
 

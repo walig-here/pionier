@@ -21,14 +21,14 @@ public class ProductionMachine extends Machine {
     public void startProduction(ArrayList<Item> inventory) {
         for (Item inventoryItem : inventory) {
             if (inventoryItem.getID() != getProduced_item()) continue;
-            inventoryItem.setIncome((inventoryItem.getIncome() + getOutput()));
+            inventoryItem.setIncome((inventoryItem.getIncome() + (double)getOutput()/inventoryItem.getProductionTime()));
             break;
         }
 
         for (Item inputItem : input) {
             for (Item inventoryItem : inventory) {
                 if (inputItem.getID() != inventoryItem.getID()) continue;
-                inventoryItem.setIncome(inventoryItem.getIncome() - inputItem.getAmount());
+                inventoryItem.setIncome(inventoryItem.getIncome() - (double) inputItem.getAmount()/inventoryItem.getProductionTime());
                 break;
             }
         }
@@ -36,9 +36,6 @@ public class ProductionMachine extends Machine {
 
     // zmiana ilości przedmitów (amount) wynikła z produkcji
     public void production(ArrayList<Item> inventory) {
-        if(glitch instanceof TurnOffGlitch) {
-            return;
-        }
 
         // produkcja trwa kolejną turę
         production_turn++;
@@ -57,7 +54,7 @@ public class ProductionMachine extends Machine {
         //przeszukuje ekwipunek w poszukiwaniu itemu produkowanego przez maszyne i zwieksza jego ilsoc
         for (Item item : inventory) {
             if (item.getID() != getProduced_item()) continue;
-            item.setAmount(item.getAmount() + getOutput());
+            item.setAmount(item.getAmount() + getOutput()/item.getProductionTime());
             break;
         }
 
@@ -65,7 +62,7 @@ public class ProductionMachine extends Machine {
         for (Item inputItem : input) {
             for (Item inventoryItem : inventory) {
                 if (inputItem.getID() != inventoryItem.getID()) continue;
-                inventoryItem.setAmount(inventoryItem.getAmount() - inputItem.getAmount());
+                inventoryItem.setAmount(inventoryItem.getAmount() - inputItem.getAmount()/inventoryItem.getProductionTime());
                 break;
             }
         }
