@@ -24,15 +24,6 @@ public abstract class Field {
 
     private ArrayList<Byte[]> glitch_probabilities; // szanse na zakłócenie, pierwsza komórka danej pozycji to ID zakłócenia, druga to szansa na jego wystąpienie na tym polu
     private boolean canBuild;   //czy można na tym polu budować
-    public int getOre_type() {
-        return ore_type;
-    }
-
-    public void setOre_type(int ore_type) {
-        this.ore_type = ore_type;
-    }
-
-    private int ore_type;
 
     /**
      * Tworzy obiekt klasy Filed, znajdujący się w podanym punkcie planszy i zawierający w sobie typ terenu o określonym ID.

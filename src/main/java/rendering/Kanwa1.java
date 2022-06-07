@@ -54,7 +54,7 @@ public class Kanwa1 extends JPanel {
                     case 1:
                         rys1.setPaint(Color.blue);
                     case 2:
-                        switch (Main.map[i][j].getOre_type()){
+                        switch (((DepositField)Main.map[i][j]).getItem_id()){
 
                             case 1:
                                 rys1.setPaint(new Color(184,105,27));
