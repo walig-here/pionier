@@ -1,8 +1,8 @@
 package map;
 
-import main.Main;
-import simulation.terrain.*;
 
+import simulation.terrain.*;
+import main.*;
 import java.util.Random;
 
 public class MapGenerator {
@@ -76,6 +76,17 @@ public class MapGenerator {
 
             }
         }
-
+        // główna pętla symulacji
+        switch (Main.simulationLoop(100)) {
+            case -1:
+                System.out.println("PORAŻKA!\nPionier nie ma już gdzie zbudować niezbędnych maszyn.");
+                break;
+            case -2:
+                System.out.println("PORAŻKA!\nPionier nie zdążył wyprodukować pożądanego przedmiotu w danym mu czasie!");
+                break;
+            case 0:
+                System.out.println("ZWYCIESTWO!");
+                break;
+        }
     }
 }
