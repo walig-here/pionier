@@ -33,9 +33,7 @@ public class Main {
 
 
         simulation_debug_start(map_size);
-
-        // wyświetlanie
-        debug_simulation_preview();
+        debug_simulation_preview(0);
 
         // pętla główna
         for (int turn = 0; turn < max_turns; turn++) {
@@ -75,7 +73,7 @@ public class Main {
                     // Pionier próbuje na aktualnie zajmowanym polu coś zbudować
                     pioneer.buildMachine(map, buildingQueue);
 
-                    debug_simulation_preview();
+                    debug_simulation_preview(turn);
                 }while (pioneer.getMove_points() != 0 && pioneer.getPath().size() > 0);
             }
 
@@ -119,7 +117,7 @@ public class Main {
         }
     }
 
-    private static void debug_simulation_preview(){
+    private static void debug_simulation_preview(int turns){
         System.out.println("MAPA:");
         for(int x = 0; x < map.length; x++){
             for(int y = 0; y < map[x].length; y++){
@@ -129,7 +127,7 @@ public class Main {
                 if(map[x][y] instanceof WaterField)  tile_fx = "~~~~~";
                 else if(map[x][y] instanceof CentralField) tile_fx = "[   ]";
                 else if(map[x][y] instanceof GlitchSourceField) tile_fx = "*****";
-                else if(map[x][y] instanceof DepositField) tile_fx = "=====";
+                else if(map[x][y] instanceof DepositField) tile_fx = "====" + ((DepositField)map[x][y]).getItem_id();
                 else tile_fx= "-----";
                 char[] tile = tile_fx.toCharArray();
 
@@ -161,6 +159,13 @@ public class Main {
             }
             System.out.println("");
         }
+        System.out.println("Numer tury: " + turns);
+        System.out.println("Ilosc maszyn: " + Machine.count);
+        {
+            Item i = new Item(buildingQueue.get(0),0,0);
+            System.out.println("Pozadany przedmiot: " + i.getName());
+        }
+
     }
 
     private static void setBuildingOrder() {

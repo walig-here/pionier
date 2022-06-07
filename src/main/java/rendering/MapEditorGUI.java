@@ -78,11 +78,6 @@ public class MapEditorGUI extends JFrame implements MouseListener, ActionListene
             currentFieldType=currentFieldTypeChooser.getSelectedIndex();
         }else if (e.getSource()==continueButton){
 
-            for (int i=0;i<size;i++){
-                for(int j=0;j<size;j++){
-                    System.out.print(mapTab[i][j]);
-                }
-            }
             //System.out.print(mapTab);
             MapGenerator.generateMap(size, mapTab);
             dispose();

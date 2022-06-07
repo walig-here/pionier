@@ -25,6 +25,8 @@ public class Machine {
 
     protected int production_turn; // ile tur minęło od rozpoczęcia produkcji
 
+    static public int count = 0; // ilość maszyn
+
 
     public Machine(int ID, int produced_item) {
         cost = new ArrayList<Item>();
