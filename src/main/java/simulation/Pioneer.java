@@ -203,9 +203,6 @@ public class Pioneer {
         // Stawiamy maszynę na polu.
         map[building_field[0]][building_field[1]].setMachine(new_building);
 
-        // Na tym polu nie można już nic wybudować
-        map[building_field[0]][building_field[1]].setCanBuild(false);
-
         // Resetujemy wybór budowy
         to_build = -1;
 
@@ -214,6 +211,9 @@ public class Pioneer {
 
         // Pionier nie może już w tej turze budować
         could_build = false;
+
+        // Nie wie też gdzie budować kolejną maszynę
+        building_field[0] = building_field[1] = -1;
     }
 
 
@@ -328,10 +328,11 @@ public class Pioneer {
                 Integer[] potential_field = {-1, -1, -1};
 
                 // Sprawdzamy czy pole jest zdatne pod budowę
-                if(!field.isCanBuild()) continue;
+                if(!field.isCanBuild())
+                    continue;
 
                 // Elektrownie, tartaki, pompy ropy i maszyny wydobywcze potrzebują do działania stać na odpowiednim polu złoża
-                if(to_build == 0 || to_build  == 2 || to_build == 4 || to_build == 1)
+                if(to_build < 8)
                 {
                     // Jeżeli pole nie jest polem zasobów lub jego zasoby się wyczerpały to na pewno nie nadaje się pod taką budowę
                     if(!(field instanceof DepositField) || ((DepositField)field).getCapacityOfDeposit() <= 0)
@@ -367,7 +368,7 @@ public class Pioneer {
                     }
 
                     // Szukamy pól mapy, które są oddalone o co najwyżej range
-                    final int RANGE = 3; // maksymalne oddalenie maszyny od maszyn wytwarzających jej materiały wejściowe
+                    final int RANGE = 1; // maksymalne oddalenie maszyny od maszyn wytwarzających jej materiały wejściowe
                     for(int x = 0; x < map.length; x++) {
                         for(int y = 0; y < map[x].length; y++){
 
@@ -402,6 +403,9 @@ public class Pioneer {
                 potential_fields.add(potential_field);
             }
         }
+
+        // Sprawdzamy czy pionier znalazł jakiekolwiek miejsce pod budowę
+        if(potential_fields.size() == 0) return;
 
         // Ustalenie wag pól budowlanych na podstawie ich odległości od pola centralnego
         {
@@ -449,13 +453,18 @@ public class Pioneer {
      * Funkcja może jednak wymusić na pionierze postawienie maszyny, produkującej przedmiot, którego zapasy znajduja się na wyczerpaniu.
      * Po wyborze nowego celu budowy, funkcja wyznacza miejsce pod nią.
      * Następnie wysyła pioniera do magazynu, symulując "zebranie niezbędnych przedmiotów", skąd ma udać się później do miejsca budowy.
+     * Jeżeli nie uda się znaleźć żdanego miejsca pod budowę to oznacza, że pionier nie ma szans na wygraną w symulacji. Funkcja zwaraca wówaczas odpowiedni kod porażki.
      *
      * @param buildingOrder główna kolejka konstrukcji
      * @param map plansza symulacji
+     *
+     * @return 1 gdy nie ustalono nowego celu budowy, gdyż stary jeszcze jest aktywny
+     * @return 0 gdy ustalono nowy cel budowy
+     * @return -1 gdy nie ustalono nowego celu budowy ze względu na brak odpowiedniego miejsca na plaszny
      * */
-    public void setNextBuilding(ArrayList<Integer> buildingOrder, Field[][] map) {
+    public int setNextBuilding(ArrayList<Integer> buildingOrder, Field[][] map) {
         // Sprawdzamy czy pionier zakończył już ostatnią budowę
-        if(to_build != -1) return;
+        if(to_build != -1) return 1;
 
         // Sprawdzamy czy nie zaczyna brakować pionierowi przedmiotu, który nie został uwzględniony w kolejce budowy
         for(Item eq_item : inventory){
@@ -477,6 +486,20 @@ public class Pioneer {
         // Szukamy idealnego miejsca pod budowę wybranego obiektu.
         findBuildingPlace(map);
 
+        // Jeżeli pionier nie znalazł żadnego miejsca pod budowę to sprawdzamy
+        // czy pionier ma jakieś inne możliwości zdobycia zasobu, który miała produkować maszyna.
+        if(building_field[0] == -1) {
+            for(Item item : inventory){
+                if(item.getID() == to_build)
+                    // Jeżeli nie to pionier przegrywa symulację
+                    if(item.getIncome() <= 0)
+                        return -1;
+            }
+
+            // Jeżeli tak to pionier spróbuje kontynuować pracę
+            return 1;
+        }
+
         // Najpierw pionier musi udać się do magazynu po materiały, wyznaczamy mu ścieżkę do magazynu i z magazynu na plac budowy
         // Szukamy zatem koordynatów pola centralnego.
         {
@@ -495,6 +518,8 @@ public class Pioneer {
                 if(central_found) break;
             }
         }
+
+        return 0;
     }
 
 

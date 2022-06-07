@@ -119,7 +119,7 @@ public class GlitchSourceField extends Field {
                         map[x][y].getGlitch_probabilities().get(q)[1] = prob;
 
                         // Jeżeli prawdopodobieństwo przekroczyło w wyniku tych operacji wartość 100 to ustalamy jego wartość na 100
-                        if(map[x][y].getGlitch_probabilities().get(q)[1] > 100)
+                        if(map[x][y].getGlitch_probabilities().get(q)[1] > 100 || map[x][y].getGlitch_probabilities().get(q)[1] < 0)
                             map[x][y].getGlitch_probabilities().get(q)[1] = 100;
 
                         break;
