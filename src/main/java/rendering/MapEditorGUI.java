@@ -90,7 +90,7 @@ public class MapEditorGUI extends JFrame implements MouseListener, ActionListene
         clickState=true;
 
         JButton temporal = (JButton)e.getSource();
-            mapTab[temporal.getBounds().x/20][temporal.getBounds().y/20]=currentFieldType;
+            mapTab[temporal.getBounds().y/20][temporal.getBounds().x/20]=currentFieldType;
             switch (currentFieldType+1){
                 case 1:
                     buttonTab[temporal.getBounds().x/20][temporal.getBounds().y/20].setBackground(null);
@@ -136,7 +136,7 @@ public class MapEditorGUI extends JFrame implements MouseListener, ActionListene
 
         if(clickState){
             JButton temporal = (JButton)e.getSource();
-            mapTab[temporal.getBounds().x/20][temporal.getBounds().y/20]=currentFieldType;
+            mapTab[temporal.getBounds().y/20][temporal.getBounds().x/20]=currentFieldType;
             switch (currentFieldType+1){
                 case 1:
                     buttonTab[temporal.getBounds().x/20][temporal.getBounds().y/20].setBackground(null);

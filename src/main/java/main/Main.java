@@ -15,7 +15,7 @@ public class Main {
     static public int map_size; // rozmiar planszy(w polach) z przedziału [???]
     static public Field[][] map; // plansza na której odbywa się symulacja
     static private MenuGUI menu;
-    static private Pioneer pioneer; // pionier
+    static public Pioneer pioneer; // pionier
     static private Item targetItem = new ComponentItem(16, 0, 0); // przedmiot, ktorego zdobycie, konczy symulacje (przedmiot docelowy)
     static private ArrayList<Item> children = new ArrayList<>();
     static private ArrayList<Integer> buildingQueue = new ArrayList<>();
@@ -24,20 +24,15 @@ public class Main {
         
         setBuildingOrder();
         
-        //menu=new MenuGUI();
-        // główna pętla symulacji
-        switch (simulationLoop(100)){
-            case -1: System.out.println("PORAŻKA!\nPionier nie ma już gdzie zbudować niezbędnych maszyn."); break;
-            case -2: System.out.println("PORAŻKA!\nPionier nie zdążył wyprodukować pożądanego przedmiotu w danym mu czasie!"); break;
-            case 0: System.out.println("ZWYCIESTWO!"); break;
-        }
+        menu=new MenuGUI();
+
     }
 
     // pętla symulacji wykonująca się określoną ilość tur lub do osiągnięcia przez pioniera określonego celu
-    private static int simulationLoop(int max_turns) {
+    public static int simulationLoop(int max_turns) {
 
 
-        simulation_debug_start(15);
+        simulation_debug_start(map_size);
 
         // wyświetlanie
         debug_simulation_preview();
@@ -93,19 +88,7 @@ public class Main {
 
     private static void simulation_debug_start(int map_size){
         // tymaczasowa mapa i eq
-        map = new Field[map_size][map_size];
         Random rng = new Random();
-        for(int x = 0; x < map.length; x++){
-            for(int y = 0; y < map[x].length; y++){
-                int ID = rng.nextInt(4);
-                switch (ID){
-                    case 0: map[x][y] = new SoilField(x,y); break;
-                    case 1: map[x][y] = new WaterField(x,y); break;
-                   case 2: map[x][y] = new DepositField(x,y, rng.nextInt(100)+1, rng.nextInt(7)); break;
-                    case 3: map[x][y] = new GlitchSourceField(x,y,rng.nextInt(3), (byte)rng.nextInt(1)); break;
-                }
-            }
-        }
         int central_x = rng.nextInt(map_size);
         int central_y = rng.nextInt(map_size);
         map[central_x][central_y] = new CentralField(central_x,central_y);
