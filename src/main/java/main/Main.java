@@ -84,7 +84,13 @@ public class Main {
                 }while (pioneer.getMove_points() != 0 && pioneer.getPath().size() > 0);
             }
 
-            if(buildingQueue.size() == 0) break;
+            if(buildingQueue.size() == 0) {
+                // sprawdzamy czy wyprodukowano odpowiedni przedmiot
+                for(Item item : pioneer.getInventory()){
+                    if(item.getID() == targetItem.getID() && item.getAmount() >= 1)
+                        return 0;
+                }
+            }
         }
 
         if(buildingQueue.size() != 0) return -2;
