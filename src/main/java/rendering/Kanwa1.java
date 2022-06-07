@@ -1,7 +1,7 @@
 package rendering;
 import simulation.terrain.*;
 
-import main.Main;
+import main.*;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -56,22 +56,22 @@ public class Kanwa1 extends JPanel {
                     case 2:
                         switch (((DepositField)Main.map[i][j]).getItem_id()){
 
-                            case 1:
+                            case 2:
                                 rys1.setPaint(new Color(184,105,27));
                                 break;
-                            case 2:
+                            case 6:
                                 rys1.setPaint(Color.lightGray);
                                 break;
                             case 3:
                                 rys1.setPaint(Color.orange);
                                 break;
-                            case 4:
+                            case 1:
                                 rys1.setPaint(Color.black);
                                 break;
                             case 5:
                                 rys1.setPaint(Color.yellow);
                                 break;
-                            case 6:
+                            case 4:
                                 rys1.setPaint(new Color(68,57,1));
                                 break;
                             case 7:

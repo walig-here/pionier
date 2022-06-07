@@ -1,7 +1,7 @@
 package simulation.terrain;
 
 import rendering.GridSprite;
-import simulation.Machine;
+import simulation.*;
 import simulation.Pioneer;
 import simulation.ProductionMachine;
 
@@ -107,6 +107,7 @@ public abstract class Field {
         if(machine instanceof ProductionMachine) this.machine = new ProductionMachine((ProductionMachine)machine);
         else this.machine = new Machine(machine);
         canBuild = false;
+        Machine.count++;
     }
 
     // pobiera listę prawdopodobieństw wystąpienia zakłóceń
