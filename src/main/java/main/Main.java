@@ -54,7 +54,7 @@ public class Main {
 
             // Pionier podejmuje decyzję co do kolejnej budowy
             pioneer.setCould_build(true);
-            if(pioneer.setNextBuilding(buildingQueue,map) == -1) return -1;
+            if(pioneer.setNextBuilding(buildingQueue,map) == -1 && buildingQueue.size() != 0) return -1;
 
             // Pętla ruchu - wykonuje się dopóki pionierowi starcza punktów ruchu lub aż dotrze do celu
             {
@@ -161,11 +161,15 @@ public class Main {
         }
         System.out.println("Numer tury: " + turns);
         System.out.println("Ilosc maszyn: " + Machine.count);
-        {
+        if(buildingQueue.size() != 0) {
             Item i = new Item(buildingQueue.get(0),0,0);
             System.out.println("Pozadany przedmiot: " + i.getName());
         }
 
+        System.out.println("Ekwipunek:");
+        for(Item item : pioneer.getInventory()){
+            System.out.printf("\t%-25s\t%-5d\t%-5.2f\n", item.getName(), item.getAmount(), item.getIncome());
+        }
     }
 
     private static void setBuildingOrder() {
