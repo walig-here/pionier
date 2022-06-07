@@ -3,12 +3,10 @@ package simulation.terrain;
 import rendering.GridSprite;
 import simulation.Machine;
 import simulation.Pioneer;
-import simulation.ProductionMachine;
 
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Random;
 import java.util.Scanner;
 
 
@@ -18,6 +16,15 @@ public abstract class Field {
     protected int[] coordinates; //koordynaty pola terenu
     private int terrain_id;  //id terenu
 
+    public int getOre_type() {
+        return ore_type;
+    }
+
+    public void setOre_type(int ore_type) {
+        this.ore_type = ore_type;
+    }
+
+    private int ore_type;
     protected Machine machine; //maszyna stojąca na polu
     private GridSprite gridSprite; //render pola
     private int base_move_points; //punkty na początku rundy jeśli jest to pole startu
@@ -47,7 +54,7 @@ public abstract class Field {
         glitch_probabilities = new ArrayList<>();
 
         // na podstawie typu terenu dobieramy blik z którego wczytane zostaną dane
-        String path = "database/terrain/";
+        String path = "database\\terrain\\";
         switch (terrain_id)
         {
             // ID 0 - pole z ziemią
@@ -103,11 +110,6 @@ public abstract class Field {
        coordinates[1] = y;
     }
 
-    public void setMachine(Machine machine) {
-        if(machine instanceof ProductionMachine) this.machine = new ProductionMachine((ProductionMachine)machine);
-        else this.machine = new Machine(machine);
-        canBuild = false;
-    }
 
     // pobiera listę prawdopodobieństw wystąpienia zakłóceń
     public ArrayList<Byte[]> getGlitch_probabilities() {
@@ -163,26 +165,5 @@ public abstract class Field {
     // odpowiada z wystąpienie glitcha
     public void activateGlitch() {
 
-        // Jeżeli na polu nie ma maszyny to na pewno nie wystąpi zakłócenie
-        if(machine == null) return;
-
-        // Jeżeli w maszynie aktywny jest już jakieś zakłócenie to również już nie sprawdzamy czy wystąpi kolejne
-        if(machine.getGlitch() != null) return;
-
-        // Sprawdzamy kolejne zakłócenia, które mogą wystąpić na tym polu
-        Random rng = new Random();
-        for(Byte[] glitch : glitch_probabilities){
-
-            // Losujemy liczbę, która zdeterminuje wystąpienie zakłócenia
-            // Przy jego wystąpieniu wywołujemy w maszynie stojącej na polu zakłócenie
-            if(glitch[1] >= rng.nextInt(99) + 1){
-                machine.activateGlitch(glitch[0]);
-                break;
-            }
-        }
-    }
-
-    public Machine getMachine() {
-        return machine;
     }
 }
