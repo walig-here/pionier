@@ -3,8 +3,6 @@ package main;
 import rendering.*;
 import simulation.*;
 import simulation.terrain.*;
-
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
@@ -21,11 +19,7 @@ public class Main {
     static private ArrayList<Integer> buildingQueue = new ArrayList<>();
 
     public static void main(String[] args) {
-        
-
-        
         menu=new MenuGUI();
-
     }
 
     // pętla symulacji wykonująca się określoną ilość tur lub do osiągnięcia przez pioniera określonego celu
