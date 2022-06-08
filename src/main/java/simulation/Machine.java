@@ -26,6 +26,7 @@ public class Machine {
     protected int production_turn; // ile tur minęło od rozpoczęcia produkcji
 
     static public int count = 0; // ilość maszyn
+    static public int active_machines = 0; // ilość aktywnych maszyn
 
     private Boolean active;
 
@@ -155,6 +156,7 @@ public class Machine {
         // resetujemy licznik tur produkcyjnych
         production_turn = 0;
         active = true;
+        active_machines++;
     }
 
     public void stopProduction(ArrayList<Item> inventory){
@@ -166,6 +168,7 @@ public class Machine {
             break;
         }
         active = false;
+        active_machines--;
     }
 
         // zmiana ilości przedmitów wynikła z produkcji

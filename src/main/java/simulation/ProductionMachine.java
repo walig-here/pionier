@@ -36,6 +36,7 @@ public class ProductionMachine extends Machine {
             }
         }
         super.setActive(true);
+        Machine.active_machines++;
     }
 
     @Override
@@ -56,6 +57,7 @@ public class ProductionMachine extends Machine {
             }
         }
         super.setActive(false);
+        Machine.active_machines--;
     }
 
     // zmiana ilości przedmitów (amount) wynikła z produkcji
