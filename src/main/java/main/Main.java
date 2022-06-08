@@ -32,11 +32,14 @@ public class Main {
     public static int simulationLoop(int max_turns) {
 
 
-        simulation_debug_start(map_size);
+        if(simulation_setup() == -1) return -4;
         debug_simulation_preview(0);
 
         // pętla główna
         for (int turn = 0; turn < max_turns; turn++) {
+
+            // w pierwszej turze pionier wybiera miejsce pod pole centralne
+            if(turn == 0) if(pioneer.chooseCentral(map, buildingQueue) == -1) return -3;
 
             // Pętla działań wywoływanych co turę na kafelkach planszy
             for (int x = 0; x < map.length; x++) {
@@ -66,7 +69,7 @@ public class Main {
                 boolean starting = true; // true - jest to pierwszy ruch pioniera w tej turze
                 do{
                     try {
-                        TimeUnit.MILLISECONDS.sleep(100);
+                        TimeUnit.MILLISECONDS.sleep(900);
                     } catch (InterruptedException e) {
                         throw new RuntimeException(e);
                     }
@@ -98,17 +101,19 @@ public class Main {
         return 0;
     }
 
-    private static void simulation_debug_start(int map_size){
-        // tymaczasowa mapa i eq
-        Random rng = new Random();
-        int central_x = rng.nextInt(map_size);
-        int central_y = rng.nextInt(map_size);
-        map[central_x][central_y] = new CentralField(central_x,central_y);
-        pioneer = new Pioneer(map[rng.nextInt(map_size)][rng.nextInt(map_size)]);
+    private static int simulation_setup(){
+
+        // PIONIER
+        if(spawn_pioneer() == -1) return -1;
+
+        // Dodajemy energię na początek kolejki budowania
+        buildingQueue.add(0, 0);
+
+        // EKWIPUNEK
         for(int i = 0; i <= 24; i++) {
             Item new_item;
-            if(i == 0) new_item = new Item(i,10,0);
-            else new_item = new ComponentItem(i,10,0);
+            if(i == 0) new_item = new Item(i,20,0);
+            else new_item = new ComponentItem(i,20,0);
             pioneer.getInventory().add(new_item);
         }
         for(int x = 0; x < map.length; x++){
@@ -117,18 +122,27 @@ public class Main {
                     ((GlitchSourceField)map[x][y]).setProbabilities(map);
             }
         }
+        return 0;
+    }
 
-        for(int x = 0; x < map.length; x++){
-            for(int y = 0; y < map[x].length; y++){
-                if(map[x][y].getGlitch_probabilities().size() != 0)
-                {
-                    Byte p = map[x][y].getGlitch_probabilities().get(0)[1];
-                    System.out.printf("%-3d ", p.intValue());
-                }
-                else System.out.printf("0   ");
-            }
-            System.out.println();
-        }
+    // funkcja wybierająca miejsce spawnu pioniera
+    private static int spawn_pioneer(){
+
+        // Tworzymy maszynę losującą
+        Random rng = new Random(map_size * targetItem.getID() / 2 - targetItem.getProductionTime());
+
+        // Losujemy kolejne miejsce spawnu, aż do momentu, kiedy pole będzie odopowiednie pod pojawienie się na nim pioniera
+        Field spawn_field = new SoilField(0,0);
+        int p = 0;
+        do {
+            p++;
+            if(p > map_size * map_size) return -1;
+            spawn_field = map[rng.nextInt(map_size)][rng.nextInt(map_size)];
+        }while (spawn_field.getTerrainId() == 1 || spawn_field.getTerrainId() == 3);
+
+        // Spawnujemy pioniera
+        pioneer = new Pioneer(spawn_field);
+        return 0;
     }
 
     private static void debug_simulation_preview(int turns){
@@ -179,6 +193,7 @@ public class Main {
             Item i = new Item(buildingQueue.get(0),0,0);
             System.out.println("Pozadany przedmiot: " + i.getName());
         }
+
 
         System.out.println("Ekwipunek:");
         for(Item item : pioneer.getInventory()){

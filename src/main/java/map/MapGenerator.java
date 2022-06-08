@@ -84,6 +84,12 @@ public class MapGenerator {
             case -2:
                 System.out.println("PORAŻKA!\nPionier nie zdążył wyprodukować pożądanego przedmiotu w danym mu czasie!");
                 break;
+            case -3:
+                System.out.println("PORAŻKA!\nPionier nie był w stanie założyć kompleksu przemysłowego!");
+                break;
+            case -4:
+                System.out.println("PORAŻKA!\nPionier nie był w stanie przybyć do tej okolicy!");
+                break;
             case 0:
                 System.out.println("ZWYCIESTWO!");
                 break;
