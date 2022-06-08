@@ -29,9 +29,10 @@ public class MapGenerator {
     public static void generateMap(int size, int[][] mapTab){
         //generuje mapę z edytora
 
-        final int maxDepositSize=100;
-        final int minDepositSize=50;
-        final int maxGlitchRange=10;
+        final int maxDepositSize=500;
+        final int minDepositSize=100;
+        int maxGlitchRange=size/5;
+        if(maxGlitchRange == 0) maxGlitchRange = 10;
 
         Random random=new Random();
 

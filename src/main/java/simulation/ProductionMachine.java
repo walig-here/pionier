@@ -63,6 +63,9 @@ public class ProductionMachine extends Machine {
     // zmiana ilości przedmitów (amount) wynikła z produkcji
     public void production(ArrayList<Integer> buildingOrder, Pioneer pioneer, simulation.terrain.Field[][] map) {
 
+        // sprawdzamy czy nie ma glitcha wyłączającego w maszynie
+        if(super.glitch instanceof TurnOffGlitch) return;
+
         // sprawdzamy czy mamy wystarczająco przedmiotów do kontynuacji produkcji
         startProduction(pioneer.getInventory());
         for (Item inputItem : input) {

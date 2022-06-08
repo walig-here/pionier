@@ -81,6 +81,9 @@ public class DepositField extends Field {
         // Sprawdzamy czy pole zawiera maszyne.
         if(machine == null) return;
 
+        // Sprawdzamy czy maszyna stojąca na polu jest aktywna
+        if(!machine.getActive()) return;
+
         // Sprawdzamy czy na tym polu jest jeszcze cokolwiek do wydobycia
         // Jeżeli nie ma to maszyna się zatrzymuje
         if(deposit_capacity <= 0) {

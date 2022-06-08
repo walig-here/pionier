@@ -31,6 +31,10 @@ public class Machine {
     private Boolean active;
 
 
+
+    public void setOutput(int output) {
+        this.output = output;
+    }
     public void setActive(boolean active) {
         this.active = active;
     }
@@ -202,8 +206,13 @@ public class Machine {
     }
 
     // włączenie gitcha w maszynie
-    public void activateGlitch(int gitchID) {
+    public void activateGlitch(int glitchID) {
+        if(glitchID == 0) glitch = new TurnOffGlitch(glitchID, 10);
+        else glitch = new SlowGlitch(glitchID, 0.1f);
+    }
 
+    public void deactivateGlitch() {
+        glitch = null;
     }
 
     public ArrayList<Item> getCost() {
