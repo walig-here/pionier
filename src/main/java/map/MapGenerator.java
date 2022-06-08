@@ -29,8 +29,8 @@ public class MapGenerator {
     public static void generateMap(int size, int[][] mapTab){
         //generuje mapę z edytora
 
-        final int maxDepositSize=10;
-        final int minDepositSize=5;
+        final int maxDepositSize=100;
+        final int minDepositSize=50;
         final int maxGlitchRange=10;
 
         Random random=new Random();
@@ -77,22 +77,18 @@ public class MapGenerator {
             }
         }
         // główna pętla symulacji
+        int score = 0;
         switch (Main.simulationLoop(100)) {
-            case -1:
-                System.out.println("PORAŻKA!\nPionier nie ma już gdzie zbudować niezbędnych maszyn.");
-                break;
-            case -2:
-                System.out.println("PORAŻKA!\nPionier nie zdążył wyprodukować pożądanego przedmiotu w danym mu czasie!");
-                break;
-            case -3:
-                System.out.println("PORAŻKA!\nPionier nie był w stanie założyć kompleksu przemysłowego!");
-                break;
-            case -4:
-                System.out.println("PORAŻKA!\nPionier nie był w stanie przybyć do tej okolicy!");
-                break;
-            case 0:
+            case -1: System.out.println("PORAŻKA!\nPionier nie ma już gdzie zbudować niezbędnych maszyn.");break;
+            case -2: System.out.println("PORAŻKA!\nPionier nie zdążył wyprodukować pożądanego przedmiotu w danym mu czasie!");break;
+            case -3: System.out.println("PORAŻKA!\nPionier nie był w stanie założyć kompleksu przemysłowego!");break;
+            case -4: System.out.println("PORAŻKA!\nPionier nie był w stanie przybyć do tej okolicy!");break;
+            case 0: {
                 System.out.println("ZWYCIESTWO!");
-                break;
+                score += 10000;
+            }break;
         }
+        score += Main.getScore();
+        System.out.println("PUNKTY: " + score);
     }
 }

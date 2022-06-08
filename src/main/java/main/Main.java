@@ -22,7 +22,7 @@ public class Main {
 
     public static void main(String[] args) {
         
-        setBuildingOrder();
+
         
         menu=new MenuGUI();
 
@@ -69,7 +69,7 @@ public class Main {
                 boolean starting = true; // true - jest to pierwszy ruch pioniera w tej turze
                 do{
                     try {
-                        TimeUnit.MILLISECONDS.sleep(900);
+                        TimeUnit.MILLISECONDS.sleep(800);
                     } catch (InterruptedException e) {
                         throw new RuntimeException(e);
                     }
@@ -101,7 +101,27 @@ public class Main {
         return 0;
     }
 
+    // funkcja zliczająca punkty zebrane podczas całej symulacji
+    public static int getScore(){
+        int score = 0;
+
+        // punkty przyznaje się za ilośc przedmiotu w ekwipunku
+        for(Item eq_item : pioneer.getInventory())
+            score += eq_item.getAmount();
+
+        // punty przyznaje się za każdą maszynę
+        score += Machine.count * 10;
+
+        // za działające maszyny otrzymuje się dodatkową premię
+        score += 1000 * Machine.active_machines/Machine.count;
+
+        return score;
+    }
+
     private static int simulation_setup(){
+
+        // Ustalamy kolejkę budowania
+        setBuildingOrder();
 
         // PIONIER
         if(spawn_pioneer() == -1) return -1;
@@ -116,6 +136,8 @@ public class Main {
             else new_item = new ComponentItem(i,20,0);
             pioneer.getInventory().add(new_item);
         }
+
+        // Ustalenie prawdopodobieństw wystąpienia zakłóceń
         for(int x = 0; x < map.length; x++){
             for(int y = 0; y < map[x].length; y++){
                 if(map[x][y] instanceof GlitchSourceField)
@@ -188,14 +210,14 @@ public class Main {
             System.out.println("");
         }
         System.out.println("Numer tury: " + turns);
-        System.out.println("Ilosc maszyn: " + Machine.count);
+        System.out.println("Ilosc maszyn: " + Machine.count + "(" + Machine.active_machines + " aktywnych)");
         if(buildingQueue.size() != 0) {
             Item i = new Item(buildingQueue.get(0),0,0);
             System.out.println("Pozadany przedmiot: " + i.getName());
         }
 
 
-        System.out.println("Ekwipunek:");
+        /*System.out.println("Ekwipunek:");
         for(Item item : pioneer.getInventory()){
             System.out.printf("\t%-25s\t%-5d\t%-5.2f\n", item.getName(), item.getAmount(), item.getIncome());
         }
@@ -213,7 +235,7 @@ public class Main {
                 }
             }
             System.out.printf("\t%-25s\t%-5d\t%-5.2f\n", item.getName(), item.getAmount(), item.getIncome());
-        }
+        }*/
     }
 
     private static void setBuildingOrder() {
