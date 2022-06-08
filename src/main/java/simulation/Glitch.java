@@ -1,24 +1,28 @@
 package simulation;
 
+import java.util.ArrayList;
+
 public abstract class Glitch {
 
-    private float intensity; // natężenie zakłócenia(w %)
+    private  int ID;
 
-    private int glitchID; // ID glitcha
-
-    public Glitch(int ID, float intensity) {
-        this.intensity = intensity;
-        glitchID = ID;
+    private boolean glitch_ended = false;
+    public Glitch(int ID) {
+        this.ID = ID;
     }
 
     // wpływ glitcha na maszyne
-    abstract void glitchImpact(Machine impacting);
+    abstract public void glitchImpact(Machine impacting, ArrayList<Item> inventory);
 
-    public float getIntensity() {
-        return intensity;
+    public int getID() {
+        return ID;
     }
 
-    public int getGlitchID() {
-        return glitchID;
+    public boolean isGlitch_ended() {
+        return glitch_ended;
+    }
+
+    public void setGlitch_ended(boolean glitch_ended) {
+        this.glitch_ended = glitch_ended;
     }
 }

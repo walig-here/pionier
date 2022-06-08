@@ -50,6 +50,13 @@ public class Main {
 
                     // Na każdym polu posiadającym maszynę odbywa sie produkcja lub wydobycie
                     if(map[x][y].getMachine() != null){
+
+                        // Dla każdego pola z maszyną, w której wystąpiło zakłócenie, symulujemy wpływ zakłócenia na tę maszynę
+                        if(map[x][y].getMachine().getGlitch() != null) {
+                            map[x][y].getMachine().getGlitch().glitchImpact(map[x][y].getMachine(),pioneer.getInventory());
+                            if(map[x][y].getMachine().getGlitch().isGlitch_ended()) map[x][y].getMachine().deactivateGlitch();
+                        }
+
                         // Dla każdego pola z surowcem preprowadzamy proces wydobycia
                         if(map[x][y] instanceof DepositField) ((DepositField)map[x][y]).extract(pioneer.getInventory());
 
@@ -69,7 +76,7 @@ public class Main {
                 boolean starting = true; // true - jest to pierwszy ruch pioniera w tej turze
                 do{
                     try {
-                        TimeUnit.MILLISECONDS.sleep(800);
+                        TimeUnit.MILLISECONDS.sleep(600);
                     } catch (InterruptedException e) {
                         throw new RuntimeException(e);
                     }
@@ -174,11 +181,11 @@ public class Main {
 
                 //TEREN
                 String tile_fx = "";
-                if(map[x][y] instanceof WaterField)  tile_fx = "~~~~~";
-                else if(map[x][y] instanceof CentralField) tile_fx = "[   ]";
-                else if(map[x][y] instanceof GlitchSourceField) tile_fx = "*****";
-                else if(map[x][y] instanceof DepositField) tile_fx = "====" + ((DepositField)map[x][y]).getItem_id();
-                else tile_fx= "-----";
+                if(map[x][y] instanceof WaterField)  tile_fx = "~~~~~~";
+                else if(map[x][y] instanceof CentralField) tile_fx = "[   ] ";
+                else if(map[x][y] instanceof GlitchSourceField) tile_fx = "*****" + ((GlitchSourceField)map[x][y]).getGlitch_id();
+                else if(map[x][y] instanceof DepositField) tile_fx = "=====" + ((DepositField)map[x][y]).getItem_id();
+                else tile_fx= "------";
                 char[] tile = tile_fx.toCharArray();
 
                 // PIONIER
@@ -199,12 +206,17 @@ public class Main {
                     Integer machine = map[x][y].getMachine().getID();
                     tile[0] = machine.toString().charAt(0);
                     if(machine > 9) tile[1] = machine.toString().charAt(1);
+
+                    if(map[x][y].getMachine().getGlitch() != null) {
+                        Integer i = map[x][y].getMachine().getGlitch().getID();
+                        tile[tile.length-2] = i.toString().charAt(0);
+                    }
                 }
 
                 // KONIEC
                 tile_fx = "";
                 for(int i = 0; i < tile.length; i++) tile_fx += tile[i];
-                tile_fx += "   ";
+                tile_fx += "  ";
                 System.out.print(tile_fx);
             }
             System.out.println("");
