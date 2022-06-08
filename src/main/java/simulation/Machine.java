@@ -44,7 +44,7 @@ public class Machine {
     }
 
     public Machine(int ID, int produced_item) {
-        cost = new ArrayList<Item>();
+        cost = new ArrayList<>();
         active = false;
         //id podany do szukania w plikach
         this.ID = ID;
@@ -88,11 +88,9 @@ public class Machine {
             case 15: path += "production_belt_factory.txt"; break;
 
         }
-        try {
-            Item item = new Item(produced_item, 0, 0);
-            //ustalamy jaki przedmiot wylatuje po weryfikacji (oddelegowanie do klasy Item) czy ten przedmiot istnieje
-            this.produced_item = produced_item;
-        } catch (Exception e) {}
+        Item item = new Item(produced_item, 0, 0);
+        //ustalamy jaki przedmiot wylatuje po weryfikacji (oddelegowanie do klasy Item) czy ten przedmiot istnieje
+        this.produced_item = produced_item;
 
         try{
             InputStream file_stream = new FileInputStream(path);

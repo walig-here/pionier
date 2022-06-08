@@ -43,7 +43,6 @@ public class SoilField extends Field {
             catch (Exception e) {
                 e.printStackTrace();
                 System.out.println("Blad wczytywania danych dla pola ziemnego planszy! Nie udalo sie uzyskac dostepu do pliku z danymi!");
-                return;
             }
         }
     }

@@ -3,11 +3,7 @@ import rendering.Sprite;
 import simulation.terrain.CentralField;
 import simulation.terrain.DepositField;
 import simulation.terrain.Field;
-
-import java.io.FileInputStream;
 import java.util.ArrayList;
-
-import static java.lang.Math.abs;
 
 public class Pioneer {
     /**
@@ -40,7 +36,7 @@ public class Pioneer {
      * Tablica liczb całkowitych przechowująca koordynaty pola, na którym pionier dokona najbliższej konstrukcji.
      * Pierwsza komórka odpowiada za współrzędną x, druga za współrzędną y.
      * */
-    private int building_field[];
+    private int[] building_field;
     /**
      * Lista dwuelementowych tablic, zawierających koordynaty pól, tworzących ścieżkę, po której będzie poruszał się pionier.
      * */
@@ -576,31 +572,14 @@ public class Pioneer {
      * @param buildingOrder główna kolejka konstrukcji
      * @param map plansza symulacji
      *
-     * @return 1 gdy nie ustalono nowego celu budowy, gdyż stary jeszcze jest aktywny
-     * @return 0 gdy ustalono nowy cel budowy
-     * @return -1 gdy nie ustalono nowego celu budowy ze względu na brak odpowiedniego miejsca na plaszny
+     * @return  1 gdy nie ustalono nowego celu budowy, gdyż stary jeszcze jest aktywny
+     *          0 gdy ustalono nowy cel budowy
+     *          -1 gdy nie ustalono nowego celu budowy ze względu na brak odpowiedniego miejsca na plaszny
      * */
     public int setNextBuilding(ArrayList<Integer> buildingOrder, Field[][] map) {
 
         // Jeżeli trwa budowa priorytetowa to na pewno nie możemy wyznaczyć kolejnej
         if(emergency_construction) return 1;
-        /*
-         {
-            // Sprawdzamy czy nie zaczyna brakować pionierowi przedmiotu, który nie został uwzględniony w najbliższych planach kolejce budowy
-            for(Item eq_item : inventory){
-                if(eq_item.getIncome() < 0 && eq_item.getAmount() + 10 * eq_item.getIncome() <= 0){
-
-                    if(buildingOrder.get(0) == eq_item.getID() || buildingOrder.get(1) == eq_item.getID()) continue;
-
-                    // Jeżeli przedmiotu zaczyna brakować, a nie ma w planach zbudowania produkującej do maszyny to dodajemy taką na początek kolejki
-                    buildingOrder.add(0,eq_item.getID());
-                    path.clear();
-                    to_build = -1;
-                    emergency_construction = true;
-                    break;
-                }
-            }
-        }*/
 
         // Sprawdzamy czy pionier zakończył już ostatnią budowę
         if(to_build != -1) return 1;

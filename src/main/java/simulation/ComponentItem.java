@@ -1,10 +1,5 @@
 package simulation;
 
-import java.io.FileInputStream;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Scanner;
-
 /**
  * Skomplikowany przedmiot, który może zostac pozyskany tylko z użyciem receptury.
  * */
