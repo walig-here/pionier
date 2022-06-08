@@ -20,6 +20,8 @@ public class ProductionMachine extends Machine {
     //rozpoczyna produkcję, zwieksza income produktow, zmniejsza income itemow potrzevbnych do wytworzenia produktu
     @Override
     public void startProduction(ArrayList<Item> inventory) {
+        if(super.getActive()) return;
+
         for (Item inventoryItem : inventory) {
             if (inventoryItem.getID() != getProduced_item()) continue;
             inventoryItem.setIncome((inventoryItem.getIncome() + (double)getOutput()/inventoryItem.getProductionTime()));
@@ -38,6 +40,8 @@ public class ProductionMachine extends Machine {
 
     @Override
     public void stopProduction(ArrayList<Item> inventory){
+        if(!super.getActive()) return;
+
         for (Item inventoryItem : inventory) {
             if (inventoryItem.getID() != getProduced_item()) continue;
             inventoryItem.setIncome((inventoryItem.getIncome() - (double)getOutput()/inventoryItem.getProductionTime()));

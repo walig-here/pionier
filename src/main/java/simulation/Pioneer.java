@@ -191,7 +191,15 @@ public class Pioneer {
             for(Item item_eq : inventory){
                 if(item_cost.getID() == item_eq.getID())
                 {
-                    if(item_eq.getAmount() - item_cost.getAmount() < 0) return;
+                    // Jeżeli nie ma wystarczająco itemu oraz ten item nie przyrasta to wybiera się na jego zbudowanie
+                    if(item_eq.getAmount() - item_cost.getAmount() < 0) {
+                        if(item_eq.getIncome() <= 0){
+                            to_build = -1;
+                            buildingOrder.add(item_cost.getID());
+                            setNextBuilding(buildingOrder, map);
+                        }
+                        return;
+                    }
                     owns_item = true;
                     break;
                 }
@@ -474,22 +482,26 @@ public class Pioneer {
      * @return -1 gdy nie ustalono nowego celu budowy ze względu na brak odpowiedniego miejsca na plaszny
      * */
     public int setNextBuilding(ArrayList<Integer> buildingOrder, Field[][] map) {
-        // Sprawdzamy czy pionier zakończył już ostatnią budowę
-        if(to_build != -1) return 1;
 
-        // Sprawdzamy czy nie zaczyna brakować pionierowi przedmiotu, który nie został uwzględniony w kolejce budowy
+        // Sprawdzamy czy nie zaczyna brakować pionierowi przedmiotu, który nie został uwzględniony w najbliższych planach kolejce budowy
         for(Item eq_item : inventory){
-            if(eq_item.getIncome() < 0){
-                boolean included = false;
+            if(eq_item.getIncome() < 0 && eq_item.getAmount() - 5 * eq_item.getIncome() <= 0){
+                boolean next = false;
 
-                for(Integer order_item : buildingOrder)
-                    if(order_item == eq_item.getID())
-                        included = true;
+                for(int i = 0; i < buildingOrder.size()  && i < 2; i++)
+                    if(buildingOrder.get(i) == eq_item.getID())
+                        next = true;
 
                 // Jeżeli przedmiotu zaczyna brakować, a nie ma w planach zbudowania produkującej do maszyny to dodajemy taką na początek kolejki
-                if(!included) buildingOrder.add(eq_item.getID());
+                if(!next) {
+                    buildingOrder.add(eq_item.getID());
+                    to_build = -1;
+                }
             }
         }
+
+        // Sprawdzamy czy pionier zakończył już ostatnią budowę
+        if(to_build != -1) return 1;
 
         // Pobieramy ID produkowanego przez następną potrzebną maszynę przedmiotu
         to_build = buildingOrder.get(0);

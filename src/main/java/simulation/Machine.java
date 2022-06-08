@@ -144,6 +144,8 @@ public class Machine {
 
     //rozpoczyna produkcję, zwieksza income produktow
     public void startProduction(ArrayList<Item> inventory) {
+        if(active) return;
+
         for (Item inventoryItem : inventory) {
             if (inventoryItem.getID() != getProduced_item()) continue;
             inventoryItem.setIncome((inventoryItem.getIncome() + (double)output/inventoryItem.getProductionTime()));
@@ -155,6 +157,8 @@ public class Machine {
     }
 
     public void stopProduction(ArrayList<Item> inventory){
+        if(!active) return;
+
         for (Item inventoryItem : inventory) {
             if (inventoryItem.getID() != getProduced_item()) continue;
             inventoryItem.setIncome((inventoryItem.getIncome() - (double)output/inventoryItem.getProductionTime()));
