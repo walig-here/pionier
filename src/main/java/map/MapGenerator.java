@@ -77,6 +77,7 @@ public class MapGenerator {
 
             }
         }
+
         // główna pętla symulacji
         int score = 0;
         switch (Main.simulationLoop(100)) {

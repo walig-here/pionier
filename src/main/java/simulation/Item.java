@@ -1,6 +1,5 @@
 package simulation;
 
-import javax.sound.sampled.Line;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.Scanner;

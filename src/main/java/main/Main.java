@@ -8,13 +8,11 @@ import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 public class Main {
-
-    static private NFrame current_window; // akutalne okno symulacji
-    static public int map_size; // rozmiar planszy(w polach) z przedziału [???]
+    static public int map_size; // rozmiar planszy(w polach)
     static public Field[][] map; // plansza na której odbywa się symulacja
     static private MenuGUI menu;
     static public Pioneer pioneer; // pionier
-    static private Item targetItem = new ComponentItem(16, 0, 0); // przedmiot, ktorego zdobycie, konczy symulacje (przedmiot docelowy)
+    static final private Item targetItem = new ComponentItem(16, 0, 0); // przedmiot, ktorego zdobycie, konczy symulacje (przedmiot docelowy)
     static private ArrayList<Item> children = new ArrayList<>();
     static private ArrayList<Integer> buildingQueue = new ArrayList<>();
 
@@ -36,27 +34,30 @@ public class Main {
             if(turn == 0) if(pioneer.chooseCentral(map, buildingQueue) == -1) return -3;
 
             // Pętla działań wywoływanych co turę na kafelkach planszy
-            for (int x = 0; x < map.length; x++) {
-                for(int y = 0; y < map[x].length; y++){
+            for (Field[] fields : map) {
+                for (Field field : fields) {
 
                     // Ustalamy czy w tej turze na polu wystąpiło zakłócenie
-                    map[x][y].activateGlitch();
+                    field.activateGlitch();
 
-                    // Na każdym polu posiadającym maszynę odbywa sie produkcja lub wydobycie
-                    if(map[x][y].getMachine() != null){
+                    // Na każdym polu posiadającym maszynę odbywa się produkcja lub wydobycie
+                    if (field.getMachine() != null) {
 
                         // Dla każdego pola z maszyną, w której wystąpiło zakłócenie, symulujemy wpływ zakłócenia na tę maszynę
-                        if(map[x][y].getMachine().getGlitch() != null) {
-                            map[x][y].getMachine().getGlitch().glitchImpact(map[x][y].getMachine(),pioneer.getInventory());
-                            if(map[x][y].getMachine().getGlitch().isGlitch_ended()) map[x][y].getMachine().deactivateGlitch();
+                        if (field.getMachine().getGlitch() != null) {
+                            field.getMachine().getGlitch().glitchImpact(field.getMachine(), pioneer.getInventory());
+                            if (field.getMachine().getGlitch().isGlitch_ended())
+                                field.getMachine().deactivateGlitch();
                         }
 
                         // Dla każdego pola z surowcem preprowadzamy proces wydobycia
-                        if(map[x][y] instanceof DepositField) ((DepositField)map[x][y]).extract(pioneer.getInventory());
+                        if (field instanceof DepositField)
+                            ((DepositField) field).extract(pioneer.getInventory());
 
                         // Każde inne pole z maszyną produkuje przedmioty
-                        if(map[x][y].getMachine() instanceof ProductionMachine) ((ProductionMachine)map[x][y].getMachine()).production(buildingQueue, pioneer, map);
-                        else map[x][y].getMachine().production(pioneer.getInventory());
+                        if (field.getMachine() instanceof ProductionMachine)
+                            ((ProductionMachine) field.getMachine()).production(buildingQueue, pioneer, map);
+                        else field.getMachine().production(pioneer.getInventory());
                     }
                 }
             }
@@ -139,10 +140,10 @@ public class Main {
         }
 
         // Ustalenie prawdopodobieństw wystąpienia zakłóceń
-        for(int x = 0; x < map.length; x++){
-            for(int y = 0; y < map[x].length; y++){
-                if(map[x][y] instanceof GlitchSourceField)
-                    ((GlitchSourceField)map[x][y]).setProbabilities(map);
+        for (Field[] fields : map) {
+            for (Field field : fields) {
+                if (field instanceof GlitchSourceField)
+                    ((GlitchSourceField) field).setProbabilities(map);
             }
         }
         return 0;
@@ -155,7 +156,7 @@ public class Main {
         Random rng = new Random(map_size * targetItem.getID() / 2 - targetItem.getProductionTime());
 
         // Losujemy kolejne miejsce spawnu, aż do momentu, kiedy pole będzie odopowiednie pod pojawienie się na nim pioniera
-        Field spawn_field = new SoilField(0,0);
+        Field spawn_field;
         int p = 0;
         do {
             p++;
@@ -174,7 +175,7 @@ public class Main {
             for(int y = 0; y < map[x].length; y++){
 
                 //TEREN
-                String tile_fx = "";
+                String tile_fx;
                 if(map[x][y] instanceof WaterField)  tile_fx = "~~~~~~";
                 else if(map[x][y] instanceof CentralField) tile_fx = "[   ] ";
                 else if(map[x][y] instanceof GlitchSourceField) tile_fx = "*****" + ((GlitchSourceField)map[x][y]).getGlitch_id();
@@ -209,11 +210,11 @@ public class Main {
 
                 // KONIEC
                 tile_fx = "";
-                for(int i = 0; i < tile.length; i++) tile_fx += tile[i];
+                for (char c : tile) tile_fx += c;
                 tile_fx += "  ";
                 System.out.print(tile_fx);
             }
-            System.out.println("");
+            System.out.println();
         }
         System.out.println("Numer tury: " + turns);
         System.out.println("Ilosc maszyn: " + Machine.count + "(" + Machine.active_machines + " aktywnych)");
