@@ -16,6 +16,7 @@ public abstract class Field {
 
 
     protected int[] coordinates; //koordynaty pola terenu
+
     private int terrain_id;  //id terenu
 
     protected Machine machine; //maszyna stojąca na polu
@@ -93,6 +94,10 @@ public abstract class Field {
             System.out.println("Blad wczytywania danych dla pola planszy! Nie udalo sie uzyskac dostepu do pliku z danymi!");
             return;
         }
+    }
+
+    public int getTerrain_id() {
+        return terrain_id;
     }
 
     public int[] getCoordinates() {

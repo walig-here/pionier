@@ -4,6 +4,7 @@ import simulation.terrain.CentralField;
 import simulation.terrain.DepositField;
 import simulation.terrain.Field;
 
+import java.io.FileInputStream;
 import java.util.ArrayList;
 
 import static java.lang.Math.abs;
@@ -48,6 +49,79 @@ public class Pioneer {
     private boolean emergency_construction; // określa czy pionier aktualnie wykonuje prorytetową budowę
 
 
+    // funkcja wyboru miejsca pod pole centralne
+    public int chooseCentral(Field[][] map, ArrayList<Integer> buildingOrder){
+
+        ArrayList<Integer[]> potential_centrals = new ArrayList<>();
+
+        // Potencjalnymi polami są wszystkie pola, które nie są wodą, źródłem zakłóceń albo polem z surowcem, który będzie potrzebny
+        for(Field[] row : map){
+            for(Field field : row){
+
+                // czy pole wodne lub pole zakłóceń
+                if(field.getTerrain_id() == 1 || field.getTerrain_id() == 3) continue;
+
+                // czy jest to pole z zasobem, który na pewno będzie potem potrzebny
+                if(field instanceof DepositField){
+                    boolean includes_needed_item = false;
+                    for (Integer needed_item : buildingOrder) {
+                        if(needed_item == ((DepositField)field).getItem_id()) {
+                            includes_needed_item = true;
+                            break;
+                        }
+                    }
+                    if(includes_needed_item) continue;
+                }
+
+                // dodajemy pole do potencjalnych centrów
+                Integer[] new_field = {field.getCoordinates()[0], field.getCoordinates()[1], 0};
+                potential_centrals.add(new_field);
+            }
+        }
+
+        // Jeżeli nie ma żadnych potencjalnych pól to pionier przegrywa symulacje
+        if(potential_centrals.size() == 0) return -1;
+
+        // Nadajemy polom, w których okolicy znajduje się więcej surowców większą wagę
+        // Nadajemy polom, w których okolicy znajduje się większe prawdopodobieństwo zakłócenia mniejszą wagę
+        // Nadajemu polom, w których okolicy znajduje się więcej pól wodnych mniejszą wagę(bo utrudniają przemieszczanie)
+        final int max_distance = map.length / 3;
+        for(Integer[] central : potential_centrals){
+
+            for(Field[] row : map){
+                for(Field map_field : row){
+                    int distance = (int)Math.sqrt(Math.pow(map_field.getCoordinates()[0]-central[0],2)+Math.pow(map_field.getCoordinates()[1]-central[1],2));
+                    if(distance > max_distance) continue;
+
+                    if(map_field instanceof DepositField) {
+                        central[2] += ((DepositField)map_field).getCapacityOfDeposit();
+                        for (Integer needed_item : buildingOrder) {
+                            if(needed_item == ((DepositField)map_field).getItem_id()) {
+                                central[2] += 2 * ((DepositField)map_field).getCapacityOfDeposit();
+                                break;
+                            }
+                        }
+                    }
+                    for(Byte[] probability : map_field.getGlitch_probabilities()) central[2] -= probability[1];
+                    if(map_field.getTerrain_id() == 1) central[2] -= 10;
+                }
+            }
+
+        }
+
+        // wybieramy te pole, które ma największą wagę
+        Integer[] best_cental = {potential_centrals.get(0)[0], potential_centrals.get(0)[1], potential_centrals.get(0)[2]};
+        for(Integer[] central : potential_centrals){
+            if(best_cental[2] < central[2])
+            {
+                best_cental[0] = central[0];
+                best_cental[1] = central[1];
+                best_cental[2] = central[2];
+            }
+        }
+        map[best_cental[0]][best_cental[1]] = new CentralField(best_cental[0],best_cental[1]);
+        return 0;
+    }
 
     public void setEmergency_construction(boolean emergency_construction) {
         this.emergency_construction = emergency_construction;
