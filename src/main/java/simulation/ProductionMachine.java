@@ -59,19 +59,31 @@ public class ProductionMachine extends Machine {
     }
 
     // zmiana ilości przedmitów (amount) wynikła z produkcji
-    @Override
-    public void production(ArrayList<Item> inventory) {
+    public void production(ArrayList<Integer> buildingOrder, Pioneer pioneer, simulation.terrain.Field[][] map) {
 
-        if(!super.getActive()) return;
-
-        //przeszukuje ekwipunek w poszukiwaniu przedmiotow potrzebnych do wyprodukowania produktu i zmniejsza ich ilosc
+        // sprawdzamy czy mamy wystarczająco przedmiotów do kontynuacji produkcji
+        startProduction(pioneer.getInventory());
         for (Item inputItem : input) {
-            for (Item inventoryItem : inventory) {
+            for (Item inventoryItem : pioneer.getInventory()) {
                 if (inputItem.getID() != inventoryItem.getID()) continue;
-                inventoryItem.setAmount(inventoryItem.getAmount() - inputItem.getAmount()/inventoryItem.getProductionTime());
+
+                // Jeżeli nie mamy wystarczającej ilości wymaganego przedmiotu, to zatrzymujemy produkcję i nakazujemy pionierowi pozyskać przedmiot
+                if(inventoryItem.getAmount() - inputItem.getAmount() < 0 && inventoryItem.getIncome() < 0) {
+                    stopProduction(pioneer.getInventory());
+                    if(!pioneer.getEmergency_construction()){
+                        buildingOrder.add(0,inventoryItem.getID());
+                        pioneer.getPath().clear();
+                        pioneer.setTo_build(-1);
+                        pioneer.setNextBuilding(buildingOrder,map);
+                        pioneer.setEmergency_construction(true);
+                    }
+                    return;
+                }
                 break;
             }
         }
+
+        if(!super.getActive()) return;
 
         // produkcja trwa kolejną turę
         production_turn++;
@@ -88,10 +100,19 @@ public class ProductionMachine extends Machine {
         }
 
         //przeszukuje ekwipunek w poszukiwaniu itemu produkowanego przez maszyne i zwieksza jego ilsoc
-        for (Item item : inventory) {
+        for (Item item : pioneer.getInventory()) {
             if (item.getID() != getProduced_item()) continue;
-            item.setAmount(item.getAmount() + getOutput()/item.getProductionTime());
+            item.setAmount(item.getAmount() + getOutput());
             break;
+        }
+
+        //przeszukuje ekwipunek w poszukiwaniu przedmiotow potrzebnych do wyprodukowania produktu i zmniejsza ich ilosc
+        for (Item inputItem : input) {
+            for (Item inventoryItem : pioneer.getInventory()) {
+                if (inputItem.getID() != inventoryItem.getID()) continue;
+                inventoryItem.setAmount(inventoryItem.getAmount() - inputItem.getAmount());
+                break;
+            }
         }
     }
 

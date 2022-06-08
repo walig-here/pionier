@@ -154,6 +154,7 @@ public class Machine {
 
         // resetujemy licznik tur produkcyjnych
         production_turn = 0;
+        active = true;
     }
 
     public void stopProduction(ArrayList<Item> inventory){
@@ -164,6 +165,7 @@ public class Machine {
             inventoryItem.setIncome((inventoryItem.getIncome() - (double)output/inventoryItem.getProductionTime()));
             break;
         }
+        active = false;
     }
 
         // zmiana ilości przedmitów wynikła z produkcji
@@ -187,7 +189,7 @@ public class Machine {
         //przeszukuje ekwipunek w poszukiwaniu itemu produkowanego przez maszyne i zwieksza jego ilsoc
         for (Item inventoryItem : inventory) {
             if (inventoryItem.getID() != getProduced_item()) continue;
-            inventoryItem.setAmount(inventoryItem.getAmount() + output/inventoryItem.getProductionTime());
+            inventoryItem.setAmount(inventoryItem.getAmount() + output);
             break;
         }
     }
