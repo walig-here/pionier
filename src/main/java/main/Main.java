@@ -51,7 +51,7 @@ public class Main {
                         if(map[x][y] instanceof DepositField) ((DepositField)map[x][y]).extract(pioneer.getInventory());
 
                         // Każde inne pole z maszyną produkuje przedmioty
-                        if(map[x][y].getMachine() instanceof ProductionMachine) ((ProductionMachine)map[x][y].getMachine()).production(pioneer.getInventory());
+                        if(map[x][y].getMachine() instanceof ProductionMachine) ((ProductionMachine)map[x][y].getMachine()).production(buildingQueue, pioneer, map);
                         else map[x][y].getMachine().production(pioneer.getInventory());
                     }
                 }
@@ -66,7 +66,7 @@ public class Main {
                 boolean starting = true; // true - jest to pierwszy ruch pioniera w tej turze
                 do{
                     try {
-                        TimeUnit.MILLISECONDS.sleep(900);
+                        TimeUnit.MILLISECONDS.sleep(100);
                     } catch (InterruptedException e) {
                         throw new RuntimeException(e);
                     }
@@ -82,11 +82,14 @@ public class Main {
                 }while (pioneer.getMove_points() != 0 && pioneer.getPath().size() > 0);
             }
 
-            if(buildingQueue.size() == 0) {
-                // sprawdzamy czy wyprodukowano odpowiedni przedmiot
-                for(Item item : pioneer.getInventory()){
-                    if(item.getID() == targetItem.getID() && item.getAmount() >= 1)
-                        return 0;
+            // sprawdzamy czy wyprodukowano odpowiedni przedmiot
+            for(Item item : pioneer.getInventory()){
+                if(item.getID() == targetItem.getID() && item.getAmount() >= 1){
+                    for(Field[] row : map){
+                        for(Field field : row)
+                            if(field.getMachine() != null && field.getMachine().getProduced_item() == item.getID())
+                                return 0;
+                    }
                 }
             }
         }
@@ -104,8 +107,8 @@ public class Main {
         pioneer = new Pioneer(map[rng.nextInt(map_size)][rng.nextInt(map_size)]);
         for(int i = 0; i <= 24; i++) {
             Item new_item;
-            if(i == 0) new_item = new Item(i,100,0);
-            else new_item = new ComponentItem(i,100,0);
+            if(i == 0) new_item = new Item(i,10,0);
+            else new_item = new ComponentItem(i,10,0);
             pioneer.getInventory().add(new_item);
         }
         for(int x = 0; x < map.length; x++){

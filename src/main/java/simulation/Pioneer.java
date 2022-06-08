@@ -30,6 +30,7 @@ public class Pioneer {
      * Zmienna zawierająca informację co do możliwości zbudowania kolejnej maszyny przez pioniera w tej turze.
      * */
     private boolean could_build;
+
     /**
      * Przechowuje ID przedmiotu, którego maszynę go produkującą pionier ma zamiar postawić przy najbliżeszj okazji.
      * */
@@ -44,6 +45,21 @@ public class Pioneer {
      * */
     private ArrayList<Integer[]> path;
 
+    private boolean emergency_construction; // określa czy pionier aktualnie wykonuje prorytetową budowę
+
+
+
+    public void setEmergency_construction(boolean emergency_construction) {
+        this.emergency_construction = emergency_construction;
+    }
+
+    public boolean getEmergency_construction() {
+        return emergency_construction;
+    }
+
+    public void setTo_build(int to_build) {
+        this.to_build = to_build;
+    }
 
     /**
      * Konstruktor klasy pionier. Na podstawie danych pola, na którym na początku symulacji stoi pionier ustala część z jego parametrów.
@@ -170,6 +186,9 @@ public class Pioneer {
         // Sprawdzamy czy pionier znajduje się na placu budowy w polu building_field
         if(coordinates[0] != building_field[0] || coordinates[1] != building_field[1]) return;
 
+        // Sprawdzamy czy już przeszedł całą zaplanowaną drogę start->magazyn->budowa
+        if(path.size() != 0) return;
+
         // Sprawdzamu czy pionier ma w ogóle zamiar cokolwiek zbudować
         if(to_build == -1) return;
 
@@ -194,9 +213,12 @@ public class Pioneer {
                     // Jeżeli nie ma wystarczająco itemu oraz ten item nie przyrasta to wybiera się na jego zbudowanie
                     if(item_eq.getAmount() - item_cost.getAmount() < 0) {
                         if(item_eq.getIncome() <= 0){
+                            emergency_construction = false;
                             to_build = -1;
-                            buildingOrder.add(item_cost.getID());
+                            path.clear();
+                            buildingOrder.add(0,item_cost.getID());
                             setNextBuilding(buildingOrder, map);
+                            emergency_construction = true;
                         }
                         return;
                     }
@@ -230,6 +252,9 @@ public class Pioneer {
 
         // Pionier nie może już w tej turze budować
         could_build = false;
+
+        // Jeżeli budowa była priorytetowa to się kończy
+        emergency_construction = false;
 
         // Nie wie też gdzie budować kolejną maszynę
         building_field[0] = building_field[1] = -1;
@@ -387,7 +412,7 @@ public class Pioneer {
                     }
 
                     // Szukamy pól mapy, które są oddalone o co najwyżej range
-                    final int RANGE = 2; // maksymalne oddalenie maszyny od maszyn wytwarzających jej materiały wejściowe
+                    final int RANGE = 3; // maksymalne oddalenie maszyny od maszyn wytwarzających jej materiały wejściowe
                     for(int x = 0; x < map.length; x++) {
                         for(int y = 0; y < map[x].length; y++){
 
@@ -483,22 +508,25 @@ public class Pioneer {
      * */
     public int setNextBuilding(ArrayList<Integer> buildingOrder, Field[][] map) {
 
-        // Sprawdzamy czy nie zaczyna brakować pionierowi przedmiotu, który nie został uwzględniony w najbliższych planach kolejce budowy
-        for(Item eq_item : inventory){
-            if(eq_item.getIncome() < 0 && eq_item.getAmount() - 5 * eq_item.getIncome() <= 0){
-                boolean next = false;
+        // Jeżeli trwa budowa priorytetowa to na pewno nie możemy wyznaczyć kolejnej
+        if(emergency_construction) return 1;
+        /*
+         {
+            // Sprawdzamy czy nie zaczyna brakować pionierowi przedmiotu, który nie został uwzględniony w najbliższych planach kolejce budowy
+            for(Item eq_item : inventory){
+                if(eq_item.getIncome() < 0 && eq_item.getAmount() + 10 * eq_item.getIncome() <= 0){
 
-                for(int i = 0; i < buildingOrder.size()  && i < 2; i++)
-                    if(buildingOrder.get(i) == eq_item.getID())
-                        next = true;
+                    if(buildingOrder.get(0) == eq_item.getID() || buildingOrder.get(1) == eq_item.getID()) continue;
 
-                // Jeżeli przedmiotu zaczyna brakować, a nie ma w planach zbudowania produkującej do maszyny to dodajemy taką na początek kolejki
-                if(!next) {
-                    buildingOrder.add(eq_item.getID());
+                    // Jeżeli przedmiotu zaczyna brakować, a nie ma w planach zbudowania produkującej do maszyny to dodajemy taką na początek kolejki
+                    buildingOrder.add(0,eq_item.getID());
+                    path.clear();
                     to_build = -1;
+                    emergency_construction = true;
+                    break;
                 }
             }
-        }
+        }*/
 
         // Sprawdzamy czy pionier zakończył już ostatnią budowę
         if(to_build != -1) return 1;
