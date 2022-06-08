@@ -29,8 +29,8 @@ public class MapGenerator {
     public static void generateMap(int size, int[][] mapTab){
         //generuje mapę z edytora
 
-        final int maxDepositSize=200;
-        final int minDepositSize=100;
+        final int maxDepositSize=10;
+        final int minDepositSize=5;
         final int maxGlitchRange=10;
 
         Random random=new Random();
@@ -52,25 +52,25 @@ public class MapGenerator {
                         Main.map[i][j]=new GlitchSourceField(i,j,random.nextInt(maxGlitchRange),(byte)random.nextInt(2));
                         break;
                     case 3:
-                        Main.map[i][j]=new DepositField(i,j, random.nextInt(maxDepositSize-minDepositSize)+1+minDepositSize, 2);
+                        Main.map[i][j]=new DepositField(i,j, random.nextInt(maxDepositSize)+minDepositSize, 2);
                         break;
                     case 4:
-                        Main.map[i][j]=new DepositField(i,j, random.nextInt(maxDepositSize-minDepositSize)+1+minDepositSize, 6);
+                        Main.map[i][j]=new DepositField(i,j, random.nextInt(maxDepositSize)+minDepositSize, 6);
                         break;
                     case 5:
-                        Main.map[i][j]=new DepositField(i,j, random.nextInt(maxDepositSize-minDepositSize)+1+minDepositSize, 3);
+                        Main.map[i][j]=new DepositField(i,j, random.nextInt(maxDepositSize)+minDepositSize, 3);
                         break;
                     case 6:
-                        Main.map[i][j]=new DepositField(i,j, random.nextInt(maxDepositSize-minDepositSize)+1+minDepositSize, 1);
+                        Main.map[i][j]=new DepositField(i,j, random.nextInt(maxDepositSize)+minDepositSize, 1);
                         break;
                     case 7:
-                        Main.map[i][j]=new DepositField(i,j, random.nextInt(maxDepositSize-minDepositSize)+1+minDepositSize, 5);
+                        Main.map[i][j]=new DepositField(i,j, random.nextInt(maxDepositSize)+minDepositSize, 5);
                         break;
                     case 8:
-                        Main.map[i][j]=new DepositField(i,j, random.nextInt(maxDepositSize-minDepositSize)+1+minDepositSize, 4);
+                        Main.map[i][j]=new DepositField(i,j, random.nextInt(maxDepositSize)+minDepositSize, 4);
                         break;
                     case 9:
-                        Main.map[i][j]=new DepositField(i,j, random.nextInt(maxDepositSize-minDepositSize)+1+minDepositSize, 7);
+                        Main.map[i][j]=new DepositField(i,j, random.nextInt(maxDepositSize)+minDepositSize, 7);
                         break;
                 }
 

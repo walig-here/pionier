@@ -38,8 +38,6 @@ public class Main {
         // pętla główna
         for (int turn = 0; turn < max_turns; turn++) {
 
-            System.out.println("TURA " + (turn+1));
-
             // Pętla działań wywoływanych co turę na kafelkach planszy
             for (int x = 0; x < map.length; x++) {
                 for(int y = 0; y < map[x].length; y++){
@@ -181,6 +179,21 @@ public class Main {
 
         System.out.println("Ekwipunek:");
         for(Item item : pioneer.getInventory()){
+            System.out.printf("\t%-25s\t%-5d\t%-5.2f\n", item.getName(), item.getAmount(), item.getIncome());
+        }
+
+        System.out.println("Zasoby na mapie:");
+        for(int i = 1; i < 9; i++){
+            Item item = new Item(i,0,0);
+            for(Field[] row : map){
+                for(Field field : row){
+                    if(field instanceof DepositField && ((DepositField)field).getItem_id() == i){
+                        item.setAmount(item.getAmount() + ((DepositField)field).getCapacityOfDeposit());
+                        if(field.getMachine() != null && field.getMachine().getActive())
+                        item.setIncome(item.getIncome() - field.getMachine().getOutput());
+                    }
+                }
+            }
             System.out.printf("\t%-25s\t%-5d\t%-5.2f\n", item.getName(), item.getAmount(), item.getIncome());
         }
     }
