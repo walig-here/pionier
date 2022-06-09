@@ -16,7 +16,7 @@ public class DepositField extends Field {
     private int item_id; // ID wydobywanego stąd itemu
     private int deposit_capacity; // maksymalna ilość surowca do wydobycia
     private static int move_cost = -1; // punkty ruchu odbierane pionierowi przy wejściu na niezabudowane pole tego typu
-    private static float excavation_penalty=0.25f; // współczynnik określający ile punktów ruchu zabudowane pole odbierze pionierowi w stosunku do swojej niezabudowanej wersji
+    private static float excavation_penalty=0.00f; // współczynnik określający ile punktów ruchu zabudowane pole odbierze pionierowi w stosunku do swojej niezabudowanej wersji
 
     // konstruktor
     public DepositField(int x, int y, int capacity, int item_id){

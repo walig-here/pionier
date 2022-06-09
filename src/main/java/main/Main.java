@@ -9,10 +9,11 @@ import java.util.concurrent.TimeUnit;
 
 public class Main {
     static public int map_size; // rozmiar planszy(w polach)
+
     static public Field[][] map; // plansza na której odbywa się symulacja
     static private MenuGUI menu;
     static public Pioneer pioneer; // pionier
-    static final private Item targetItem = new ComponentItem(16, 0, 0); // przedmiot, ktorego zdobycie, konczy symulacje (przedmiot docelowy)
+    static final private Item targetItem = new ComponentItem(23, 0, 0); // przedmiot, ktorego zdobycie, konczy symulacje (przedmiot docelowy)
     static private ArrayList<Item> children = new ArrayList<>();
     static private ArrayList<Integer> buildingQueue = new ArrayList<>();
 
@@ -29,6 +30,12 @@ public class Main {
 
         // pętla główna
         for (int turn = 0; turn < max_turns; turn++) {
+
+            try {
+            TimeUnit.MILLISECONDS.sleep(800);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
 
             // w pierwszej turze pionier wybiera miejsce pod pole centralne
             if(turn == 0) if(pioneer.chooseCentral(map, buildingQueue) == -1) return -3;
@@ -70,22 +77,17 @@ public class Main {
             {
                 boolean starting = true; // true - jest to pierwszy ruch pioniera w tej turze
                 do{
-                    try {
-                        TimeUnit.MILLISECONDS.sleep(600);
-                    } catch (InterruptedException e) {
-                        throw new RuntimeException(e);
-                    }
 
                     // Przemieszczenie na pole
                     pioneer.walk(map, starting);
                     if(starting) starting = false;
 
                     // Pionier próbuje na aktualnie zajmowanym polu coś zbudować
-                    pioneer.buildMachine(map, buildingQueue);
-
-                    debug_simulation_preview(turn);
+                    if(pioneer.buildMachine(map, buildingQueue) == -1) return -1;
                 }while (pioneer.getMove_points() != 0 && pioneer.getPath().size() > 0);
             }
+
+            debug_simulation_preview(turn);
 
             // sprawdzamy czy wyprodukowano odpowiedni przedmiot
             for(Item item : pioneer.getInventory()){
@@ -177,7 +179,7 @@ public class Main {
                 //TEREN
                 String tile_fx;
                 if(map[x][y] instanceof WaterField)  tile_fx = "~~~~~~";
-                else if(map[x][y] instanceof CentralField) tile_fx = "[   ] ";
+                else if(map[x][y] instanceof CentralField) tile_fx = "[    ]";
                 else if(map[x][y] instanceof GlitchSourceField) tile_fx = "*****" + ((GlitchSourceField)map[x][y]).getGlitch_id();
                 else if(map[x][y] instanceof DepositField) tile_fx = "=====" + ((DepositField)map[x][y]).getItem_id();
                 else tile_fx= "------";
@@ -223,8 +225,7 @@ public class Main {
             System.out.println("Pozadany przedmiot: " + i.getName());
         }
 
-
-        /*System.out.println("Ekwipunek:");
+        System.out.println("Ekwipunek:");
         for(Item item : pioneer.getInventory()){
             System.out.printf("\t%-25s\t%-5d\t%-5.2f\n", item.getName(), item.getAmount(), item.getIncome());
         }
@@ -242,7 +243,7 @@ public class Main {
                 }
             }
             System.out.printf("\t%-25s\t%-5d\t%-5.2f\n", item.getName(), item.getAmount(), item.getIncome());
-        }*/
+        }
     }
 
     private static void setBuildingOrder() {

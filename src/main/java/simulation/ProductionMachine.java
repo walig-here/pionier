@@ -61,10 +61,10 @@ public class ProductionMachine extends Machine {
     }
 
     // zmiana ilości przedmitów (amount) wynikła z produkcji
-    public void production(ArrayList<Integer> buildingOrder, Pioneer pioneer, simulation.terrain.Field[][] map) {
+    public int production(ArrayList<Integer> buildingOrder, Pioneer pioneer, simulation.terrain.Field[][] map) {
 
         // sprawdzamy czy nie ma glitcha wyłączającego w maszynie
-        if(super.glitch instanceof TurnOffGlitch) return;
+        if(super.glitch instanceof TurnOffGlitch) return 0;
 
         // sprawdzamy czy mamy wystarczająco przedmiotów do kontynuacji produkcji
         startProduction(pioneer.getInventory());
@@ -79,16 +79,16 @@ public class ProductionMachine extends Machine {
                         buildingOrder.add(0,inventoryItem.getID());
                         pioneer.getPath().clear();
                         pioneer.setTo_build(-1);
-                        pioneer.setNextBuilding(buildingOrder,map);
+                        if(pioneer.setNextBuilding(buildingOrder,map) == -1) return -1;
                         pioneer.setEmergency_construction(true);
                     }
-                    return;
+                    return 0;
                 }
                 break;
             }
         }
 
-        if(!super.getActive()) return;
+        if(!super.getActive()) return 0;
 
         // produkcja trwa kolejną turę
         production_turn++;
@@ -98,7 +98,7 @@ public class ProductionMachine extends Machine {
             Item temp = new Item(produced_item, 0,0);
 
             // jeżeli taka ilość czasu jeszcze nie minęła to produkcja trwa dalej
-            if(temp.getProductionTime() > production_turn) return;
+            if(temp.getProductionTime() > production_turn) return 0;
 
             // jeżeli taka ilość czasu już minęła to resetujemy timer produkcji
             production_turn = 0;
@@ -119,6 +119,7 @@ public class ProductionMachine extends Machine {
                 break;
             }
         }
+        return 0;
     }
 
     public ArrayList<Item> getInput() {

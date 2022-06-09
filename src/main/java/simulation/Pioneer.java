@@ -251,19 +251,19 @@ public class Pioneer {
      * @param map zbiór pól składających się na planszę symulacji
      * @param buildingOrder lista określająca kolejność konstrukcji, których ma podjąć się pionier
      * */
-    public void buildMachine(Field[][] map, ArrayList<Integer> buildingOrder) {
+    public int buildMachine(Field[][] map, ArrayList<Integer> buildingOrder) {
 
         // Sprawdzamy czy pionier znajduje się na placu budowy w polu building_field
-        if(coordinates[0] != building_field[0] || coordinates[1] != building_field[1]) return;
+        if(coordinates[0] != building_field[0] || coordinates[1] != building_field[1]) return 0;
 
         // Sprawdzamy czy już przeszedł całą zaplanowaną drogę start->magazyn->budowa
-        if(path.size() != 0) return;
+        if(path.size() != 0) return 0;
 
         // Sprawdzamu czy pionier ma w ogóle zamiar cokolwiek zbudować
-        if(to_build == -1) return;
+        if(to_build == -1) return 0;
 
         // Sprawdzamy czy pionier może jeszcze coś zbudować
-        if(!could_build) return;
+        if(!could_build) return 0;
 
         // Ustawiamy na polu maszyne na podstawie receptury itemu, który chcemy zacząć wytwarzać
         Item start_producting;
@@ -282,22 +282,22 @@ public class Pioneer {
                 {
                     // Jeżeli nie ma wystarczająco itemu oraz ten item nie przyrasta to wybiera się na jego zbudowanie
                     if(item_eq.getAmount() - item_cost.getAmount() < 0) {
-                        if(item_eq.getIncome() <= 0){
+                        if(item_eq.getIncome() <= 0 && to_build != item_eq.getID()){
                             emergency_construction = false;
                             to_build = -1;
                             path.clear();
                             buildingOrder.add(0,item_cost.getID());
-                            setNextBuilding(buildingOrder, map);
+                            if(setNextBuilding(buildingOrder, map) == -1) return -1;
                             emergency_construction = true;
                         }
-                        return;
+                        return 0;
                     }
                     owns_item = true;
                     break;
                 }
             }
             // Jeżeli pionier wcale nie posiada potrzebnego itemu to również nie zbuduje maszyny
-            if(!owns_item) return;
+            if(!owns_item) return 0;
         }
 
         // Stawiamy maszynę na polu.
@@ -328,6 +328,8 @@ public class Pioneer {
 
         // Nie wie też gdzie budować kolejną maszynę
         building_field[0] = building_field[1] = -1;
+
+        return 0;
     }
 
 
