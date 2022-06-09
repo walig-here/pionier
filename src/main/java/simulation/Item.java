@@ -101,7 +101,7 @@ public class Item {
             // 23 - superkomputer
             case 23: path += "supercomputer.txt"; break;
 
-            // 10 - sztabka żelaza
+            // 24 - sztabka żelaza
             case 24: path += "iron_ingot.txt"; break;
         }
 
