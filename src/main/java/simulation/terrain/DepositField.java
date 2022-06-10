@@ -78,24 +78,29 @@ public class DepositField extends Field {
 
         // Jeżeli na polu jest maszyna wydobywająca surowiec lub generująca prąd to wyczerpuje ona zasoby.
         // Sprawdzamy czy pole zawiera maszyne.
-        if(machine == null) return;
+        if(machine == null)
+            return;
 
         // Sprawdzamy czy maszyna stojąca na polu jest aktywna
-        if(!machine.getActive()) return;
+        if(machine.getActive() == 0)
+            return;
 
         // Sprawdzamy czy na tym polu jest jeszcze cokolwiek do wydobycia
         // Jeżeli nie ma to maszyna się zatrzymuje
         if(deposit_capacity <= 0) {
             if(machine instanceof ProductionMachine) ((ProductionMachine)machine).stopProduction(inventory);
             else machine.stopProduction(inventory);
+            machine.setActive(-1);
             return;
         }
 
         // Sprawdzamy czy ta maszyna jest odpowiedniego typu
         if(machine.getProduced_item() != 0 && machine.getProduced_item() != item_id) return;
 
+        if(machine.getProduced_item() == 0 ) deposit_capacity -= machine.getOutput()/2;
+
         // Maszyna wydobywa tyle jednostek surowca ile generuje produktu wyjściowego
-        deposit_capacity -= machine.getOutput();
+        else deposit_capacity -= machine.getOutput();
     }
 
     public int getItem_id() {

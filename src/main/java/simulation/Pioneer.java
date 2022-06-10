@@ -282,12 +282,13 @@ public class Pioneer {
                 {
                     // Jeżeli nie ma wystarczająco itemu oraz ten item nie przyrasta to wybiera się na jego zbudowanie
                     if(item_eq.getAmount() - item_cost.getAmount() < 0) {
-                        if(item_eq.getIncome() <= 0 && to_build != item_eq.getID()){
+                        if(item_eq.getIncome() <= 0 && buildingOrder.get(0) != item_cost.getID()){
                             emergency_construction = false;
                             to_build = -1;
                             path.clear();
                             buildingOrder.add(0,item_cost.getID());
-                            if(setNextBuilding(buildingOrder, map) == -1) return -1;
+                            if(setNextBuilding(buildingOrder, map) == -1)
+                                return -1;
                             emergency_construction = true;
                         }
                         return 0;
@@ -436,6 +437,24 @@ public class Pioneer {
                                                                     // komórka 1 i 2 - koordynaty pola
                                                                     // komórka 3 - waga pola
 
+        ArrayList<Integer> needed_machines = new ArrayList<>();
+        Item item = null;
+        if(to_build >= 8){
+            // Sprawdzamy jakich maszyn potrzebujemy
+            {
+                item = new ComponentItem(to_build, 0,0); // item, który chcemy wyprodukować
+                for(Item input_item : ((ComponentItem)item).getRecipe().getInput()){
+
+                    // Sprawdzamy czy przedmiot wejściowy jest wytwarzany przez jakąś maszynę
+                    if(!(input_item instanceof ComponentItem)) continue;
+
+                    // Sprawdzamy jaka maszyna wytwarza ten przedmiot wejściowy
+                    // Dodajemy te maszynę do wymaganych w okolicy budowanej akutalnie budowanej maszyny
+                    needed_machines.add(((ComponentItem)input_item).getRecipe().getMachine());
+                }
+            }
+        }
+
         // Zbieramy potencjalnie miejsca pod budowę.
         // Sprawdzamy czy pole jest w dopuszczalnej minimalnej odległości od niezbędnych maszyn lub zawiera niezbędny do działania maszyny zasób.
         for (Field[] row : map)
@@ -467,24 +486,8 @@ public class Pioneer {
 
                 // Reszta maszyn potrzebuje być w otoczeniu maszyn wytwarzających ich materiały wejściowe
                 else{
-
-                    // Sprawdzamy jakich maszyn potrzebujemy
-                    ArrayList<Integer> needed_machines = new ArrayList<>();
-                    {
-                        ComponentItem item = new ComponentItem(to_build, 0,0); // item, który chcemy wyprodukować
-                        for(Item input_item : item.getRecipe().getInput()){
-
-                            // Sprawdzamy czy przedmiot wejściowy jest wytwarzany przez jakąś maszynę
-                            if(!(input_item instanceof ComponentItem)) continue;
-
-                            // Sprawdzamy jaka maszyna wytwarza ten przedmiot wejściowy
-                            // Dodajemy te maszynę do wymaganych w okolicy budowanej akutalnie budowanej maszyny
-                            needed_machines.add(((ComponentItem)input_item).getRecipe().getMachine());
-                        }
-                    }
-
                     // Szukamy pól mapy, które są oddalone o co najwyżej range
-                    final int RANGE = 3; // maksymalne oddalenie maszyny od maszyn wytwarzających jej materiały wejściowe
+                    final int RANGE = 2; // maksymalne oddalenie maszyny od maszyn wytwarzających jej materiały wejściowe
                     for(int x = 0; x < map.length; x++) {
                         for(int y = 0; y < map[x].length; y++){
 
@@ -501,6 +504,16 @@ public class Pioneer {
                             for(int i = 0; i < needed_machines.size(); i++){
                                 // Jeżeli taką zawiera to nie usuwamy maszynę z listy potrzebnych maszyn - nie musimy już jej szukać w innych polach
                                 if(map[x][y].getMachine().getID() == needed_machines.get(i)) {
+
+                                    boolean producing_component = false;
+                                    for(Item input_item : ((ComponentItem)item).getRecipe().getInput()) {
+                                        if(input_item.getID() == map[x][y].getMachine().getProduced_item()) {
+                                            producing_component = true;
+                                            break;
+                                        }
+                                    }
+
+                                    if(!producing_component) break;
                                     needed_machines.remove(i);
                                     break;
                                 }
@@ -587,7 +600,17 @@ public class Pioneer {
         if(to_build != -1) return 1;
 
         // Pobieramy ID produkowanego przez następną potrzebną maszynę przedmiotu
+
         to_build = buildingOrder.get(0);
+
+        // Jeżeli danego zasobu jest aż nadmiar to nie będziemy dostawiać jego fabryki
+        for(Item item : inventory) {
+            if(item.getID() == to_build && item.getAmount() > 0 && item.getAmount() > 1000) {
+                buildingOrder.remove(0);
+                to_build = -1;
+                return 1;
+            }
+        }
 
         // Szukamy idealnego miejsca pod budowę wybranego obiektu.
         findBuildingPlace(map);
@@ -602,7 +625,7 @@ public class Pioneer {
                         return -1;
             }
 
-            // Jeżeli tak to pionier spróbuje kontynuować pracę
+            // Jeżeli tak to pionier spróbuje kontynuować pracę i pominąć te budowę
             return 1;
         }
 

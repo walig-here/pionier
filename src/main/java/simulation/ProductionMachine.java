@@ -1,5 +1,7 @@
 package simulation;
 
+import simulation.terrain.Field;
+
 import java.util.ArrayList;
 
 public class ProductionMachine extends Machine {
@@ -20,7 +22,7 @@ public class ProductionMachine extends Machine {
     //rozpoczyna produkcję, zwieksza income produktow, zmniejsza income itemow potrzevbnych do wytworzenia produktu
     @Override
     public void startProduction(ArrayList<Item> inventory) {
-        if(super.getActive()) return;
+        if(super.getActive() == 1 || super.getActive() == -1) return;
 
         for (Item inventoryItem : inventory) {
             if (inventoryItem.getID() != getProduced_item()) continue;
@@ -35,13 +37,13 @@ public class ProductionMachine extends Machine {
                 break;
             }
         }
-        super.setActive(true);
+        super.setActive(1);
         Machine.active_machines++;
     }
 
     @Override
     public void stopProduction(ArrayList<Item> inventory){
-        if(!super.getActive()) return;
+        if(super.getActive() == 0 || super.getActive() == -1) return;
 
         for (Item inventoryItem : inventory) {
             if (inventoryItem.getID() != getProduced_item()) continue;
@@ -56,15 +58,15 @@ public class ProductionMachine extends Machine {
                 break;
             }
         }
-        super.setActive(false);
+        super.setActive(0);
         Machine.active_machines--;
     }
 
     // zmiana ilości przedmitów (amount) wynikła z produkcji
-    public int production(ArrayList<Integer> buildingOrder, Pioneer pioneer, simulation.terrain.Field[][] map) {
+    public int production(ArrayList<Integer> buildingOrder, Pioneer pioneer, Field[][] map) {
 
         // sprawdzamy czy nie ma glitcha wyłączającego w maszynie
-        if(super.glitch instanceof TurnOffGlitch) return 0;
+        if(super.glitch != null && super.glitch.getID() == 0) return 0;
 
         // sprawdzamy czy mamy wystarczająco przedmiotów do kontynuacji produkcji
         startProduction(pioneer.getInventory());
@@ -79,7 +81,8 @@ public class ProductionMachine extends Machine {
                         buildingOrder.add(0,inventoryItem.getID());
                         pioneer.getPath().clear();
                         pioneer.setTo_build(-1);
-                        if(pioneer.setNextBuilding(buildingOrder,map) == -1) return -1;
+                        if(pioneer.setNextBuilding(buildingOrder,map) == -1)
+                            return -1;
                         pioneer.setEmergency_construction(true);
                     }
                     return 0;
@@ -88,7 +91,7 @@ public class ProductionMachine extends Machine {
             }
         }
 
-        if(!super.getActive()) return 0;
+        if(super.getActive() == 0) return 0;
 
         // produkcja trwa kolejną turę
         production_turn++;

@@ -80,8 +80,8 @@ public class MapGenerator {
 
         // główna pętla symulacji
         int score = 0;
-        switch (Main.simulationLoop(1000)) {
-            case -1: System.out.println("PORAŻKA!\nPionier nie ma już gdzie zbudować niezbędnych maszyn.");break;
+        switch (Main.simulationLoop(200)) {
+            case -1: System.out.println("PORAŻKA!\nPionier nie ma już gdzie zbudować niezbędnych maszyn. " + Main.buildingQueue.get(0));break;
             case -2: System.out.println("PORAŻKA!\nPionier nie zdążył wyprodukować pożądanego przedmiotu w danym mu czasie!");break;
             case -3: System.out.println("PORAŻKA!\nPionier nie był w stanie założyć kompleksu przemysłowego!");break;
             case -4: System.out.println("PORAŻKA!\nPionier nie był w stanie przybyć do tej okolicy!");break;

@@ -13,9 +13,9 @@ public class Main {
     static public Field[][] map; // plansza na której odbywa się symulacja
     static private MenuGUI menu;
     static public Pioneer pioneer; // pionier
-    static final private Item targetItem = new ComponentItem(23, 0, 0); // przedmiot, ktorego zdobycie, konczy symulacje (przedmiot docelowy)
+    static final private Item targetItem = new ComponentItem(16, 0, 0); // przedmiot, ktorego zdobycie, konczy symulacje (przedmiot docelowy)
     static private ArrayList<Item> children = new ArrayList<>();
-    static private ArrayList<Integer> buildingQueue = new ArrayList<>();
+    static public ArrayList<Integer> buildingQueue = new ArrayList<>();
 
     public static void main(String[] args) {
         menu=new MenuGUI();
@@ -32,7 +32,7 @@ public class Main {
         for (int turn = 0; turn < max_turns; turn++) {
 
             try {
-            TimeUnit.MILLISECONDS.sleep(800);
+            TimeUnit.MILLISECONDS.sleep(1);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
@@ -136,10 +136,12 @@ public class Main {
         // EKWIPUNEK
         for(int i = 0; i <= 24; i++) {
             Item new_item;
-            if(i == 0) new_item = new Item(i,20,0);
+            if(i == 0) new_item = new Item(i,100,0);
             else new_item = new ComponentItem(i,20,0);
             pioneer.getInventory().add(new_item);
         }
+        pioneer.getInventory().get(16).setAmount(50);
+        pioneer.getInventory().get(19).setAmount(17);
 
         // Ustalenie prawdopodobieństw wystąpienia zakłóceń
         for (Field[] fields : map) {
@@ -185,9 +187,7 @@ public class Main {
                 else tile_fx= "------";
                 char[] tile = tile_fx.toCharArray();
 
-                // PIONIER
-                if(x == pioneer.getCoordinates()[0] && y == pioneer.getCoordinates()[1])
-                    tile[2] = 'P';
+
 
                 // ŚCIEŻKA
                 for(Integer[] filed : pioneer.getPath()) {
@@ -196,6 +196,10 @@ public class Main {
                         break;
                     }
                 }
+
+                // PIONIER
+                if(x == pioneer.getCoordinates()[0] && y == pioneer.getCoordinates()[1])
+                    tile[2] = 'P';
 
                 // MASZYNA
 
@@ -219,7 +223,7 @@ public class Main {
             System.out.println();
         }
         System.out.println("Numer tury: " + turns);
-        System.out.println("Ilosc maszyn: " + Machine.count + "(" + Machine.active_machines + " aktywnych)");
+        System.out.println("Ilosc maszyn: " + Machine.count + "(" + Machine.active_machines + " aktywnych, " + Machine.glitched_machines + " zglitchowanych)");
         if(buildingQueue.size() != 0) {
             Item i = new Item(buildingQueue.get(0),0,0);
             System.out.println("Pozadany przedmiot: " + i.getName());
@@ -237,8 +241,12 @@ public class Main {
                 for(Field field : row){
                     if(field instanceof DepositField && ((DepositField)field).getItem_id() == i){
                         item.setAmount(item.getAmount() + ((DepositField)field).getCapacityOfDeposit());
-                        if(field.getMachine() != null && field.getMachine().getActive())
-                        item.setIncome(item.getIncome() - field.getMachine().getOutput());
+                        if(field.getMachine() != null && field.getMachine().getActive() == 1 ){
+                            if(field.getMachine().getID() < 3 || field.getMachine().getID() == 4 ){
+                                if(field.getMachine().getID() == 0) item.setIncome(item.getIncome() - field.getMachine().getOutput()/2);
+                                else item.setIncome(item.getIncome() - field.getMachine().getOutput());
+                            }
+                        }
                     }
                 }
             }
