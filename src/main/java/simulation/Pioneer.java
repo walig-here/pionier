@@ -1,4 +1,5 @@
 package simulation;
+import main.Main;
 import rendering.Sprite;
 import simulation.terrain.CentralField;
 import simulation.terrain.DepositField;
@@ -76,7 +77,10 @@ public class Pioneer {
         }
 
         // Jeżeli nie ma żadnych potencjalnych pól to pionier przegrywa symulacje
-        if(potential_centrals.size() == 0) return -1;
+        if(potential_centrals.size() == 0) {
+            Main.addToLog("PORAŻKA! PIONIER NIE BYL W STANIE WYZNACZYĆ ŻADNEGO MIEJSCA POD MAGAZYN!");
+            return -1;
+        }
 
         // Nadajemy polom, w których okolicy znajduje się więcej surowców większą wagę
         // Nadajemy polom, w których okolicy znajduje się większe prawdopodobieństwo zakłócenia mniejszą wagę
@@ -116,6 +120,7 @@ public class Pioneer {
             }
         }
         map[best_cental[0]][best_cental[1]] = new CentralField(best_cental[0],best_cental[1]);
+        Main.addToLog("\tPionier wybrał miejsce pod budowę magazynu na polu (" + best_cental[0] + "," + best_cental[1] + ") z puli " + potential_centrals.size() + " odpowiednich pod magazyn pól.");
         return 0;
     }
 
@@ -282,13 +287,13 @@ public class Pioneer {
                 {
                     // Jeżeli nie ma wystarczająco itemu oraz ten item nie przyrasta to wybiera się na jego zbudowanie
                     if(item_eq.getAmount() - item_cost.getAmount() < 0) {
+                        Main.addToLog("\tPrzerwano konstrukcję " + new_building.getName() + " ze względu na brak " + item_cost.getName() + ".");
                         if(item_eq.getIncome() <= 0 && buildingOrder.get(0) != item_cost.getID()){
                             emergency_construction = false;
                             to_build = -1;
                             path.clear();
                             buildingOrder.add(0,item_cost.getID());
-                            if(setNextBuilding(buildingOrder, map) == -1)
-                                return -1;
+                            if(setNextBuilding(buildingOrder, map) == -1) return -1;
                             emergency_construction = true;
                         }
                         return 0;
@@ -309,7 +314,7 @@ public class Pioneer {
             for(Item item_eq : inventory){
                 if(item_cost.getID() == item_eq.getID())
                 {
-                    item_eq.setAmount(item_eq.getAmount() - item_cost.getAmount());
+                    item_eq.setAmount(item_eq.getAmount() - item_cost.getAmount(), true);
                     break;
                 }
             }
@@ -574,6 +579,9 @@ public class Pioneer {
         for(Integer[] field : potential_fields)
             if(field[2] < min[2]) min = field;
         building_field[0] = min[0]; building_field[1] = min[1];
+
+        Item i = new Item(to_build,0,0);
+        Main.addToLog("\tPionier postanowił zbudować maszynę produkującą " + i.getName() + " na polu (" + building_field[0] + "," + building_field[1] + "), które wybrał z puli " + potential_fields.size() + " potencjalnych pól budowlanych.");
     }
 
 
@@ -608,7 +616,7 @@ public class Pioneer {
             if(item.getID() == to_build && item.getAmount() > 0 && item.getAmount() > 1000) {
                 buildingOrder.remove(0);
                 to_build = -1;
-                return 1;
+                return 2;
             }
         }
 

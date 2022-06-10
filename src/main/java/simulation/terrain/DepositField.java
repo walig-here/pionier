@@ -1,5 +1,6 @@
 package simulation.terrain;
 
+import main.Main;
 import simulation.Item;
 import simulation.Pioneer;
 import simulation.ProductionMachine;
@@ -91,6 +92,7 @@ public class DepositField extends Field {
             if(machine instanceof ProductionMachine) ((ProductionMachine)machine).stopProduction(inventory);
             else machine.stopProduction(inventory);
             machine.setActive(-1);
+            Main.addToLog("Maszyna " + machine.getName() + " została trwale wyłączona ze względu na wyczerpanie się zasobów pola (" + coordinates[0] + ", " + coordinates[1] + "), na którym się znajduje.");
             return;
         }
 

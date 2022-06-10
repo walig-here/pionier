@@ -1,5 +1,6 @@
 package simulation;
 
+import main.Main;
 import simulation.terrain.Field;
 
 import java.util.ArrayList;
@@ -76,8 +77,11 @@ public class ProductionMachine extends Machine {
 
                 // Jeżeli nie mamy wystarczającej ilości wymaganego przedmiotu, to zatrzymujemy produkcję i nakazujemy pionierowi pozyskać przedmiot
                 if(inventoryItem.getAmount() - inputItem.getAmount() < 0 && inventoryItem.getIncome() < 0) {
+
+                    Main.addToLog("\tMaszyna " + getName() + " została tymczasowo wyłączona ze względu na brak " + inputItem.getName() + ".");
                     stopProduction(pioneer.getInventory());
-                    if(!pioneer.getEmergency_construction()){
+
+                    if(!pioneer.getEmergency_construction() && buildingOrder.get(0) != inventoryItem.getID()){
                         buildingOrder.add(0,inventoryItem.getID());
                         pioneer.getPath().clear();
                         pioneer.setTo_build(-1);
@@ -110,7 +114,7 @@ public class ProductionMachine extends Machine {
         //przeszukuje ekwipunek w poszukiwaniu itemu produkowanego przez maszyne i zwieksza jego ilsoc
         for (Item item : pioneer.getInventory()) {
             if (item.getID() != getProduced_item()) continue;
-            item.setAmount(item.getAmount() + getOutput());
+            item.setAmount(item.getAmount() + getOutput(), true);
             break;
         }
 
@@ -118,7 +122,7 @@ public class ProductionMachine extends Machine {
         for (Item inputItem : input) {
             for (Item inventoryItem : pioneer.getInventory()) {
                 if (inputItem.getID() != inventoryItem.getID()) continue;
-                inventoryItem.setAmount(inventoryItem.getAmount() - inputItem.getAmount());
+                inventoryItem.setAmount(inventoryItem.getAmount() - inputItem.getAmount(), true);
                 break;
             }
         }

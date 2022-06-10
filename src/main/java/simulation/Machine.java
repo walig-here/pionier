@@ -1,5 +1,7 @@
 package simulation;
 
+import main.Main;
+
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
@@ -195,7 +197,7 @@ public class Machine {
         //przeszukuje ekwipunek w poszukiwaniu itemu produkowanego przez maszyne i zwieksza jego ilsoc
         for (Item inventoryItem : inventory) {
             if (inventoryItem.getID() != getProduced_item()) continue;
-            inventoryItem.setAmount(inventoryItem.getAmount() + output);
+            inventoryItem.setAmount(inventoryItem.getAmount() + output, true);
             break;
         }
     }
@@ -213,6 +215,7 @@ public class Machine {
     }
 
     public void deactivateGlitch() {
+        Main.addToLog("\tW maszynie "+ name + " problemy spowodowane zakłóceniem " + glitch.getID() + " skończyły się.");
         glitch = null;
         glitched_machines--;
     }

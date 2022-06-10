@@ -92,5 +92,6 @@ public class MapGenerator {
         }
         score += Main.getScore();
         System.out.println("PUNKTY: " + score);
+        Main.saveLog();
     }
 }

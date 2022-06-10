@@ -1,5 +1,7 @@
 package simulation;
 
+import main.Main;
+
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.Scanner;
@@ -149,7 +151,7 @@ public class Item {
         return amount;
     }
 
-    public void setAmount(int amount) {
+    public void setAmount(int amount, boolean in_inventory) {
         this.amount = amount;
     }
 
