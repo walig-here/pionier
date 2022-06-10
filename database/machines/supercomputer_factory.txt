@@ -1,5 +1,5 @@
 "name":Fabryka superkomputerów
-"output":10
+"output":1
 "cost":0:1
 "cost":16:2
 "cost":19:1
