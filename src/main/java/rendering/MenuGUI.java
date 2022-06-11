@@ -17,7 +17,7 @@ public class MenuGUI extends JFrame implements ActionListener {
 
     public MenuGUI(){
 
-        ImageIcon logo = new ImageIcon("logo.png");
+        ImageIcon logo = new ImageIcon("src\\textures\\logo.png");
 
         button1=new JButton(); //otwiera edytor map
         button1.setBounds(100,100,175,50);

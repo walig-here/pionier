@@ -103,6 +103,9 @@ public class Kanwa1 extends JPanel implements ActionListener{
                 }
 
                 rys1.fillRect(i*25,j*25,25,25);
+
+                //if(i==Main.map[i][j].getMachine().getID())
+
                 if(i==Main.pioneer.getCoordinates()[0]&&j==Main.pioneer.getCoordinates()[1]){
                     rys1.setPaint(Color.black);
                     rys1.setStroke(new BasicStroke(3));
@@ -110,6 +113,7 @@ public class Kanwa1 extends JPanel implements ActionListener{
                     rys1.drawLine(i*25+25,j*25,i*25,j*25+25);
                     rys1.setStroke(new BasicStroke(1));
                 }
+
             }
         }
 
@@ -136,9 +140,10 @@ public class Kanwa1 extends JPanel implements ActionListener{
 
 
         if(turn<max_turns) {
-            turn++;
+
             Main.simulationLoop(turn);
             super.repaint();
+            turn++;
         }else{
             isRunning=false;
         }
