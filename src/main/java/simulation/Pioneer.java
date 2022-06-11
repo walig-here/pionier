@@ -10,12 +10,12 @@ public class Pioneer {
     /**
      * Tablica liczb całkowitych. W pierwszej komórce przechowuje pozycję x pioniera na planszy. W drugiej przechowuje pozycję y pioniera na planszy.
      * */
-    private int[] coordinates;
+    private final int[] coordinates;
 
     /**
      * Lista przedmiotów posiadanych przez pioniera.
      * */
-    private ArrayList<Item> inventory;
+    private final ArrayList<Item> inventory;
     /**
      * Punkty ruchu posiadane przez pioniera. Determinują one ilośc pól, jaką ten może się przemieścić.
      * */
@@ -37,11 +37,11 @@ public class Pioneer {
      * Tablica liczb całkowitych przechowująca koordynaty pola, na którym pionier dokona najbliższej konstrukcji.
      * Pierwsza komórka odpowiada za współrzędną x, druga za współrzędną y.
      * */
-    private int[] building_field;
+    private final int[] building_field;
     /**
      * Lista dwuelementowych tablic, zawierających koordynaty pól, tworzących ścieżkę, po której będzie poruszał się pionier.
      * */
-    private ArrayList<Integer[]> path;
+    private final ArrayList<Integer[]> path;
 
     private boolean emergency_construction; // określa czy pionier aktualnie wykonuje prorytetową budowę
 
@@ -271,11 +271,11 @@ public class Pioneer {
         if(!could_build) return 0;
 
         // Ustawiamy na polu maszyne na podstawie receptury itemu, który chcemy zacząć wytwarzać
-        Item start_producting;
+        ComponentItem start_producting;
         Machine new_building;
         if(to_build > 0){
             start_producting = new ComponentItem(to_build, 0, 0);
-            new_building = new ProductionMachine(((ComponentItem)start_producting).getRecipe().getMachine(),to_build);
+            new_building = new ProductionMachine(start_producting.getRecipe().getMachine(),to_build);
         }
         else new_building= new Machine(0, to_build);
 
@@ -314,7 +314,7 @@ public class Pioneer {
             for(Item item_eq : inventory){
                 if(item_cost.getID() == item_eq.getID())
                 {
-                    item_eq.setAmount(item_eq.getAmount() - item_cost.getAmount(), true);
+                    item_eq.setAmount(item_eq.getAmount() - item_cost.getAmount());
                     break;
                 }
             }
@@ -443,12 +443,12 @@ public class Pioneer {
                                                                     // komórka 3 - waga pola
 
         ArrayList<Integer> needed_machines = new ArrayList<>();
-        Item item = null;
+        ComponentItem item = null;
         if(to_build >= 8){
             // Sprawdzamy jakich maszyn potrzebujemy
             {
                 item = new ComponentItem(to_build, 0,0); // item, który chcemy wyprodukować
-                for(Item input_item : ((ComponentItem)item).getRecipe().getInput()){
+                for(Item input_item : item.getRecipe().getInput()){
 
                     // Sprawdzamy czy przedmiot wejściowy jest wytwarzany przez jakąś maszynę
                     if(!(input_item instanceof ComponentItem)) continue;
@@ -492,7 +492,7 @@ public class Pioneer {
                 // Reszta maszyn potrzebuje być w otoczeniu maszyn wytwarzających ich materiały wejściowe
                 else{
                     // Szukamy pól mapy, które są oddalone o co najwyżej range
-                    final int RANGE = 2; // maksymalne oddalenie maszyny od maszyn wytwarzających jej materiały wejściowe
+                    final int RANGE = 0; // maksymalne oddalenie maszyny od maszyn wytwarzających jej materiały wejściowe
                     for(int x = 0; x < map.length; x++) {
                         for(int y = 0; y < map[x].length; y++){
 
@@ -511,7 +511,7 @@ public class Pioneer {
                                 if(map[x][y].getMachine().getID() == needed_machines.get(i)) {
 
                                     boolean producing_component = false;
-                                    for(Item input_item : ((ComponentItem)item).getRecipe().getInput()) {
+                                    for(Item input_item : item.getRecipe().getInput()) {
                                         if(input_item.getID() == map[x][y].getMachine().getProduced_item()) {
                                             producing_component = true;
                                             break;
@@ -539,7 +539,12 @@ public class Pioneer {
         }
 
         // Sprawdzamy czy pionier znalazł jakiekolwiek miejsce pod budowę
-        if(potential_fields.size() == 0) return;
+        if(potential_fields.size() == 0)
+        {
+            Item i = new Item(to_build,0,0);
+            Main.addToLog("PORAŻKA! PIONIER NIE BYL W STANIE ZNALEŹĆ ODPOWIEDNIEGO MIEJSCA POD BUDOWE MASZYNY PRODUKUJĄCEJ " + i.getName().toUpperCase() + "!");
+            return;
+        }
 
         // Ustalenie wag pól budowlanych na podstawie ich odległości od pola centralnego
         {

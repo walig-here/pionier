@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 public class ProductionMachine extends Machine {
 
-    private ArrayList<Item> input; // lista obiektow potrzebnych do wytworzenia produktu wyjściowego
+    private final ArrayList<Item> input; // lista obiektow potrzebnych do wytworzenia produktu wyjściowego
 
     public ProductionMachine(int ID, int produced_item) {
         super(ID, produced_item);
@@ -114,7 +114,7 @@ public class ProductionMachine extends Machine {
         //przeszukuje ekwipunek w poszukiwaniu itemu produkowanego przez maszyne i zwieksza jego ilsoc
         for (Item item : pioneer.getInventory()) {
             if (item.getID() != getProduced_item()) continue;
-            item.setAmount(item.getAmount() + getOutput(), true);
+            item.setAmount(item.getAmount() + getOutput());
             break;
         }
 
@@ -122,7 +122,7 @@ public class ProductionMachine extends Machine {
         for (Item inputItem : input) {
             for (Item inventoryItem : pioneer.getInventory()) {
                 if (inputItem.getID() != inventoryItem.getID()) continue;
-                inventoryItem.setAmount(inventoryItem.getAmount() - inputItem.getAmount(), true);
+                inventoryItem.setAmount(inventoryItem.getAmount() - inputItem.getAmount());
                 break;
             }
         }

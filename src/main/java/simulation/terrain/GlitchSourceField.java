@@ -12,7 +12,7 @@ import java.util.Scanner;
  */
 public class GlitchSourceField extends Field {
 
-    private byte glitch_id; // ID zakłócenia generowanego przez pole
+    private final byte glitch_id; // ID zakłócenia generowanego przez pole
     private int range; // zasięg zakłócenia
     private static int move_cost=-1; // koszt wejścia na pole
     private static byte generated_glitch_probability=-1; // maksymalne, generawane przez źródło prawdopodobieństwo wystąpienia generowanego przez nie zakłócenia

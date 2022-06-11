@@ -19,11 +19,11 @@ public class Machine {
 
     private int output; // ilość przedmiotów produkowanych na turę
 
-    private ArrayList<Item> cost; // lista obiektów potrzebnych do wybudowania/ulepszenia
+    private final ArrayList<Item> cost; // lista obiektów potrzebnych do wybudowania/ulepszenia
 
     protected Glitch glitch; // zakłócenie obecne w maszynie
 
-    private int ID; // ID maszyny
+    private final int ID; // ID maszyny
 
     protected int production_turn; // ile tur minęło od rozpoczęcia produkcji
 
@@ -91,8 +91,7 @@ public class Machine {
             case 15: path += "production_belt_factory.txt"; break;
 
         }
-        Item item = new Item(produced_item, 0, 0);
-        //ustalamy jaki przedmiot wylatuje po weryfikacji (oddelegowanie do klasy Item) czy ten przedmiot istnieje
+
         this.produced_item = produced_item;
 
         try{
@@ -197,7 +196,7 @@ public class Machine {
         //przeszukuje ekwipunek w poszukiwaniu itemu produkowanego przez maszyne i zwieksza jego ilsoc
         for (Item inventoryItem : inventory) {
             if (inventoryItem.getID() != getProduced_item()) continue;
-            inventoryItem.setAmount(inventoryItem.getAmount() + output, true);
+            inventoryItem.setAmount(inventoryItem.getAmount() + output);
             break;
         }
     }

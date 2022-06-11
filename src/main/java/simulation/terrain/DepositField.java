@@ -14,7 +14,7 @@ import java.util.Scanner;
 public class DepositField extends Field {
 
 
-    private int item_id; // ID wydobywanego stąd itemu
+    private final int item_id; // ID wydobywanego stąd itemu
     private int deposit_capacity; // maksymalna ilość surowca do wydobycia
     private static int move_cost = -1; // punkty ruchu odbierane pionierowi przy wejściu na niezabudowane pole tego typu
     private static float excavation_penalty=0.00f; // współczynnik określający ile punktów ruchu zabudowane pole odbierze pionierowi w stosunku do swojej niezabudowanej wersji
@@ -92,7 +92,7 @@ public class DepositField extends Field {
             if(machine instanceof ProductionMachine) ((ProductionMachine)machine).stopProduction(inventory);
             else machine.stopProduction(inventory);
             machine.setActive(-1);
-            Main.addToLog("Maszyna " + machine.getName() + " została trwale wyłączona ze względu na wyczerpanie się zasobów pola (" + coordinates[0] + ", " + coordinates[1] + "), na którym się znajduje.");
+            Main.addToLog("\tMaszyna " + machine.getName() + " została trwale wyłączona ze względu na wyczerpanie się zasobów pola (" + coordinates[0] + ", " + coordinates[1] + "), na którym się znajduje.");
             return;
         }
 

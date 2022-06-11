@@ -12,32 +12,30 @@ import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 public class Main {
-    static public int map_size; // rozmiar planszy(w polach)
+    static public int map_size; // rozmiar planszy (w polach)
 
-    static public Field[][] map; // plansza na której odbywa się symulacja
-    static private MenuGUI menu;
+    static public Field[][] map; // plansza, na której odbywa się symulacja
     static public Pioneer pioneer; // pionier
-    static final private Item targetItem = new ComponentItem(18, 0, 0); // przedmiot, ktorego zdobycie, konczy symulacje (przedmiot docelowy)
-    static private ArrayList<Item> children = new ArrayList<>();
+    static final private Item targetItem = new ComponentItem(23, 0, 0); // przedmiot, którego zdobycie, kończy symulacje (przedmiot docelowy)
+    static final private ArrayList<Item> children = new ArrayList<>();
     static public ArrayList<Integer> buildingQueue = new ArrayList<>();
-
-    static private ArrayList<String> log = new ArrayList<>();
+    static final private ArrayList<String> log = new ArrayList<>();
 
     public static void main(String[] args) {
-        menu=new MenuGUI();
+        MenuGUI window =new MenuGUI();
     }
 
     // funkcja zapisująca dziennik w pliku tekstowym
     public static void saveLog(){
 
         // usuwamy poprzedni dziennik
-        File old_log= new File("database/log.txt");
+        File old_log= new File("simulation_log.txt");
         old_log.delete();
 
         // otwieramy nowy dziennik
         FileWriter log_file;
         try {
-            log_file = new FileWriter("database/log.txt");
+            log_file = new FileWriter("simulation_log.txt");
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -74,7 +72,7 @@ public class Main {
         // pętla główna
         for (int turn = 0; turn < max_turns; turn++) {
 
-            addToLog("\n\nRozpoczyna się tura " + turn + "...");
+            addToLog("\n\nTURA " + turn + ":");
 
             try {
             TimeUnit.MILLISECONDS.sleep(800);
@@ -199,10 +197,10 @@ public class Main {
         }
 
         final int base_prodbelt_amount = 50;
-        pioneer.getInventory().get(16).setAmount(base_prodbelt_amount, true);
+        pioneer.getInventory().get(16).setAmount(base_prodbelt_amount);
 
         final int base_engines_amount = 17;
-        pioneer.getInventory().get(19).setAmount(base_engines_amount, true);
+        pioneer.getInventory().get(19).setAmount(base_engines_amount);
 
         // Ustalenie prawdopodobieństw wystąpienia zakłóceń
         for (Field[] fields : map) {
@@ -295,7 +293,7 @@ public class Main {
             System.out.println("Pozadany przedmiot: " + i.getName());
         }
 
-        System.out.println("Ekwipunek:");
+        /*System.out.println("Ekwipunek:");
         for(Item item : pioneer.getInventory()){
             System.out.printf("\t%-25s\t%-5d\t%-5.2f\n", item.getName(), item.getAmount(), item.getIncome());
         }
@@ -317,7 +315,7 @@ public class Main {
                 }
             }
             System.out.printf("\t%-25s\t%-5d\t%-5.2f\n", item.getName(), item.getAmount(), item.getIncome());
-        }
+        }*/
     }
 
     private static void setBuildingOrder() {

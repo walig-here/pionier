@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public abstract class Glitch {
 
-    private  int ID;
+    private final int ID;
 
     private boolean glitch_ended = false;
     public Glitch(int ID) {

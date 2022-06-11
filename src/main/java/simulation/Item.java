@@ -1,6 +1,5 @@
 package simulation;
 
-import main.Main;
 
 import java.io.FileInputStream;
 import java.io.InputStream;
@@ -10,7 +9,7 @@ import java.util.Scanner;
  * Prymitywny rodzaj przedmiotu, który może zostac pozyskany bez użycia receptury.
 * */
 public class Item {
-    private int ID; // ID przedmiotu
+    private final int ID; // ID przedmiotu
     private String name;
     private int amount; // ilość przedmiotu
     private double income; // przyrost na turę
@@ -151,7 +150,7 @@ public class Item {
         return amount;
     }
 
-    public void setAmount(int amount, boolean in_inventory) {
+    public void setAmount(int amount) {
         this.amount = amount;
     }
 

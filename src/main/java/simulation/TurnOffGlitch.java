@@ -18,13 +18,13 @@ public class TurnOffGlitch extends Glitch {
     public void glitchImpact(Machine impacting, ArrayList<Item> inventory) {
 
         if(turns_left == 0) {
-            if(impacting instanceof ProductionMachine) ((ProductionMachine)impacting).startProduction(inventory);
+            if(impacting instanceof ProductionMachine) impacting.startProduction(inventory);
             else impacting.startProduction(inventory);
             super.setGlitch_ended(true);
         }
 
         else {
-            if(impacting instanceof ProductionMachine) ((ProductionMachine)impacting).stopProduction(inventory);
+            if(impacting instanceof ProductionMachine) impacting.stopProduction(inventory);
             else impacting.stopProduction(inventory);
             turns_left--;
         }

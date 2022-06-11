@@ -7,7 +7,7 @@ import java.util.Scanner;
 
 public class Recipe{
 
-    private ArrayList<Item> input; // lista składników wejściowych
+    private final ArrayList<Item> input; // lista składników wejściowych
     private int machine; // ID maszyny produkującej
 
     // konstruktor
