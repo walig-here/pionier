@@ -585,6 +585,7 @@ public class Pioneer {
         if(to_build != -1) return 1;
 
         // Pobieramy ID produkowanego przez następną potrzebną maszynę przedmiotu
+        if(buildingOrder.size() == 0)
         to_build = buildingOrder.get(0);
 
         // Szukamy idealnego miejsca pod budowę wybranego obiektu.
