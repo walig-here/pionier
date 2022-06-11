@@ -22,7 +22,7 @@ public class SoilField extends Field {
         // Jeżeli te informacje zostały już cześniej wczytane do klasy(są różne od 0) to nie musimy ich wczytywać drugi raz.
         if(move_cost == 0) {
             try {
-                InputStream file_stream = new FileInputStream("database\\terrain\\soil.txt");
+                InputStream file_stream = new FileInputStream("database/terrain/soil.txt");
                 Scanner file = new Scanner(file_stream);
 
                 while (file.hasNextLine()) {
@@ -47,12 +47,12 @@ public class SoilField extends Field {
         }
     }
 
-    @Override
     /**
      * Odbiera pionierowi określoną ilość punktów ruchu przy przejściu przez to pole.
      *
      * @param pioneer wchodzący na pole pionier
      * */
+    @Override
     public boolean goInto(Pioneer pioneer) {
 
         // Sprawdzamy czy pionier ma odpowiednią ilość punktów ruchu.
@@ -66,5 +66,10 @@ public class SoilField extends Field {
         // Jeżeli wystarczy mu punktów ruchu to pole odbiera mu ich odpowiednią ilosć i pozwala wkroczyć na swój teren.
         pioneer.setMove_points(pioneer.getMove_points() - move_cost);
         return true;
+    }
+
+    // pobiera koszt wejścia na pole
+    public static int getMove_cost() {
+        return move_cost;
     }
 }

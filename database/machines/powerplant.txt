@@ -1,2 +1,2 @@
 "name":Elektrownia
-"output":10
+"output":15

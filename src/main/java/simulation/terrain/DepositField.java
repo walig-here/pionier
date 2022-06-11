@@ -1,5 +1,6 @@
 package simulation.terrain;
 
+import main.Main;
 import simulation.Item;
 import simulation.Pioneer;
 import simulation.ProductionMachine;
@@ -13,10 +14,10 @@ import java.util.Scanner;
 public class DepositField extends Field {
 
 
-    private int item_id; // ID wydobywanego stąd itemu
+    private final int item_id; // ID wydobywanego stąd itemu
     private int deposit_capacity; // maksymalna ilość surowca do wydobycia
     private static int move_cost = -1; // punkty ruchu odbierane pionierowi przy wejściu na niezabudowane pole tego typu
-    private static float excavation_penalty=0.25f; // współczynnik określający ile punktów ruchu zabudowane pole odbierze pionierowi w stosunku do swojej niezabudowanej wersji
+    private static float excavation_penalty=0.00f; // współczynnik określający ile punktów ruchu zabudowane pole odbierze pionierowi w stosunku do swojej niezabudowanej wersji
 
     // konstruktor
     public DepositField(int x, int y, int capacity, int item_id){
@@ -78,24 +79,30 @@ public class DepositField extends Field {
 
         // Jeżeli na polu jest maszyna wydobywająca surowiec lub generująca prąd to wyczerpuje ona zasoby.
         // Sprawdzamy czy pole zawiera maszyne.
-        if(machine == null) return;
+        if(machine == null)
+            return;
 
         // Sprawdzamy czy maszyna stojąca na polu jest aktywna
-        if(!machine.getActive()) return;
+        if(machine.getActive() == 0)
+            return;
 
         // Sprawdzamy czy na tym polu jest jeszcze cokolwiek do wydobycia
         // Jeżeli nie ma to maszyna się zatrzymuje
         if(deposit_capacity <= 0) {
             if(machine instanceof ProductionMachine) ((ProductionMachine)machine).stopProduction(inventory);
             else machine.stopProduction(inventory);
+            machine.setActive(-1);
+            Main.addToLog("\tMaszyna " + machine.getName() + " została trwale wyłączona ze względu na wyczerpanie się zasobów pola (" + coordinates[0] + ", " + coordinates[1] + "), na którym się znajduje.");
             return;
         }
 
         // Sprawdzamy czy ta maszyna jest odpowiedniego typu
         if(machine.getProduced_item() != 0 && machine.getProduced_item() != item_id) return;
 
-        // Maszyna wydobywa tyle jednostek surowca ile generuje produktu wyjściowego
-        deposit_capacity -= machine.getOutput();
+        if(machine.getProduced_item() == 0 ) deposit_capacity -= machine.getOutput()/2;
+
+            // Maszyna wydobywa tyle jednostek surowca ile generuje produktu wyjściowego
+        else deposit_capacity -= machine.getOutput();
     }
 
     public int getItem_id() {

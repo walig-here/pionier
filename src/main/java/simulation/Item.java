@@ -1,14 +1,15 @@
 package simulation;
 
+
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.Scanner;
 
 /**
  * Prymitywny rodzaj przedmiotu, który może zostac pozyskany bez użycia receptury.
-* */
+ * */
 public class Item {
-    private int ID; // ID przedmiotu
+    private final int ID; // ID przedmiotu
     private String name;
     private int amount; // ilość przedmiotu
     private double income; // przyrost na turę
@@ -101,7 +102,7 @@ public class Item {
             // 23 - superkomputer
             case 23: path += "supercomputer.txt"; break;
 
-            // 10 - sztabka żelaza
+            // 24 - sztabka żelaza
             case 24: path += "iron_ingot.txt"; break;
         }
 
@@ -119,7 +120,7 @@ public class Item {
 
                 // linia zawierająca informację o nazwie przedmiotu
                 if(line.contains("\"name\":") && line_scanner.hasNext()) name = line_scanner.next();
-                // linia zawierająca informację na temat czasu potrzebnego do wyprodukowania przedmiotu
+                    // linia zawierająca informację na temat czasu potrzebnego do wyprodukowania przedmiotu
                 else if(line.contains("\"production time\":") && line_scanner.hasNextInt()) productionTime = line_scanner.nextInt();
 
                 line_scanner.close();

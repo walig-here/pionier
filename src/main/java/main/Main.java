@@ -4,6 +4,10 @@ import map.MapGenerator;
 import rendering.*;
 import simulation.*;
 import simulation.terrain.*;
+
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
@@ -30,6 +34,44 @@ public class Main {
     static final private Item targetItem = new ComponentItem(16, 0, 0); // przedmiot, ktorego zdobycie, konczy symulacje (przedmiot docelowy)
     static private ArrayList<Item> children = new ArrayList<>();
     static private ArrayList<Integer> buildingQueue = new ArrayList<>();
+    static final private ArrayList<String> log = new ArrayList<>();
+
+    // funkcja zapisująca dziennik w pliku tekstowym
+    public static void saveLog(){
+
+        // usuwamy poprzedni dziennik
+        File old_log= new File("simulation_log.txt");
+        old_log.delete();
+
+        // otwieramy nowy dziennik
+        FileWriter log_file;
+        try {
+            log_file = new FileWriter("simulation_log.txt");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        // zapisujemy do niego zawartość
+        for(String log_line : log){
+            try {
+                log_file.write(log_line + "\n");
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        // zamykamy dziennik
+        try {
+            log_file.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    // funkcja tworząca wpis do dziennika symulacji
+    public static void addToLog(String new_log_line){
+        log.add(new_log_line);
+    }
 
     public static void main(String[] args) {
         MapGenerator generator=new MapGenerator();
@@ -37,17 +79,11 @@ public class Main {
     }
 
     // pętla symulacji wykonująca się określoną ilość tur lub do osiągnięcia przez pioniera określonego celu
-    public static int simulationLoop(int turn) {
-
-
-
-        //if(simulation_setup() == -1) return -4;
-        //debug_simulation_preview(0);
-
-        //NFrame simWindow =new NFrame();
+    public static int simulationLoop(int turn, int max_turns) {
 
         // pętla główna
-        //for (int turn = 0; turn < max_turns; turn++) {
+
+            addToLog("\n\nTURA " + turn + ":");
 
             // w pierwszej turze pionier wybiera miejsce pod pole centralne
             if(turn == 0) if(pioneer.chooseCentral(map, buildingQueue) == -1) return -3;
@@ -80,36 +116,36 @@ public class Main {
                     }
                 }
             }
-
-
+            addToLog("");
 
             // Pionier podejmuje decyzję co do kolejnej budowy
             pioneer.setCould_build(true);
-            if(pioneer.setNextBuilding(buildingQueue,map) == -1 && buildingQueue.size() != 0) return -1;
+            {
+                int next_building_output;
+                do {
+                    next_building_output = pioneer.setNextBuilding(buildingQueue,map);
+                }while(next_building_output == 2);
+                if (next_building_output == -1 && buildingQueue.size() != 0) return -1;
+            }
+            addToLog("");
 
             // Pętla ruchu - wykonuje się dopóki pionierowi starcza punktów ruchu lub aż dotrze do celu
             {
                 boolean starting = true; // true - jest to pierwszy ruch pioniera w tej turze
-                do{/*
-                    try {
-                        TimeUnit.MILLISECONDS.sleep(600);
-                    } catch (InterruptedException e) {
-                        throw new RuntimeException(e);
-                    }*/
+                addToLog("\tPionier rozpoczyna marsz z pola (" + pioneer.getCoordinates()[0] + "," + pioneer.getCoordinates()[1] + ").");
+                do{
 
                     // Przemieszczenie na pole
                     pioneer.walk(map, starting);
                     if(starting) starting = false;
 
                     // Pionier próbuje na aktualnie zajmowanym polu coś zbudować
-                    pioneer.buildMachine(map, buildingQueue);
-
-                    debug_simulation_preview(turn);
-                    //simWindow.refresh();
-
-
+                    if(pioneer.buildMachine(map, buildingQueue) == -1) return -1;
                 }while (pioneer.getMove_points() != 0 && pioneer.getPath().size() > 0);
+                addToLog("\tPionier kończy marsz na polu (" + pioneer.getCoordinates()[0] + "," + pioneer.getCoordinates()[1] + ").");
             }
+
+            debug_simulation_preview(turn);
 
             // sprawdzamy czy wyprodukowano odpowiedni przedmiot
             for(Item item : pioneer.getInventory()){
@@ -117,14 +153,12 @@ public class Main {
                     for(Field[] row : map){
                         for(Field field : row)
                             if(field.getMachine() != null && field.getMachine().getProduced_item() == item.getID())
-                                return 0;
+                                return 1;
                     }
                 }
             }
-        //}
 
-        //if(buildingQueue.size() != 0) return -2;
-        //simWindow.stop();
+        if(turn >= max_turns) return -2;
         return 0;
     }
 
@@ -148,6 +182,7 @@ public class Main {
     public static int simulation_setup(){
 
         // Ustalamy kolejkę budowania
+        log.add("Symulacja rozpoczyna się...");
         setBuildingOrder();
 
         // PIONIER
@@ -159,10 +194,16 @@ public class Main {
         // EKWIPUNEK
         for(int i = 0; i <= 24; i++) {
             Item new_item;
-            if(i == 0) new_item = new Item(i,20,0);
+            if(i == 0) new_item = new Item(i,100,0);
             else new_item = new ComponentItem(i,20,0);
             pioneer.getInventory().add(new_item);
         }
+
+        final int base_prodbelt_amount = 50;
+        pioneer.getInventory().get(16).setAmount(base_prodbelt_amount);
+
+        final int base_engines_amount = 17;
+        pioneer.getInventory().get(19).setAmount(base_engines_amount);
 
         // Ustalenie prawdopodobieństw wystąpienia zakłóceń
         for (Field[] fields : map) {
@@ -171,6 +212,7 @@ public class Main {
                     ((GlitchSourceField) field).setProbabilities(map);
             }
         }
+        addToLog("Ustalono prawdopodobieństwa wystąpienia poszczególnych zakłóceń na polach.");
         return 0;
     }
 

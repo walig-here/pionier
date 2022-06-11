@@ -1,5 +1,6 @@
 package simulation.terrain;
 
+import main.Main;
 import rendering.GridSprite;
 import simulation.*;
 import simulation.Pioneer;
@@ -116,6 +117,7 @@ public abstract class Field {
             this.machine = new Machine(machine);
             this.machine.startProduction(inventory);
         }
+        Main.addToLog("\tMaszyna " + machine.getName() + " została zbudowana na polu (" + coordinates[0] + "," + coordinates[1] + ").");
         canBuild = false;
         Machine.count++;
     }
@@ -187,6 +189,7 @@ public abstract class Field {
             // Losujemy liczbę, która zdeterminuje wystąpienie zakłócenia
             // Przy jego wystąpieniu wywołujemy w maszynie stojącej na polu zakłócenie
             if(glitch[1] >= rng.nextInt(99) + 1){
+                Main.addToLog("\tW maszynie " + machine.getName() + " wystąpiło zakłócenie " + glitch[0] + "! Szansa na pojawienie się zakłócenia wynosiła " + glitch[1] + "%.");
                 machine.activateGlitch(glitch[0]);
                 break;
             }

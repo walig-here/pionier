@@ -1,2 +1,2 @@
 "machine":2
-"component":0:1
+"component":0:4
