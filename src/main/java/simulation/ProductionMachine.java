@@ -82,12 +82,11 @@ public class ProductionMachine extends Machine {
                     Main.addToLog("\tMaszyna " + getName() + " została tymczasowo wyłączona ze względu na brak " + inputItem.getName() + ".");
                     stopProduction(pioneer.getInventory());
 
-                    if(inventoryItem.getIncome() < 0 && !pioneer.getEmergency_construction() && buildingOrder.get(0) != inventoryItem.getID()){
+                    if(inventoryItem.getIncome() < 0 && !pioneer.getEmergency_construction() && (buildingOrder.size() == 0 || buildingOrder.get(0) != inventoryItem.getID())){
                         buildingOrder.add(0,inventoryItem.getID());
                         pioneer.getPath().clear();
                         pioneer.setTo_build(-1);
-                        if(pioneer.setNextBuilding(buildingOrder,map) == -1)
-                            return -1;
+                        if(pioneer.setNextBuilding(buildingOrder,map) == -1) return -1;
                         pioneer.setEmergency_construction(true);
                     }
                     return 0;
