@@ -31,7 +31,7 @@ public class Main {
     static private int[][] mapTab;// się symulacja
     static private MenuGUI menu;
     static public Pioneer pioneer; // pionier
-    static final private Item targetItem = new ComponentItem(16, 0, 0); // przedmiot, ktorego zdobycie, konczy symulacje (przedmiot docelowy)
+    static final private Item targetItem = new ComponentItem(23, 0, 0); // przedmiot, ktorego zdobycie, konczy symulacje (przedmiot docelowy)
     static private ArrayList<Item> children = new ArrayList<>();
     static private ArrayList<Integer> buildingQueue = new ArrayList<>();
     static final private ArrayList<String> log = new ArrayList<>();
@@ -110,8 +110,9 @@ public class Main {
                             ((DepositField) field).extract(pioneer.getInventory());
 
                         // Każde inne pole z maszyną produkuje przedmioty
-                        if (field.getMachine() instanceof ProductionMachine)
-                            ((ProductionMachine) field.getMachine()).production(buildingQueue, pioneer, map);
+                        if (field.getMachine() instanceof ProductionMachine) {
+                            if(((ProductionMachine) field.getMachine()).production(buildingQueue, pioneer, map) == -1) return -1;
+                        }
                         else field.getMachine().production(pioneer.getInventory());
                     }
                 }
@@ -291,11 +292,10 @@ public class Main {
         }
 
 
-        /*System.out.println("Ekwipunek:");
+        System.out.println("Ekwipunek:");
         for(Item item : pioneer.getInventory()){
-            System.out.printf("\t%-25s\t%-5d\t%-5.2f\n", item.getName(), item.getAmount(), item.getIncome());
+            System.out.printf("\t%-25s\t%-5.2f\t%-5.2f\n", item.getName(), item.getAmount(), item.getIncome());
         }
-
         System.out.println("Zasoby na mapie:");
         for(int i = 1; i < 9; i++){
             Item item = new Item(i,0,0);
@@ -303,13 +303,17 @@ public class Main {
                 for(Field field : row){
                     if(field instanceof DepositField && ((DepositField)field).getItem_id() == i){
                         item.setAmount(item.getAmount() + ((DepositField)field).getCapacityOfDeposit());
-                        if(field.getMachine() != null && field.getMachine().getActive())
-                        item.setIncome(item.getIncome() - field.getMachine().getOutput());
+                        if(field.getMachine() != null && field.getMachine().getActive() == 1 ){
+                            if(field.getMachine().getID() < 3 || field.getMachine().getID() == 4 ){
+                                if(field.getMachine().getID() == 0) item.setIncome(item.getIncome() - field.getMachine().getOutput()/2);
+                                else item.setIncome(item.getIncome() - field.getMachine().getOutput());
+                            }
+                        }
                     }
                 }
             }
-            System.out.printf("\t%-25s\t%-5d\t%-5.2f\n", item.getName(), item.getAmount(), item.getIncome());
-        }*/
+            System.out.printf("\t%-25s\t%-5.2f\t%-5.2f\n", item.getName(), item.getAmount(), item.getIncome());
+        }
     }
 
     private static void setBuildingOrder() {

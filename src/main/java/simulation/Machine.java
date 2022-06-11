@@ -17,7 +17,7 @@ public class Machine {
 
     protected int produced_item; // ID produkowanego przedmiotu
 
-    private int output; // ilość przedmiotów produkowanych na turę
+    private float output; // ilość przedmiotów produkowanych na turę
 
     private final ArrayList<Item> cost; // lista obiektów potrzebnych do wybudowania/ulepszenia
 
@@ -35,7 +35,7 @@ public class Machine {
 
 
 
-    public void setOutput(int output) {
+    public void setOutput(float output) {
         this.output = output;
     }
     public void setActive(int active) {
@@ -135,7 +135,7 @@ public class Machine {
         this(copy.ID,copy.produced_item);
     }
 
-    public int getOutput() {
+    public float getOutput() {
         return output;
     }
 
