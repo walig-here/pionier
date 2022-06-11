@@ -1,9 +1,13 @@
 package map;
 
 
+import rendering.NFrame;
 import simulation.terrain.*;
 import main.*;
 import java.util.Random;
+import java.lang.Math;
+
+import static main.Main.simulation_setup;
 
 public class MapGenerator {
 
@@ -11,8 +15,8 @@ public class MapGenerator {
     public static void generateMap(){
         //generuje losową mapę
 
-        final int maxMapSize=40;
-        final int minMapSize=5;
+        final int maxMapSize=32;
+        final int minMapSize=15;
 
         Random random=new Random();
 
@@ -21,11 +25,90 @@ public class MapGenerator {
         int[][] mapTab=new int[size][size];
 
         //generator planszy
+        int x,y,a,b;
 
+
+
+
+
+
+        //generacja złota
+        x=random.nextInt(size);
+        y=random.nextInt(size);
+        a=random.nextInt(2)+1;
+        b=random.nextInt(2)+1;
+        for (int i =x-a;i<=x+a;i++){
+            int delta = (int)Math.sqrt(Math.abs((float)b * (float)b * (1.0f - (float)((i-x) * (i-x)) / (float)(a * a))));
+            for (int j = y-delta; j<=y+delta;j++){
+                if(i>=0&&i<=size-1&&j>=0&&j<=size-1)mapTab[i][j]=7;
+            }
+        }
+        //generacja miedzi
+        x=random.nextInt(size);
+        y=random.nextInt(size);
+        a=random.nextInt(3)+1+1;
+        b=random.nextInt(3)+1+1;
+        for (int i =x-a;i<=x+a;i++){
+            int delta = (int)Math.sqrt(Math.abs((float)b * (float)b * (1.0f - (float)((i-x) * (i-x)) / (float)(a * a))));
+            for (int j = y-delta; j<=y+delta;j++){
+                if(i>=0&&i<=size-1&&j>=0&&j<=size-1)mapTab[i][j]=5;
+            }
+        }
+
+        //generacja żelaza
+        x=random.nextInt(size);
+        y=random.nextInt(size);
+        a=random.nextInt(4)+1+2;
+        b=random.nextInt(4)+1+2;
+        for (int i =x-a;i<=x+a;i++){
+            int delta = (int)Math.sqrt(Math.abs((float)b * (float)b * (1.0f - (float)((i-x) * (i-x)) / (float)(a * a))));
+            for (int j = y-delta; j<=y+delta;j++){
+                if(i>=0&&i<=size-1&&j>=0&&j<=size-1)mapTab[i][j]=4;
+            }
+        }
+
+        //generacja węgla
+        x=random.nextInt(size);
+        y=random.nextInt(size);
+        a=random.nextInt(3)+1+1;
+        b=random.nextInt(3)+1+1;
+        for (int i =x-a;i<=x+a;i++){
+            int delta = (int)Math.sqrt(Math.abs((float)b * (float)b * (1.0f - (float)((i-x) * (i-x)) / (float)(a * a))));
+            for (int j = y-delta; j<=y+delta;j++){
+                if(i>=0&&i<=size-1&&j>=0&&j<=size-1)mapTab[i][j]=6;
+            }
+        }
+
+        //generacja lasu
+        x=random.nextInt(size);
+        y=random.nextInt(size);
+        a=random.nextInt(6)+1+2;
+        b=random.nextInt(6)+1+2;
+
+        for (int i =x-a;i<=x+a;i++){
+            int delta = (int)Math.sqrt(Math.abs((float)b * (float)b * (1.0f - (float)((i-x) * (i-x)) / (float)(a * a))));
+            for (int j = y-delta; j<=y+delta;j++){
+                if(i>=0&&i<=size-1&&j>=0&&j<=size-1)mapTab[i][j]=3;
+            }
+        }
+
+        //generacja wody
+        x=random.nextInt(size);
+        y=random.nextInt(size);
+        a=random.nextInt(6)+1+2;
+        b=random.nextInt(6)+1+2;
+
+        for (int i =x-a;i<=x+a;i++){
+            int delta = (int)Math.sqrt(Math.abs((float)b * (float)b * (1.0f - (float)((i-x) * (i-x)) / (float)(a * a))));
+            for (int j = y-delta; j<=y+delta;j++){
+                if(i>=0&&i<=size-1&&j>=0&&j<=size-1)mapTab[i][j]=1;
+            }
+        }
 
         generateMap(size, mapTab);
 
     }
+
     public static void generateMap(int size, int[][] mapTab){
         //generuje mapę z edytora
 
@@ -36,7 +119,8 @@ public class MapGenerator {
 
         Random random=new Random();
 
-        Main.map_size=size;
+        Main.setMap_size(size);
+        Main.setMapTab(mapTab);
         Main.map=new Field[size][size];
 
         for (int i=0;i<size;i++){
@@ -79,8 +163,10 @@ public class MapGenerator {
         }
 
         // główna pętla symulacji
-        int score = 0;
-        switch (Main.simulationLoop(100)) {
+        //int score = 0;
+        if(simulation_setup() == -1) System.out.println("PORAŻKA!\nPionier nie był w stanie przybyć do tej okolicy!");
+        NFrame simWindow =new NFrame();
+        /*switch () {
             case -1: System.out.println("PORAŻKA!\nPionier nie ma już gdzie zbudować niezbędnych maszyn.");break;
             case -2: System.out.println("PORAŻKA!\nPionier nie zdążył wyprodukować pożądanego przedmiotu w danym mu czasie!");break;
             case -3: System.out.println("PORAŻKA!\nPionier nie był w stanie założyć kompleksu przemysłowego!");break;
@@ -89,8 +175,8 @@ public class MapGenerator {
                 System.out.println("ZWYCIESTWO!");
                 score += 10000;
             }break;
-        }
-        score += Main.getScore();
-        System.out.println("PUNKTY: " + score);
+        }*/
+        //score += Main.getScore();
+        //System.out.println("PUNKTY: " + score);
     }
 }

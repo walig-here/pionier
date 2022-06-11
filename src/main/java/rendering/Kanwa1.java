@@ -1,4 +1,5 @@
 package rendering;
+import map.MapGenerator;
 import simulation.terrain.*;
 
 import main.*;
@@ -6,31 +7,44 @@ import main.*;
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-public class Kanwa1 extends JPanel {
+public class Kanwa1 extends JPanel implements ActionListener{
 
     JLabel stats;
 
+    Timer timer;
     int sizeOfGrid;
     int dimension;
+    int max_turns;
+    int turn;
+    boolean isRunning;
     Kanwa1(){
 
-        sizeOfGrid= Main.map_size;
-        dimension = sizeOfGrid*20;
+        isRunning=true;
+        max_turns=100;
+        turn=0;
+        sizeOfGrid= Main.getMap_size();
+        dimension = sizeOfGrid*25;
         this.setBounds(0,0,dimension,dimension);
+        //this.setPreferredSize(new Dimension(dimension,dimension));
 
 
         stats=new JLabel();
         Border border = BorderFactory.createLineBorder(Color.CYAN, 2);
 
 
-        stats.setBounds(sizeOfGrid*20,0,200,sizeOfGrid*20 );
+        stats.setBounds(sizeOfGrid*25,0,200,sizeOfGrid*25 );
         stats.setVerticalAlignment(JLabel.TOP);
         stats.setHorizontalAlignment(JLabel.CENTER);
 
         String text ="<html>"+"test1"+"<br>"+"test2"+"</html>";
         stats.setText(text);
         stats.setBorder(border);
+
+        timer=new Timer(1000, this);
+        timer.start();
 
         //this.setBorder(BorderFactory.createLineBorder(Color.blue, 3));
         //this.setPreferredSize(new Dimension(dimension,dimension));
@@ -41,6 +55,8 @@ public class Kanwa1 extends JPanel {
     public void paint(Graphics g) {
 
         Graphics2D rys1 = (Graphics2D) g;
+
+
 
         for (int i =0; i<sizeOfGrid;i++)
         {
@@ -53,11 +69,12 @@ public class Kanwa1 extends JPanel {
                         break;
                     case 1:
                         rys1.setPaint(Color.blue);
+                        break;
                     case 2:
                         switch (((DepositField)Main.map[i][j]).getItem_id()){
 
                             case 2:
-                                rys1.setPaint(new Color(184,105,27));
+                                rys1.setPaint(Color.green);
                                 break;
                             case 6:
                                 rys1.setPaint(Color.lightGray);
@@ -85,12 +102,12 @@ public class Kanwa1 extends JPanel {
 
                 }
 
-                rys1.fillRect(i*20,j*20,20,20);
+                rys1.fillRect(i*25,j*25,25,25);
                 if(i==Main.pioneer.getCoordinates()[0]&&j==Main.pioneer.getCoordinates()[1]){
                     rys1.setPaint(Color.black);
                     rys1.setStroke(new BasicStroke(3));
-                    rys1.drawLine(i*20,j*20,i*20+20,j*20+20);
-                    rys1.drawLine(i*20+20,j*20,i*20,j*20+20);
+                    rys1.drawLine(i*25,j*25,i*25+25,j*25+25);
+                    rys1.drawLine(i*25+25,j*25,i*25,j*25+25);
                     rys1.setStroke(new BasicStroke(1));
                 }
             }
@@ -100,14 +117,32 @@ public class Kanwa1 extends JPanel {
         {
 
             rys1.setPaint(Color.black);
-            rys1.drawLine(20 *i,0,20 *i,dimension);
-            rys1.drawLine(0,20*i,dimension-1,20 *i);
+            rys1.drawLine(25 *i,0,25 *i,dimension);
+            rys1.drawLine(0,25*i,dimension-1,25 *i);
         }
 
         //wymiary 0-854x0-831 przy 870x870
         rys1.drawLine(0, dimension-1,dimension-1,dimension-1);
         rys1.drawLine(dimension-1, 0,dimension-1,dimension-1);
 
+
     }
 
+    @Override
+    public void actionPerformed(ActionEvent e) {
+
+        //Main.pioneer.setCoordinates(Main.pioneer.getCoordinates()[0]+1, Main.pioneer.getCoordinates()[1]+1);
+        repaint();
+
+
+        if(turn<max_turns) {
+            turn++;
+            Main.simulationLoop(turn);
+            super.repaint();
+        }else{
+            isRunning=false;
+        }
+
+
+    }
 }
