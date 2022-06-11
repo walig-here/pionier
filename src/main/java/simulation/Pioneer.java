@@ -620,7 +620,7 @@ public class Pioneer {
 
         // Jeżeli danego zasobu jest aż nadmiar to nie będziemy dostawiać jego fabryki
         for(Item item : inventory) {
-            if(item.getID() == to_build && item.getAmount() > 0 && item.getAmount() > 1000) {
+            if(item.getID() == to_build && item.getAmount() > 1000) {
                 buildingOrder.remove(0);
                 to_build = -1;
                 return 2;

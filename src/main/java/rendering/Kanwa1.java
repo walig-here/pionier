@@ -24,7 +24,7 @@ public class Kanwa1 extends JPanel implements ActionListener{
     Kanwa1(){
 
         isRunning=true;
-        max_turns=50;
+        max_turns=200;
         turn=0;
         sizeOfGrid= Main.getMap_size();
         dimension = sizeOfGrid*25;
@@ -134,7 +134,6 @@ public class Kanwa1 extends JPanel implements ActionListener{
 
         //Main.pioneer.setCoordinates(Main.pioneer.getCoordinates()[0]+1, Main.pioneer.getCoordinates()[1]+1);
         repaint();
-
 
         if(isRunning){
             switch (Main.simulationLoop(turn, max_turns)) {

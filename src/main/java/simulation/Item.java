@@ -11,7 +11,7 @@ import java.util.Scanner;
 public class Item {
     private final int ID; // ID przedmiotu
     private String name;
-    private int amount; // ilość przedmiotu
+    private float amount; // ilość przedmiotu
     private double income; // przyrost na turę
     private int productionTime; //bazowy czas produkcji przedmiotu (w turach)
 
@@ -146,11 +146,11 @@ public class Item {
         this.name = name;
     }
 
-    public int getAmount() {
+    public float getAmount() {
         return amount;
     }
 
-    public void setAmount(int amount) {
+    public void setAmount(float amount) {
         this.amount = amount;
     }
 

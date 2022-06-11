@@ -70,13 +70,14 @@ public class ProductionMachine extends Machine {
         if(super.glitch != null && super.glitch.getID() == 0) return 0;
 
         // sprawdzamy czy mamy wystarczająco przedmiotów do kontynuacji produkcji
+        Item temp = new Item(produced_item, 0,0);
         startProduction(pioneer.getInventory());
         for (Item inputItem : input) {
             for (Item inventoryItem : pioneer.getInventory()) {
                 if (inputItem.getID() != inventoryItem.getID()) continue;
 
                 // Jeżeli nie mamy wystarczającej ilości wymaganego przedmiotu, to zatrzymujemy produkcję i nakazujemy pionierowi pozyskać przedmiot
-                if(inventoryItem.getAmount() - inputItem.getAmount() < 0 && inventoryItem.getIncome() < 0) {
+                if(inventoryItem.getAmount() - inputItem.getAmount()/temp.getProductionTime() < 0 && inventoryItem.getIncome() < 0) {
 
                     Main.addToLog("\tMaszyna " + getName() + " została tymczasowo wyłączona ze względu na brak " + inputItem.getName() + ".");
                     stopProduction(pioneer.getInventory());
@@ -100,16 +101,21 @@ public class ProductionMachine extends Machine {
         // produkcja trwa kolejną turę
         production_turn++;
 
-        // sprawdzamy czy minęła już odpowiednia ilość tur, niezbędnych do wyprodukowania przedmiotu
-        {
-            Item temp = new Item(produced_item, 0,0);
-
-            // jeżeli taka ilość czasu jeszcze nie minęła to produkcja trwa dalej
-            if(temp.getProductionTime() > production_turn) return 0;
-
-            // jeżeli taka ilość czasu już minęła to resetujemy timer produkcji
-            production_turn = 0;
+        //przeszukuje ekwipunek w poszukiwaniu przedmiotow potrzebnych do wyprodukowania produktu i zmniejsza ich ilosc
+        for (Item inputItem : input) {
+            for (Item inventoryItem : pioneer.getInventory()) {
+                if (inputItem.getID() != inventoryItem.getID()) continue;
+                inventoryItem.setAmount(inventoryItem.getAmount() - inputItem.getAmount()/temp.getProductionTime());
+                break;
+            }
         }
+
+        // sprawdzamy czy minęła już odpowiednia ilość tur, niezbędnych do wyprodukowania przedmiotu
+        // jeżeli taka ilość czasu jeszcze nie minęła to produkcja trwa dalej
+        if(temp.getProductionTime() > production_turn) return 0;
+
+        // jeżeli taka ilość czasu już minęła to resetujemy timer produkcji
+        production_turn = 0;
 
         //przeszukuje ekwipunek w poszukiwaniu itemu produkowanego przez maszyne i zwieksza jego ilsoc
         for (Item item : pioneer.getInventory()) {
@@ -118,14 +124,6 @@ public class ProductionMachine extends Machine {
             break;
         }
 
-        //przeszukuje ekwipunek w poszukiwaniu przedmiotow potrzebnych do wyprodukowania produktu i zmniejsza ich ilosc
-        for (Item inputItem : input) {
-            for (Item inventoryItem : pioneer.getInventory()) {
-                if (inputItem.getID() != inventoryItem.getID()) continue;
-                inventoryItem.setAmount(inventoryItem.getAmount() - inputItem.getAmount());
-                break;
-            }
-        }
         return 0;
     }
 
