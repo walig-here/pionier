@@ -136,8 +136,8 @@ public class Kanwa1 extends JPanel implements ActionListener{
 
 
         if(turn<max_turns) {
-            turn++;
             Main.simulationLoop(turn);
+            turn++;
             super.repaint();
         }else{
             isRunning=false;
