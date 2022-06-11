@@ -539,12 +539,7 @@ public class Pioneer {
         }
 
         // Sprawdzamy czy pionier znalazł jakiekolwiek miejsce pod budowę
-        if(potential_fields.size() == 0)
-        {
-            Item i = new Item(to_build,0,0);
-            Main.addToLog("PORAŻKA! PIONIER NIE BYL W STANIE ZNALEŹĆ ODPOWIEDNIEGO MIEJSCA POD BUDOWE MASZYNY PRODUKUJĄCEJ " + i.getName().toUpperCase() + "!");
-            return;
-        }
+        if(potential_fields.size() == 0) return;
 
         // Ustalenie wag pól budowlanych na podstawie ich odległości od pola centralnego
         {
@@ -636,8 +631,11 @@ public class Pioneer {
             for(Item item : inventory){
                 if(item.getID() == to_build)
                     // Jeżeli nie to pionier przegrywa symulację
-                    if(item.getIncome() <= 0)
+                    if(item.getIncome() <= 0){
+                        Main.addToLog("PORAŻKA! PIONIER NIE BYL W STANIE ZNALEŹĆ ODPOWIEDNIEGO MIEJSCA POD BUDOWE MASZYNY PRODUKUJĄCEJ " + item.getName().toUpperCase() + "!");
                         return -1;
+                    }
+
             }
 
             // Jeżeli tak to pionier spróbuje kontynuować pracę i pominąć te budowę

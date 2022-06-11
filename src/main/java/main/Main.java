@@ -195,16 +195,16 @@ public class Main {
         // EKWIPUNEK
         for(int i = 0; i <= 24; i++) {
             Item new_item;
-            if(i == 0) new_item = new Item(i,100,0);
-            else new_item = new ComponentItem(i,20,0);
+            if(i == 0) new_item = new Item(i,0,0);
+            else new_item = new ComponentItem(i,0,0);
             pioneer.getInventory().add(new_item);
         }
-
-        final int base_prodbelt_amount = 50;
-        pioneer.getInventory().get(16).setAmount(base_prodbelt_amount);
-
-        final int base_engines_amount = 17;
-        pioneer.getInventory().get(19).setAmount(base_engines_amount);
+        pioneer.getInventory().get(0).setAmount(100);
+        pioneer.getInventory().get(19).setAmount(25);
+        pioneer.getInventory().get(16).setAmount(50);
+        pioneer.getInventory().get(10).setAmount(25);
+        pioneer.getInventory().get(9).setAmount(25);
+        pioneer.getInventory().get(24).setAmount(25);
 
         // Ustalenie prawdopodobieństw wystąpienia zakłóceń
         for (Field[] fields : map) {
@@ -238,7 +238,7 @@ public class Main {
     }
 
     private static void debug_simulation_preview(int turns){
-        System.out.println("MAPA:");
+        /*System.out.println("MAPA:");
         for(int x = 0; x < map.length; x++){
             for(int y = 0; y < map[x].length; y++){
 
@@ -283,7 +283,7 @@ public class Main {
                 System.out.print(tile_fx);
             }
             System.out.println();
-        }
+        }*/
         System.out.println("Numer tury: " + turns);
         System.out.println("Ilosc maszyn: " + Machine.count + "(" + Machine.active_machines + " aktywnych)");
         if(buildingQueue.size() != 0) {
@@ -292,7 +292,7 @@ public class Main {
         }
 
 
-        System.out.println("Ekwipunek:");
+        /*System.out.println("Ekwipunek:");
         for(Item item : pioneer.getInventory()){
             System.out.printf("\t%-25s\t%-5.2f\t%-5.2f\n", item.getName(), item.getAmount(), item.getIncome());
         }
@@ -313,7 +313,7 @@ public class Main {
                 }
             }
             System.out.printf("\t%-25s\t%-5.2f\t%-5.2f\n", item.getName(), item.getAmount(), item.getIncome());
-        }
+        }*/
     }
 
     private static void setBuildingOrder() {

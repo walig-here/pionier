@@ -24,7 +24,7 @@ public class Kanwa1 extends JPanel implements ActionListener{
     Kanwa1(){
 
         isRunning=true;
-        max_turns=200;
+        max_turns=1000;
         turn=0;
         sizeOfGrid= Main.getMap_size();
         dimension = sizeOfGrid*25;
