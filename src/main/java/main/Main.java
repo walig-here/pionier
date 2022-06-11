@@ -157,6 +157,7 @@ public class Main {
         return 0;
     }
 
+
     // funkcja zliczająca punkty zebrane podczas całej symulacji
     public static int getScore(){
         int score = 0;
