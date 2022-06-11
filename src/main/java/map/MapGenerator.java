@@ -92,6 +92,18 @@ public class MapGenerator {
             }
         }
 
+        //generacja ropy
+        x=random.nextInt(size);
+        y=random.nextInt(size);
+        a=random.nextInt(2)+1;
+        b=random.nextInt(2)+1;
+        for (int i =x-a;i<=x+a;i++){
+            int delta = (int)Math.sqrt(Math.abs((float)b * (float)b * (1.0f - (float)((i-x) * (i-x)) / (float)(a * a))));
+            for (int j = y-delta; j<=y+delta;j++){
+                if(i>=0&&i<=size-1&&j>=0&&j<=size-1)mapTab[i][j]=8;
+            }
+        }
+
         //generacja wody
         x=random.nextInt(size);
         y=random.nextInt(size);
@@ -161,22 +173,7 @@ public class MapGenerator {
 
             }
         }
-
-        // główna pętla symulacji
-        //int score = 0;
         if(simulation_setup() == -1) System.out.println("PORAŻKA!\nPionier nie był w stanie przybyć do tej okolicy!");
         NFrame simWindow =new NFrame();
-        /*switch () {
-            case -1: System.out.println("PORAŻKA!\nPionier nie ma już gdzie zbudować niezbędnych maszyn.");break;
-            case -2: System.out.println("PORAŻKA!\nPionier nie zdążył wyprodukować pożądanego przedmiotu w danym mu czasie!");break;
-            case -3: System.out.println("PORAŻKA!\nPionier nie był w stanie założyć kompleksu przemysłowego!");break;
-            case -4: System.out.println("PORAŻKA!\nPionier nie był w stanie przybyć do tej okolicy!");break;
-            case 0: {
-                System.out.println("ZWYCIESTWO!");
-                score += 10000;
-            }break;
-        }*/
-        //score += Main.getScore();
-        //System.out.println("PUNKTY: " + score);
     }
 }
