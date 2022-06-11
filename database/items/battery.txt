@@ -1,2 +1,2 @@
 "name":Bateria
-"production time":15
+"production time":1

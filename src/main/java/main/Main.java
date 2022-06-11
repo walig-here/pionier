@@ -10,7 +10,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
-import java.util.concurrent.TimeUnit;
 
 public class Main {
     public static void setMap_size(int map_size) {
@@ -81,83 +80,78 @@ public class Main {
     // pętla symulacji wykonująca się określoną ilość tur lub do osiągnięcia przez pioniera określonego celu
     public static int simulationLoop(int turn, int max_turns) {
 
-        // pętla główna
+        addToLog("\n\nTURA " + turn + ":");
 
-            addToLog("\n\nTURA " + turn + ":");
+        // w pierwszej turze pionier wybiera miejsce pod pole centralne
+        if(turn == 0) if(pioneer.chooseCentral(map, buildingQueue) == -1) return -3;
 
-            // w pierwszej turze pionier wybiera miejsce pod pole centralne
-            if(turn == 0) if(pioneer.chooseCentral(map, buildingQueue) == -1) return -3;
+        // Pętla działań wywoływanych co turę na kafelkach planszy
+        for (Field[] fields : map) {
+            for (Field field : fields) {
 
-            // Pętla działań wywoływanych co turę na kafelkach planszy
-            for (Field[] fields : map) {
-                for (Field field : fields) {
+                // Ustalamy czy w tej turze na polu wystąpiło zakłócenie
+                field.activateGlitch();
 
-                    // Ustalamy czy w tej turze na polu wystąpiło zakłócenie
-                    field.activateGlitch();
+                // Na każdym polu posiadającym maszynę odbywa się produkcja lub wydobycie
+                if (field.getMachine() != null) {
 
-                    // Na każdym polu posiadającym maszynę odbywa się produkcja lub wydobycie
-                    if (field.getMachine() != null) {
-
-                        // Dla każdego pola z maszyną, w której wystąpiło zakłócenie, symulujemy wpływ zakłócenia na tę maszynę
-                        if (field.getMachine().getGlitch() != null) {
-                            field.getMachine().getGlitch().glitchImpact(field.getMachine(), pioneer.getInventory());
-                            if (field.getMachine().getGlitch().isGlitch_ended())
-                                field.getMachine().deactivateGlitch();
-                        }
-
-                        // Dla każdego pola z surowcem preprowadzamy proces wydobycia
-                        if (field instanceof DepositField)
-                            ((DepositField) field).extract(pioneer.getInventory());
-
-                        // Każde inne pole z maszyną produkuje przedmioty
-                        if (field.getMachine() instanceof ProductionMachine) {
-                            if(((ProductionMachine) field.getMachine()).production(buildingQueue, pioneer, map) == -1) return -1;
-                        }
-                        else field.getMachine().production(pioneer.getInventory());
+                    // Dla każdego pola z maszyną, w której wystąpiło zakłócenie, symulujemy wpływ zakłócenia na tę maszynę
+                    if (field.getMachine().getGlitch() != null) {
+                        field.getMachine().getGlitch().glitchImpact(field.getMachine(), pioneer.getInventory());
+                        if (field.getMachine().getGlitch().isGlitch_ended())
+                            field.getMachine().deactivateGlitch();
                     }
-                }
-            }
-            addToLog("");
 
-            // Pionier podejmuje decyzję co do kolejnej budowy
-            pioneer.setCould_build(true);
-            {
-                int next_building_output;
-                do {
-                    next_building_output = pioneer.setNextBuilding(buildingQueue,map);
-                }while(next_building_output == 2);
-                if (next_building_output == -1 && buildingQueue.size() != 0) return -1;
-            }
-            addToLog("");
+                    // Dla każdego pola z surowcem preprowadzamy proces wydobycia
+                    if (field instanceof DepositField)
+                        ((DepositField) field).extract(pioneer.getInventory());
 
-            // Pętla ruchu - wykonuje się dopóki pionierowi starcza punktów ruchu lub aż dotrze do celu
-            {
-                boolean starting = true; // true - jest to pierwszy ruch pioniera w tej turze
-                addToLog("\tPionier rozpoczyna marsz z pola (" + pioneer.getCoordinates()[0] + "," + pioneer.getCoordinates()[1] + ").");
-                do{
+                    // Każde inne pole z maszyną produkuje przedmioty
+                    if (field.getMachine() instanceof ProductionMachine) {
+                        if(((ProductionMachine) field.getMachine()).production(buildingQueue, pioneer, map) == -1) return -1;
+                    }
+                    else field.getMachine().production(pioneer.getInventory());
 
-                    // Przemieszczenie na pole
-                    pioneer.walk(map, starting);
-                    if(starting) starting = false;
-
-                    // Pionier próbuje na aktualnie zajmowanym polu coś zbudować
-                    if(pioneer.buildMachine(map, buildingQueue) == -1) return -1;
-                }while (pioneer.getMove_points() != 0 && pioneer.getPath().size() > 0);
-                addToLog("\tPionier kończy marsz na polu (" + pioneer.getCoordinates()[0] + "," + pioneer.getCoordinates()[1] + ").");
-            }
-
-            debug_simulation_preview(turn);
-
-            // sprawdzamy czy wyprodukowano odpowiedni przedmiot
-            for(Item item : pioneer.getInventory()){
-                if(item.getID() == targetItem.getID() && item.getAmount() >= 1){
-                    for(Field[] row : map){
-                        for(Field field : row)
+                    // Sprawdzamy czy wyprodukowano przedmiot docelowy
+                    for(Item item : pioneer.getInventory()){
+                        if(item.getID() == targetItem.getID() && item.getAmount() >= 1){
                             if(field.getMachine() != null && field.getMachine().getProduced_item() == item.getID())
                                 return 1;
+                        }
                     }
                 }
             }
+        }
+        addToLog("");
+
+        // Pionier podejmuje decyzję co do kolejnej budowy
+        pioneer.setCould_build(true);
+        {
+            int next_building_output;
+            do {
+                next_building_output = pioneer.setNextBuilding(buildingQueue,map);
+            }while(next_building_output == 2);
+            if (next_building_output == -1 && buildingQueue.size() != 0) return -1;
+        }
+        addToLog("");
+
+        // Pętla ruchu - wykonuje się dopóki pionierowi starcza punktów ruchu lub aż dotrze do celu
+        {
+            boolean starting = true; // true - jest to pierwszy ruch pioniera w tej turze
+            addToLog("\tPionier rozpoczyna marsz z pola (" + pioneer.getCoordinates()[0] + "," + pioneer.getCoordinates()[1] + ").");
+            do{
+
+                // Przemieszczenie na pole
+                pioneer.walk(map, starting);
+                if(starting) starting = false;
+
+                // Pionier próbuje na aktualnie zajmowanym polu coś zbudować
+                if(pioneer.buildMachine(map, buildingQueue) == -1) return -1;
+            }while (pioneer.getMove_points() != 0 && pioneer.getPath().size() > 0);
+            addToLog("\tPionier kończy marsz na polu (" + pioneer.getCoordinates()[0] + "," + pioneer.getCoordinates()[1] + ").");
+        }
+
+        debug_simulation_preview(turn);
 
         if(turn >= max_turns) return -2;
         return 0;
@@ -292,7 +286,7 @@ public class Main {
         }
 
 
-        /*System.out.println("Ekwipunek:");
+        System.out.println("Ekwipunek:");
         for(Item item : pioneer.getInventory()){
             System.out.printf("\t%-25s\t%-5.2f\t%-5.2f\n", item.getName(), item.getAmount(), item.getIncome());
         }
@@ -313,7 +307,7 @@ public class Main {
                 }
             }
             System.out.printf("\t%-25s\t%-5.2f\t%-5.2f\n", item.getName(), item.getAmount(), item.getIncome());
-        }*/
+        }
     }
 
     private static void setBuildingOrder() {
