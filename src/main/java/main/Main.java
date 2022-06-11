@@ -1,5 +1,6 @@
 package main;
 
+import map.MapGenerator;
 import rendering.*;
 import simulation.*;
 import simulation.terrain.*;
@@ -8,8 +9,22 @@ import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 public class Main {
-    static public int map_size; // rozmiar planszy(w polach)
-    static public Field[][] map; // plansza na której odbywa się symulacja
+    public static void setMap_size(int map_size) {
+        Main.map_size = map_size;
+    }
+
+    public static int getMap_size() {
+        return map_size;
+    }
+
+    static private int map_size; // rozmiar planszy(w polach)
+    static public Field[][] map; // plansza na której odbywa
+
+    public static void setMapTab(int[][] mapTab) {
+        Main.mapTab = mapTab;
+    }
+
+    static private int[][] mapTab;// się symulacja
     static private MenuGUI menu;
     static public Pioneer pioneer; // pionier
     static final private Item targetItem = new ComponentItem(16, 0, 0); // przedmiot, ktorego zdobycie, konczy symulacje (przedmiot docelowy)
@@ -17,18 +32,22 @@ public class Main {
     static private ArrayList<Integer> buildingQueue = new ArrayList<>();
 
     public static void main(String[] args) {
+        MapGenerator generator=new MapGenerator();
         menu=new MenuGUI();
     }
 
     // pętla symulacji wykonująca się określoną ilość tur lub do osiągnięcia przez pioniera określonego celu
-    public static int simulationLoop(int max_turns) {
+    public static int simulationLoop(int turn) {
 
 
-        if(simulation_setup() == -1) return -4;
-        debug_simulation_preview(0);
+
+        //if(simulation_setup() == -1) return -4;
+        //debug_simulation_preview(0);
+
+        //NFrame simWindow =new NFrame();
 
         // pętla główna
-        for (int turn = 0; turn < max_turns; turn++) {
+        //for (int turn = 0; turn < max_turns; turn++) {
 
             // w pierwszej turze pionier wybiera miejsce pod pole centralne
             if(turn == 0) if(pioneer.chooseCentral(map, buildingQueue) == -1) return -3;
@@ -62,6 +81,8 @@ public class Main {
                 }
             }
 
+
+
             // Pionier podejmuje decyzję co do kolejnej budowy
             pioneer.setCould_build(true);
             if(pioneer.setNextBuilding(buildingQueue,map) == -1 && buildingQueue.size() != 0) return -1;
@@ -69,12 +90,12 @@ public class Main {
             // Pętla ruchu - wykonuje się dopóki pionierowi starcza punktów ruchu lub aż dotrze do celu
             {
                 boolean starting = true; // true - jest to pierwszy ruch pioniera w tej turze
-                do{
+                do{/*
                     try {
                         TimeUnit.MILLISECONDS.sleep(600);
                     } catch (InterruptedException e) {
                         throw new RuntimeException(e);
-                    }
+                    }*/
 
                     // Przemieszczenie na pole
                     pioneer.walk(map, starting);
@@ -84,6 +105,9 @@ public class Main {
                     pioneer.buildMachine(map, buildingQueue);
 
                     debug_simulation_preview(turn);
+                    //simWindow.refresh();
+
+
                 }while (pioneer.getMove_points() != 0 && pioneer.getPath().size() > 0);
             }
 
@@ -97,9 +121,10 @@ public class Main {
                     }
                 }
             }
-        }
+        //}
 
-        if(buildingQueue.size() != 0) return -2;
+        //if(buildingQueue.size() != 0) return -2;
+        //simWindow.stop();
         return 0;
     }
 
@@ -115,12 +140,12 @@ public class Main {
         score += Machine.count * 10;
 
         // za działające maszyny otrzymuje się dodatkową premię
-        score += 1000 * Machine.active_machines/Machine.count;
+        if(Machine.count!=0)score += 1000 * Machine.active_machines/Machine.count;
 
         return score;
     }
 
-    private static int simulation_setup(){
+    public static int simulation_setup(){
 
         // Ustalamy kolejkę budowania
         setBuildingOrder();

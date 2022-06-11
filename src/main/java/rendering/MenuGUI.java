@@ -1,5 +1,7 @@
 package rendering;
 
+import map.*;
+
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -54,7 +56,7 @@ public class MenuGUI extends JFrame implements ActionListener {
 
         if(e.getSource()==button1){
 
-            String answer = JOptionPane.showInputDialog("Podaj wielko\u015B\u0107 boku mapy");
+            String answer = JOptionPane.showInputDialog("Podaj wielko\u015B\u0107 mapy");
             try {
                 new MapEditorGUI(Integer.parseInt(answer));
             }catch (NumberFormatException ex){
@@ -65,19 +67,14 @@ public class MenuGUI extends JFrame implements ActionListener {
         if (e.getSource()==button2){
 
             //otwiera autoGenerator map
-
-            map.MapGenerator.generateMap();
-
             dispose();
+            MapGenerator.generateMap();
         }
         if (e.getSource()==button3){
 
             //wczytuje zapisaną mapę
-
-            String answer = JOptionPane.showInputDialog("Podaj nazw\u0119 mapy");
-            map.MapLoader.loadMap(answer);
-
             dispose();
+            MapLoader.loadMap();
         }
     }
 }
