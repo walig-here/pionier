@@ -1,5 +1,7 @@
 package simulation;
 
+import main.Main;
+
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
@@ -17,35 +19,36 @@ public class Machine {
 
     private int output; // ilość przedmiotów produkowanych na turę
 
-    private ArrayList<Item> cost; // lista obiektów potrzebnych do wybudowania/ulepszenia
+    private final ArrayList<Item> cost; // lista obiektów potrzebnych do wybudowania/ulepszenia
 
     protected Glitch glitch; // zakłócenie obecne w maszynie
 
-    private int ID; // ID maszyny
+    private final int ID; // ID maszyny
 
     protected int production_turn; // ile tur minęło od rozpoczęcia produkcji
 
     static public int count = 0; // ilość maszyn
     static public int active_machines = 0; // ilość aktywnych maszyn
+    static public int glitched_machines = 0; // ilość zglitchowanych maszyn
 
-    private Boolean active;
+    private int active; // 1 - działa, 0 - nie działa, -1 - nie działa i nigdy już się nie włączy
 
 
 
     public void setOutput(int output) {
         this.output = output;
     }
-    public void setActive(boolean active) {
+    public void setActive(int active) {
         this.active = active;
     }
 
-    public boolean getActive() {
+    public int getActive() {
         return active;
     }
 
     public Machine(int ID, int produced_item) {
         cost = new ArrayList<>();
-        active = false;
+        active = 0;
         //id podany do szukania w plikach
         this.ID = ID;
 
@@ -88,8 +91,7 @@ public class Machine {
             case 15: path += "production_belt_factory.txt"; break;
 
         }
-        Item item = new Item(produced_item, 0, 0);
-        //ustalamy jaki przedmiot wylatuje po weryfikacji (oddelegowanie do klasy Item) czy ten przedmiot istnieje
+
         this.produced_item = produced_item;
 
         try{
@@ -104,7 +106,7 @@ public class Machine {
 
                 // linia zawierająca informację o nazwie przedmiotu
                 if(line.contains("\"name\":") && line_scanner.hasNext()) name = line_scanner.next();
-                // linia zawierająca informację na temat ilosci produkowanych przedmiotow na ture
+                    // linia zawierająca informację na temat ilosci produkowanych przedmiotow na ture
                 else if(line.contains("\"output\":") && line_scanner.hasNextInt()) output = line_scanner.nextInt();
 
                 else if(line.contains("\"cost\":") && line_scanner.hasNextInt()) {
@@ -147,7 +149,7 @@ public class Machine {
 
     //rozpoczyna produkcję, zwieksza income produktow
     public void startProduction(ArrayList<Item> inventory) {
-        if(active) return;
+        if(active == 1 || active == -1) return;
 
         for (Item inventoryItem : inventory) {
             if (inventoryItem.getID() != getProduced_item()) continue;
@@ -157,25 +159,25 @@ public class Machine {
 
         // resetujemy licznik tur produkcyjnych
         production_turn = 0;
-        active = true;
+        active = 1;
         active_machines++;
     }
 
     public void stopProduction(ArrayList<Item> inventory){
-        if(!active) return;
+        if(active == 0 || active == -1) return;
 
         for (Item inventoryItem : inventory) {
             if (inventoryItem.getID() != getProduced_item()) continue;
             inventoryItem.setIncome((inventoryItem.getIncome() - (double)output/inventoryItem.getProductionTime()));
             break;
         }
-        active = false;
+        active = 0;
         active_machines--;
     }
 
-        // zmiana ilości przedmitów wynikła z produkcji
+    // zmiana ilości przedmitów wynikła z produkcji
     public void production(ArrayList<Item> inventory) {
-        if(!active) return;
+        if(active == 0 || active == -1) return;
 
         // produkcja trwa kolejną turę
         production_turn++;
@@ -205,12 +207,16 @@ public class Machine {
 
     // włączenie gitcha w maszynie
     public void activateGlitch(int glitchID) {
-        if(glitchID == 0) glitch = new TurnOffGlitch(glitchID, 10);
+        if(glitchID == 0)
+            glitch = new TurnOffGlitch(glitchID, 10);
         else glitch = new SlowGlitch(glitchID, 0.1f);
+        glitched_machines++;
     }
 
     public void deactivateGlitch() {
+        Main.addToLog("\tW maszynie "+ name + " problemy spowodowane zakłóceniem " + glitch.getID() + " skończyły się.");
         glitch = null;
+        glitched_machines--;
     }
 
     public ArrayList<Item> getCost() {

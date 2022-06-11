@@ -1,16 +1,19 @@
 package simulation;
 
+import main.Main;
+import simulation.terrain.Field;
+
 import java.util.ArrayList;
 
 public class ProductionMachine extends Machine {
 
-    private ArrayList<Item> input; // lista obiektow potrzebnych do wytworzenia produktu wyjściowego
+    private final ArrayList<Item> input; // lista obiektow potrzebnych do wytworzenia produktu wyjściowego
 
     public ProductionMachine(int ID, int produced_item) {
         super(ID, produced_item);
 
         //tworzy item, bierze jego nazwy i szuka takiej recepty
-         input = new ComponentItem(produced_item, 0, 0.0).getRecipe().getInput();
+        input = new ComponentItem(produced_item, 0, 0.0).getRecipe().getInput();
 
     }
     public ProductionMachine(ProductionMachine copy){
@@ -20,7 +23,7 @@ public class ProductionMachine extends Machine {
     //rozpoczyna produkcję, zwieksza income produktow, zmniejsza income itemow potrzevbnych do wytworzenia produktu
     @Override
     public void startProduction(ArrayList<Item> inventory) {
-        if(super.getActive()) return;
+        if(super.getActive() == 1 || super.getActive() == -1) return;
 
         for (Item inventoryItem : inventory) {
             if (inventoryItem.getID() != getProduced_item()) continue;
@@ -35,13 +38,13 @@ public class ProductionMachine extends Machine {
                 break;
             }
         }
-        super.setActive(true);
+        super.setActive(1);
         Machine.active_machines++;
     }
 
     @Override
     public void stopProduction(ArrayList<Item> inventory){
-        if(!super.getActive()) return;
+        if(super.getActive() == 0 || super.getActive() == -1) return;
 
         for (Item inventoryItem : inventory) {
             if (inventoryItem.getID() != getProduced_item()) continue;
@@ -56,15 +59,15 @@ public class ProductionMachine extends Machine {
                 break;
             }
         }
-        super.setActive(false);
+        super.setActive(0);
         Machine.active_machines--;
     }
 
     // zmiana ilości przedmitów (amount) wynikła z produkcji
-    public void production(ArrayList<Integer> buildingOrder, Pioneer pioneer, simulation.terrain.Field[][] map) {
+    public int production(ArrayList<Integer> buildingOrder, Pioneer pioneer, Field[][] map) {
 
         // sprawdzamy czy nie ma glitcha wyłączającego w maszynie
-        if(super.glitch instanceof TurnOffGlitch) return;
+        if(super.glitch != null && super.glitch.getID() == 0) return 0;
 
         // sprawdzamy czy mamy wystarczająco przedmiotów do kontynuacji produkcji
         startProduction(pioneer.getInventory());
@@ -74,21 +77,25 @@ public class ProductionMachine extends Machine {
 
                 // Jeżeli nie mamy wystarczającej ilości wymaganego przedmiotu, to zatrzymujemy produkcję i nakazujemy pionierowi pozyskać przedmiot
                 if(inventoryItem.getAmount() - inputItem.getAmount() < 0 && inventoryItem.getIncome() < 0) {
+
+                    Main.addToLog("\tMaszyna " + getName() + " została tymczasowo wyłączona ze względu na brak " + inputItem.getName() + ".");
                     stopProduction(pioneer.getInventory());
-                    if(!pioneer.getEmergency_construction()){
+
+                    if(!pioneer.getEmergency_construction() && buildingOrder.get(0) != inventoryItem.getID()){
                         buildingOrder.add(0,inventoryItem.getID());
                         pioneer.getPath().clear();
                         pioneer.setTo_build(-1);
-                        pioneer.setNextBuilding(buildingOrder,map);
+                        if(pioneer.setNextBuilding(buildingOrder,map) == -1)
+                            return -1;
                         pioneer.setEmergency_construction(true);
                     }
-                    return;
+                    return 0;
                 }
                 break;
             }
         }
 
-        if(!super.getActive()) return;
+        if(super.getActive() == 0) return 0;
 
         // produkcja trwa kolejną turę
         production_turn++;
@@ -98,7 +105,7 @@ public class ProductionMachine extends Machine {
             Item temp = new Item(produced_item, 0,0);
 
             // jeżeli taka ilość czasu jeszcze nie minęła to produkcja trwa dalej
-            if(temp.getProductionTime() > production_turn) return;
+            if(temp.getProductionTime() > production_turn) return 0;
 
             // jeżeli taka ilość czasu już minęła to resetujemy timer produkcji
             production_turn = 0;
@@ -119,6 +126,7 @@ public class ProductionMachine extends Machine {
                 break;
             }
         }
+        return 0;
     }
 
     public ArrayList<Item> getInput() {

@@ -12,7 +12,7 @@ import java.util.Scanner;
  */
 public class GlitchSourceField extends Field {
 
-    private byte glitch_id; // ID zakłócenia generowanego przez pole
+    private final byte glitch_id; // ID zakłócenia generowanego przez pole
     private int range; // zasięg zakłócenia
     private static int move_cost=-1; // koszt wejścia na pole
     private static byte generated_glitch_probability=-1; // maksymalne, generawane przez źródło prawdopodobieństwo wystąpienia generowanego przez nie zakłócenia
@@ -99,15 +99,15 @@ public class GlitchSourceField extends Field {
 
                 // Jeżeli dystans jest równy 0 to prawdopodobieństwo wystąpienia zakłócenia jest równe 100%
                 if(distance == 0) probability = 100;
-                // Jeżeli dystans jest mniejszy od 25% zasięgu to prawdopodobieństwo nie zmieni się
+                    // Jeżeli dystans jest mniejszy od 25% zasięgu to prawdopodobieństwo nie zmieni się
                 else if(distance < range/4);
-                // Jeżeli dystans jest mniejszy od 50% zasięgu to prawdopodobieństwo zmniejsza się distance_modifier razy
+                    // Jeżeli dystans jest mniejszy od 50% zasięgu to prawdopodobieństwo zmniejsza się distance_modifier razy
                 else if(distance < range/2) probability /= distance_modifier;
-                // Jeżeli dystans jest większy lub równy od 75% zasięgu to prawdopodobieństwo zmniejsza się distance_modifier^2 razy
+                    // Jeżeli dystans jest większy lub równy od 75% zasięgu to prawdopodobieństwo zmniejsza się distance_modifier^2 razy
                 else if(distance < 3*range/4) probability /= Math.pow(distance_modifier,2);
-                // Jeżeli dystans jest od 100% zasięgu to prawdopodobieństwo zmniejsza się distance_modifier^3 razy
+                    // Jeżeli dystans jest od 100% zasięgu to prawdopodobieństwo zmniejsza się distance_modifier^3 razy
                 else if(distance < range) probability /= Math.pow(distance_modifier,3);
-                // Jeżeli dystans jest równy zasięgowi to prawdopodobieństwo zmniejsza się distance_modifier^4 razy
+                    // Jeżeli dystans jest równy zasięgowi to prawdopodobieństwo zmniejsza się distance_modifier^4 razy
                 else if(distance == range) probability /= Math.pow(distance_modifier,4);
 
                 // Nadajemy polu odpowiednie prawdopodobieństwo
@@ -141,7 +141,7 @@ public class GlitchSourceField extends Field {
         // Sprawdzamy czy pionier ma odpowiednią ilość punktów ruchu.
         // Jeżeli nie ma odpowiedniej ilości to pole nie pozwala mu wkroczyć na swój teren.
         if(pioneer.getMove_points() - move_cost < 0) walked_in = false;
-        // Jeżeli wystarczy mu punktów ruchu to pole pozwala wkroczyć na swój teren.
+            // Jeżeli wystarczy mu punktów ruchu to pole pozwala wkroczyć na swój teren.
         else walked_in = true;
 
         // Bez względu na to czy pionier wkroczył na pole to traci swoje punkty ruchu

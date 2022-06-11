@@ -19,11 +19,12 @@ public class Kanwa1 extends JPanel implements ActionListener{
     int dimension;
     int max_turns;
     int turn;
+    int score = 0;
     boolean isRunning;
     Kanwa1(){
 
         isRunning=true;
-        max_turns=100;
+        max_turns=50;
         turn=0;
         sizeOfGrid= Main.getMap_size();
         dimension = sizeOfGrid*25;
@@ -43,7 +44,7 @@ public class Kanwa1 extends JPanel implements ActionListener{
         stats.setText(text);
         stats.setBorder(border);
 
-        timer=new Timer(1000, this);
+        timer=new Timer(200, this);
         timer.start();
 
         //this.setBorder(BorderFactory.createLineBorder(Color.blue, 3));
@@ -104,7 +105,7 @@ public class Kanwa1 extends JPanel implements ActionListener{
 
                 rys1.fillRect(i*25,j*25,25,25);
                 if(i==Main.pioneer.getCoordinates()[0]&&j==Main.pioneer.getCoordinates()[1]){
-                    rys1.setPaint(Color.black);
+                    rys1.setPaint(Color.MAGENTA);
                     rys1.setStroke(new BasicStroke(3));
                     rys1.drawLine(i*25,j*25,i*25+25,j*25+25);
                     rys1.drawLine(i*25+25,j*25,i*25,j*25+25);
@@ -135,14 +136,39 @@ public class Kanwa1 extends JPanel implements ActionListener{
         repaint();
 
 
-        if(turn<max_turns) {
-            Main.simulationLoop(turn);
-            turn++;
+        if(isRunning){
+            switch (Main.simulationLoop(turn, max_turns)) {
+                case -1: {
+                    System.out.println("PORAŻKA!\nPionier nie ma już gdzie zbudować niezbędnych maszyn.");
+                    isRunning = false;
+                } break;
+                case -2: {
+                    System.out.println("PORAŻKA!\nPionier nie zdążył wyprodukować pożądanego przedmiotu w danym mu czasie!");
+                    isRunning = false;
+                }break;
+                case -3: {
+                    System.out.println("PORAŻKA!\nPionier nie był w stanie założyć kompleksu przemysłowego!");
+                    isRunning = false;
+                }break;
+                case -4: {
+                    System.out.println("PORAŻKA!\nPionier nie był w stanie przybyć do tej okolicy!");
+                    isRunning = false;
+                }break;
+                case 1: {
+                    System.out.println("ZWYCIESTWO!");
+                    score += 10000;
+                    isRunning = false;
+                }break;
+            }
             super.repaint();
-        }else{
-            isRunning=false;
+            turn++;
+
+            if(!isRunning){
+                Main.saveLog();
+                score += Main.getScore();
+                System.out.println("PUNKTY: " + score);
+                return;
+            }
         }
-
-
     }
 }

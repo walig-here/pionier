@@ -1,3 +1,6 @@
 "name":Fabryka silników
 "output":10
 "cost":0:1
+"cost":16:2
+"cost":24:4
+"cost":15:5
