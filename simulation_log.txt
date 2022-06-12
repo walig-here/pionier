@@ -3,117 +3,146 @@ Ustalono prawdopodobieństwa wystąpienia poszczególnych zakłóceń na polach.
 
 
 TURA 0:
-	Pionier wybrał miejsce pod budowę magazynu na polu (17,6) z puli 382 odpowiednich pod magazyn pól.
+	Pionier wybrał miejsce pod budowę magazynu na polu (9,7) z puli 396 odpowiednich pod magazyn pól.
 
-	Pionier postanowił zbudować maszynę produkującą Energia na polu (13,4), które wybrał z puli 124 potencjalnych pól budowlanych.
+	Pionier postanowił zbudować maszynę produkującą Energia na polu (8,6), które wybrał z puli 106 potencjalnych pól budowlanych.
 
-	Pionier rozpoczyna marsz z pola (21,10).
-	Pionier kończy marsz na polu (21,10).
+	Pionier rozpoczyna marsz z pola (17,20).
+	Pionier kończy marsz na polu (17,20).
 
 
 TURA 1:
 
 
-	Pionier rozpoczyna marsz z pola (21,10).
-	Pionier kończy marsz na polu (21,10).
+	Pionier rozpoczyna marsz z pola (17,20).
+	Pionier kończy marsz na polu (17,20).
 
 
 TURA 2:
 
 
-	Pionier rozpoczyna marsz z pola (21,10).
-	Pionier kończy marsz na polu (19,8).
+	Pionier rozpoczyna marsz z pola (17,20).
+	Pionier kończy marsz na polu (15,18).
 
 
 TURA 3:
 
 
-	Pionier rozpoczyna marsz z pola (19,8).
-	Pionier kończy marsz na polu (16,5).
+	Pionier rozpoczyna marsz z pola (15,18).
+	Pionier kończy marsz na polu (15,18).
 
 
 TURA 4:
 
 
-	Pionier rozpoczyna marsz z pola (16,5).
-	Pionier kończy marsz na polu (15,5).
+	Pionier rozpoczyna marsz z pola (15,18).
+	Pionier kończy marsz na polu (15,18).
 
 
 TURA 5:
 
 
-	Pionier rozpoczyna marsz z pola (15,5).
-	Maszyna Elektrownia została zbudowana na polu (13,4).
-	Pionier kończy marsz na polu (13,4).
+	Pionier rozpoczyna marsz z pola (15,18).
+	Pionier kończy marsz na polu (15,17).
 
 
 TURA 6:
 
-	Pionier postanowił zbudować maszynę produkującą Zelazo na polu (18,5), które wybrał z puli 34 potencjalnych pól budowlanych.
 
-	Pionier rozpoczyna marsz z pola (13,4).
-	Pionier kończy marsz na polu (15,5).
+	Pionier rozpoczyna marsz z pola (15,17).
+	Pionier kończy marsz na polu (15,17).
 
 
 TURA 7:
 
 
-	Pionier rozpoczyna marsz z pola (15,5).
-	Pionier kończy marsz na polu (16,5).
+	Pionier rozpoczyna marsz z pola (15,17).
+	Pionier kończy marsz na polu (15,17).
 
 
 TURA 8:
 
 
-	Pionier rozpoczyna marsz z pola (16,5).
-	Przerwano konstrukcję Maszyna wydobywcza ze względu na brak Drewno.
-	Pionier postanowił zbudować maszynę produkującą Drewno na polu (12,4), które wybrał z puli 58 potencjalnych pól budowlanych.
-	Pionier kończy marsz na polu (18,5).
+	Pionier rozpoczyna marsz z pola (15,17).
+	Pionier kończy marsz na polu (14,16).
 
 
 TURA 9:
 
 
-	Pionier rozpoczyna marsz z pola (18,5).
-	Pionier kończy marsz na polu (16,5).
+	Pionier rozpoczyna marsz z pola (14,16).
+	Pionier kończy marsz na polu (14,16).
 
 
 TURA 10:
 
 
-	Pionier rozpoczyna marsz z pola (16,5).
-	Pionier kończy marsz na polu (15,5).
+	Pionier rozpoczyna marsz z pola (14,16).
+	Pionier kończy marsz na polu (14,16).
 
 
 TURA 11:
 
 
-	Pionier rozpoczyna marsz z pola (15,5).
-	Maszyna Tartak automatyczny została zbudowana na polu (12,4).
-	Pionier kończy marsz na polu (12,4).
+	Pionier rozpoczyna marsz z pola (14,16).
+	Pionier kończy marsz na polu (13,15).
 
 
 TURA 12:
 
-	Pionier postanowił zbudować maszynę produkującą Zelazo na polu (18,5), które wybrał z puli 34 potencjalnych pól budowlanych.
 
-	Pionier rozpoczyna marsz z pola (12,4).
-	Pionier kończy marsz na polu (14,4).
+	Pionier rozpoczyna marsz z pola (13,15).
+	Pionier kończy marsz na polu (13,15).
 
 
 TURA 13:
 
 
-	Pionier rozpoczyna marsz z pola (14,4).
-	Pionier kończy marsz na polu (16,5).
+	Pionier rozpoczyna marsz z pola (13,15).
+	Pionier kończy marsz na polu (13,15).
 
 
 TURA 14:
 
 
-	Pionier rozpoczyna marsz z pola (16,5).
-	Maszyna Maszyna wydobywcza została zbudowana na polu (18,5).
-	Pionier kończy marsz na polu (18,5).
+	Pionier rozpoczyna marsz z pola (13,15).
+	Pionier kończy marsz na polu (13,14).
 
 
 TURA 15:
+
+
+	Pionier rozpoczyna marsz z pola (13,14).
+	Pionier kończy marsz na polu (13,14).
+
+
+TURA 16:
+
+
+	Pionier rozpoczyna marsz z pola (13,14).
+	Pionier kończy marsz na polu (13,14).
+
+
+TURA 17:
+
+
+	Pionier rozpoczyna marsz z pola (13,14).
+	Pionier kończy marsz na polu (12,13).
+
+
+TURA 18:
+
+
+	Pionier rozpoczyna marsz z pola (12,13).
+	Pionier kończy marsz na polu (9,8).
+
+
+TURA 19:
+
+
+	Pionier rozpoczyna marsz z pola (9,8).
+	Maszyna Elektrownia została zbudowana na polu (8,6).
+	Pionier kończy marsz na polu (8,6).
+
+
+TURA 20:

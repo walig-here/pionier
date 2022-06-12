@@ -23,19 +23,19 @@ public class MenuGUI extends JFrame implements ActionListener {
         ImageIcon logo = new ImageIcon("src\\textures\\logo.png");
 
         button1=new JButton(); //otwiera edytor map
-        button1.setBounds(100,100,175,50);
+        button1.setBounds(100,100,180,50);
         button1.addActionListener(this);
         button1.setFocusable(false);
         button1.setText("Stw\u00F3rz now\u0105 map\u0119");
 
         button2=new JButton(); //otwiera autoGenerator map
-        button2.setBounds(100,175,175,50);
+        button2.setBounds(100,175,180,50);
         button2.addActionListener(this);
         button2.setFocusable(false);
         button2.setText("Wygeneruj losow\u0105 map\u0119");
 
         button3=new JButton(); //wczytuje zapisaną mapę
-        button3.setBounds(100,250,175,50);
+        button3.setBounds(100,250,180,50);
         button3.addActionListener(this);
         button3.setFocusable(false);
         button3.setText("Wczytaj map\u0119");

@@ -11,6 +11,7 @@ import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.DecimalFormat;
 
 import static main.Main.pioneer;
 import static main.Main.simulation_setup;
@@ -236,7 +237,8 @@ public class Kanwa1 extends JPanel implements ActionListener{
 
         temp2="";
         for(Item item : pioneer.getInventory()){
-            temp2 += item.getName()+ ": " +item.getAmount()+"   "+ item.getIncome()+"<br>";
+            DecimalFormat df = new DecimalFormat("#.##");
+            temp2 += item.getName()+ ": " +df.format(item.getAmount())+"   "+ df.format(item.getIncome())+"<br>";
         }
 
         String text ="<html>"+"Numer tury: "+turn+"<br>"+ "Ilo\u015B\u0107 maszyn: " + Machine.count +"(" + Machine.active_machines + " aktywnych)"+
