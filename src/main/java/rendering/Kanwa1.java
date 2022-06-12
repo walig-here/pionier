@@ -23,6 +23,24 @@ public class Kanwa1 extends JPanel implements ActionListener{
     int turn;
     int score = 0;
     boolean isRunning;
+
+    Image coal_ore;
+    Image iron_ore;
+    Image copper_ore;
+    Image gold_ore;
+    Image diamond_ore;
+    Image forest;
+    Image pionier;
+    Image central_field;
+    Image factory_on;
+    Image factory_off;
+    Image furnace_on;
+    Image furnace_off;
+    Image powerplant_on;
+    Image powerplant_off;
+    Image extractor_on;
+    Image extractor_off;
+
     Kanwa1(int max_turns){
 
         isRunning=true;
@@ -46,6 +64,26 @@ public class Kanwa1 extends JPanel implements ActionListener{
         stats.setText(text);
         stats.setBorder(border);
 
+        //ładowanie textur
+
+        coal_ore =new ImageIcon("src\\textures\\coal_ore.png").getImage();
+        iron_ore =new ImageIcon("src\\textures\\iron_ore.png").getImage();
+        copper_ore =new ImageIcon("src\\textures\\copper_ore.png").getImage();
+        gold_ore =new ImageIcon("src\\textures\\gold_ore.png").getImage();
+        diamond_ore =new ImageIcon("src\\textures\\diamond_ore.png").getImage();
+        forest =new ImageIcon("src\\textures\\bamboo_large_leaves.png").getImage();
+        pionier =new ImageIcon("src\\textures\\pionier.png").getImage();
+        central_field =new ImageIcon("src\\textures\\central_field.png").getImage();
+        factory_on =new ImageIcon("src\\textures\\factory_on.png").getImage();
+        factory_off =new ImageIcon("src\\textures\\factory_off.png").getImage();
+        furnace_on =new ImageIcon("src\\textures\\furnace_on.png").getImage();
+        furnace_off =new ImageIcon("src\\textures\\furnace_off.png").getImage();
+        powerplant_on =new ImageIcon("src\\textures\\powerplant_on.png").getImage();
+        powerplant_off =new ImageIcon("src\\textures\\powerplant_off.png").getImage();
+        extractor_on =new ImageIcon("src\\textures\\extractor_on.png").getImage();
+        extractor_off =new ImageIcon("src\\textures\\extractor_off.png").getImage();
+
+
         timer=new Timer(200, this);
         timer.start();
 
@@ -58,9 +96,6 @@ public class Kanwa1 extends JPanel implements ActionListener{
     public void paint(Graphics g) {
 
         Graphics2D rys1 = (Graphics2D) g;
-
-
-
         for (int i =0; i<sizeOfGrid;i++)
         {
             for (int j=0;j<sizeOfGrid;j++)
@@ -69,65 +104,100 @@ public class Kanwa1 extends JPanel implements ActionListener{
 
                     case 0:
                         rys1.setPaint(Color.white);
+                        rys1.fillRect(i*25,j*25,25,25);
                         break;
                     case 1:
                         rys1.setPaint(Color.blue);
+                        rys1.fillRect(i*25,j*25,25,25);
                         break;
                     case 2:
                         switch (((DepositField)Main.map[i][j]).getItem_id()){
 
                             case 2:
-                                rys1.setPaint(Color.green);
+                                rys1.setPaint(Color.white);
+                                rys1.fillRect(i*25,j*25,25,25);
+                                rys1.drawImage(forest,i*25,j*25, null);
                                 break;
                             case 6:
-                                rys1.setPaint(Color.lightGray);
+                                rys1.drawImage(iron_ore,i*25,j*25, null);
                                 break;
                             case 3:
-                                rys1.setPaint(Color.orange);
+                                rys1.drawImage(copper_ore,i*25,j*25, null);
                                 break;
                             case 1:
-                                rys1.setPaint(Color.DARK_GRAY);
+                                rys1.drawImage(coal_ore,i*25,j*25, null);
                                 break;
                             case 5:
-                                rys1.setPaint(Color.yellow);
+                                rys1.drawImage(gold_ore,i*25,j*25, null);
                                 break;
                             case 4:
                                 rys1.setPaint(new Color(68,57,1));
+                                rys1.fillRect(i*25,j*25,25,25);
                                 break;
                             case 7:
-                                rys1.setPaint(Color.cyan);
+                                rys1.drawImage(diamond_ore,i*25,j*25, null);
                                 break;
                         }
                         break;
-                    case 3: rys1.setPaint(Color.red); break;
-                    case 4: rys1.setPaint(Color.PINK); break;
+                    case 3:
+                        rys1.setPaint(Color.red);
+                        rys1.fillRect(i*25,j*25,25,25);
+                        break;
+                    case 4: rys1.drawImage(central_field,i*25+5,j*25+5, null); break;
 
                 }
 
-                rys1.fillRect(i*25,j*25,25,25);
 
                 // wstawić renderowanie maszyn
                 if(Main.map[i][j].getMachine() != null){
 
-                    if(Main.map[i][j].getMachine().getActive() == 1) rys1.setPaint(new Color(22, 1,98));
-                    else rys1.setPaint(new Color(136, 143, 194));
+                    if(Main.map[i][j].getMachine().getActive() == 1){
+                        if(Main.map[i][j].getMachine().getID()>=5){
 
-                    rys1.setStroke(new BasicStroke(3));
-                    rys1.drawLine(i*25,j*25,i*25+25,j*25+25);
-                    rys1.drawLine(i*25+25,j*25,i*25,j*25+25);
-                    rys1.setStroke(new BasicStroke(1));
+                            rys1.drawImage(factory_on,i*25,j*25, null);
 
+                        }else{
+                            switch (Main.map[i][j].getMachine().getID()){
+
+                                case 0:
+                                    rys1.drawImage(powerplant_on,i*25,j*25, null);
+                                    break;
+                                case 3:
+                                    rys1.drawImage(furnace_on,i*25,j*25, null);
+                                    break;
+                                case 1, 2, 4:
+                                    rys1.drawImage(extractor_on,i*25+5,j*25+5, null);
+                                    break;
+                            }
+                        }
+                    }
+                    else {
+                        if(Main.map[i][j].getMachine().getID()>=5){
+
+                            rys1.drawImage(factory_off,i*25,j*25, null);
+
+                        }else{
+                            switch (Main.map[i][j].getMachine().getID()){
+
+                                case 0:
+                                    rys1.drawImage(powerplant_off,i*25,j*25, null);
+                                    break;
+                                case 3:
+                                    rys1.drawImage(furnace_off,i*25,j*25, null);
+                                    break;
+                                case 1, 2, 4:
+                                    rys1.drawImage(extractor_off,i*25+5,j*25+5, null);
+                                    break;
+                            }
+                        }
+                    }
                 }
 
 
                 // renderowanie pioniera
                 if(Main.pioneer != null){
                     if(i==Main.pioneer.getCoordinates()[0]&&j==Main.pioneer.getCoordinates()[1]){
-                        rys1.setPaint(Color.MAGENTA);
-                        rys1.setStroke(new BasicStroke(3));
-                        rys1.drawLine(i*25,j*25,i*25+25,j*25+25);
-                        rys1.drawLine(i*25+25,j*25,i*25,j*25+25);
-                        rys1.setStroke(new BasicStroke(1));
+                        rys1.drawImage(pionier,i*25+5,j*25+5, null);
                     }
                 }
             }
@@ -157,25 +227,25 @@ public class Kanwa1 extends JPanel implements ActionListener{
         if(isRunning){
             switch (Main.simulationLoop(turn, max_turns)) {
                 case -1: {
+                    isRunning = false;
                     System.out.println("PORA\u017BKA!\nPionier nie ma już gdzie zbudować niezbędnych maszyn.");
                     JOptionPane.showMessageDialog(this,"PORA\u017BKA!\nPionier nie ma ju\u017C gdzie zbudowa\u0107 niezb\u0119dnych maszyn.");
-                    isRunning = false;
                 } break;
                 case -2: {
+                    isRunning = false;
                     System.out.println("PORA\u017BKA!\nPionier nie zdążył wyprodukować pożądanego przedmiotu w danym mu czasie!");
                     JOptionPane.showMessageDialog(this,"PORA\u017BKA!\nPionier nie zd\u0105\u017Cy\u0142 wyprodukowa\u0107 po\u017C\u0105danego przedmiotu w danym mu czasie!");
-                    isRunning = false;
                 }break;
                 case -3: {
+                    isRunning = false;
                     System.out.println("PORA\u017BKA!\nPionier nie był w stanie założyć kompleksu przemysłowego!");
                     JOptionPane.showMessageDialog(this,"PORA\u017BKA!\nPionier nie by\u0142 w stanie zało\u017Cy\u0107 kompleksu przemys\u0142owego!");
-                    isRunning = false;
                 }break;
                 case 1: {
+                    isRunning = false;
                     System.out.println("ZWYCIESTWO!");
                     JOptionPane.showMessageDialog(this,"ZWYCI\u0118STWO!");
                     score += 10000;
-                    isRunning = false;
                 }break;
             }
             super.repaint();

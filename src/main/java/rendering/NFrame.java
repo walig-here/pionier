@@ -29,4 +29,7 @@ public class NFrame extends JFrame {
 
     }
 
+    public void exit(){
+        dispose();
+    }
 }

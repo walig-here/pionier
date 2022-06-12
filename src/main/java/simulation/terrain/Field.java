@@ -1,7 +1,6 @@
 package simulation.terrain;
 
 import main.Main;
-import rendering.GridSprite;
 import simulation.*;
 import simulation.Pioneer;
 import simulation.ProductionMachine;
@@ -21,7 +20,6 @@ public abstract class Field {
     private int terrain_id;  //id terenu
 
     protected Machine machine; //maszyna stojąca na polu
-    private GridSprite gridSprite; //render pola
     private int base_move_points; //punkty na początku rundy jeśli jest to pole startu
 
     private ArrayList<Byte[]> glitch_probabilities; // szanse na zakłócenie, pierwsza komórka danej pozycji to ID zakłócenia, druga to szansa na jego wystąpienie na tym polu
