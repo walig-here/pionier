@@ -30,6 +30,7 @@ public class Kanwa1 extends JPanel implements ActionListener{
     String temp,temp2;
 
     Image coal_ore;
+    Image oil_field;
     Image iron_ore;
     Image copper_ore;
     Image gold_ore;
@@ -45,6 +46,9 @@ public class Kanwa1 extends JPanel implements ActionListener{
     Image powerplant_off;
     Image extractor_on;
     Image extractor_off;
+    Image soil;
+    Image water;
+    Image glitch;
 
     Kanwa1(int max_turns){
 
@@ -75,7 +79,7 @@ public class Kanwa1 extends JPanel implements ActionListener{
         copper_ore =new ImageIcon("src\\textures\\copper_ore.png").getImage();
         gold_ore =new ImageIcon("src\\textures\\gold_ore.png").getImage();
         diamond_ore =new ImageIcon("src\\textures\\diamond_ore.png").getImage();
-        forest =new ImageIcon("src\\textures\\bamboo_large_leaves.png").getImage();
+        forest =new ImageIcon("src\\textures\\woods.png").getImage();
         pionier =new ImageIcon("src\\textures\\pionier.png").getImage();
         central_field =new ImageIcon("src\\textures\\central_field.png").getImage();
         factory_on =new ImageIcon("src\\textures\\factory_on.png").getImage();
@@ -86,6 +90,10 @@ public class Kanwa1 extends JPanel implements ActionListener{
         powerplant_off =new ImageIcon("src\\textures\\powerplant_off.png").getImage();
         extractor_on =new ImageIcon("src\\textures\\extractor_on.png").getImage();
         extractor_off =new ImageIcon("src\\textures\\extractor_off.png").getImage();
+        soil =new ImageIcon("src\\textures\\soil.png").getImage();
+        oil_field =new ImageIcon("src\\textures\\oil.png").getImage();
+        water =new ImageIcon("src\\textures\\water.png").getImage();
+        glitch =new ImageIcon("src\\textures\\glitch.png").getImage();
 
 
         timer=new Timer(200, this);
@@ -104,22 +112,15 @@ public class Kanwa1 extends JPanel implements ActionListener{
         {
             for (int j=0;j<sizeOfGrid;j++)
             {
+                rys1.drawImage(soil,i*25,j*25, null);
                 switch (Main.map[i][j].getTerrainId()){
-
-                    case 0:
-                        rys1.setPaint(Color.white);
-                        rys1.fillRect(i*25,j*25,25,25);
-                        break;
                     case 1:
-                        rys1.setPaint(Color.blue);
-                        rys1.fillRect(i*25,j*25,25,25);
+                        rys1.drawImage(water,i*25,j*25, null);
                         break;
                     case 2:
                         switch (((DepositField)Main.map[i][j]).getItem_id()){
 
                             case 2:
-                                rys1.setPaint(Color.white);
-                                rys1.fillRect(i*25,j*25,25,25);
                                 rys1.drawImage(forest,i*25,j*25, null);
                                 break;
                             case 6:
@@ -135,8 +136,7 @@ public class Kanwa1 extends JPanel implements ActionListener{
                                 rys1.drawImage(gold_ore,i*25,j*25, null);
                                 break;
                             case 4:
-                                rys1.setPaint(new Color(68,57,1));
-                                rys1.fillRect(i*25,j*25,25,25);
+                                rys1.drawImage(oil_field,i*25,j*25, null);
                                 break;
                             case 7:
                                 rys1.drawImage(diamond_ore,i*25,j*25, null);
@@ -144,11 +144,9 @@ public class Kanwa1 extends JPanel implements ActionListener{
                         }
                         break;
                     case 3:
-                        rys1.setPaint(Color.red);
-                        rys1.fillRect(i*25,j*25,25,25);
+                        rys1.drawImage(glitch,i*25,j*25, null);
                         break;
-                    case 4: rys1.drawImage(central_field,i*25+5,j*25+5, null); break;
-
+                    case 4: rys1.drawImage(central_field,i*25,j*25, null); break;
                 }
 
 
@@ -170,7 +168,7 @@ public class Kanwa1 extends JPanel implements ActionListener{
                                     rys1.drawImage(furnace_on,i*25,j*25, null);
                                     break;
                                 case 1, 2, 4:
-                                    rys1.drawImage(extractor_on,i*25+5,j*25+5, null);
+                                    rys1.drawImage(extractor_on,i*25,j*25, null);
                                     break;
                             }
                         }
@@ -190,7 +188,7 @@ public class Kanwa1 extends JPanel implements ActionListener{
                                     rys1.drawImage(furnace_off,i*25,j*25, null);
                                     break;
                                 case 1, 2, 4:
-                                    rys1.drawImage(extractor_off,i*25+5,j*25+5, null);
+                                    rys1.drawImage(extractor_off,i*25,j*25, null);
                                     break;
                             }
                         }

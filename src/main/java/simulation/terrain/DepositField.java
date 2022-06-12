@@ -92,7 +92,7 @@ public class DepositField extends Field {
             if(machine instanceof ProductionMachine) ((ProductionMachine)machine).stopProduction(inventory);
             else machine.stopProduction(inventory);
             machine.setActive(-1);
-            Main.addToLog("\tMaszyna " + machine.getName() + " została trwale wyłączona ze względu na wyczerpanie się zasobów pola (" + coordinates[0] + ", " + coordinates[1] + "), na którym się znajduje.");
+            Main.addToLog("\tMaszyna " + machine.getName() + " zosta\u0142a trwale wy\u0142\u0105czona ze wzgl\u0119du na wyczerpanie si\u0119 zasob\u00F3w pola (" + coordinates[0] + ", " + coordinates[1] + "), na kt\u00F3rym si\u0119 znajduje.");
             return;
         }
 
