@@ -95,7 +95,7 @@ public class ProductionMachine extends Machine {
             }
         }
 
-        if(super.getActive() == 0) return 0;
+        if(super.getActive() == 0 || super.getActive() == -1) return 0;
 
         // produkcja trwa kolejną turę
         production_turn++;
