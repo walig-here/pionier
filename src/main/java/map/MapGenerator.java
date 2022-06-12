@@ -2,10 +2,14 @@ package map;
 
 
 import rendering.NFrame;
+import rendering.TargetItemChooser;
 import simulation.terrain.*;
 import main.*;
+
+import javax.swing.*;
 import java.util.Random;
 import java.lang.Math;
+import java.util.Scanner;
 
 import static main.Main.simulation_setup;
 
@@ -14,6 +18,7 @@ public class MapGenerator {
 
     public static void generateMap(){
         //generuje losową mapę
+
 
         final int maxMapSize=32;
         final int minMapSize=15;
@@ -173,7 +178,11 @@ public class MapGenerator {
 
             }
         }
-        if(simulation_setup() == -1) System.out.println("PORAŻKA!\nPionier nie był w stanie przybyć do tej okolicy!");
-        NFrame simWindow =new NFrame();
+
+
+
+        int target_item_id = 0;
+        int max_turns=0;
+        TargetItemChooser win = new TargetItemChooser(size, target_item_id);
     }
 }

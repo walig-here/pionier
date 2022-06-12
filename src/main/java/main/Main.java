@@ -30,7 +30,7 @@ public class Main {
     static private int[][] mapTab;// się symulacja
     static private MenuGUI menu;
     static public Pioneer pioneer; // pionier
-    static final private Item targetItem = new ComponentItem(23, 0, 0); // przedmiot, ktorego zdobycie, konczy symulacje (przedmiot docelowy)
+    static private Item targetItem; // przedmiot, ktorego zdobycie, konczy symulacje (przedmiot docelowy)
     static private ArrayList<Item> children = new ArrayList<>();
     static private ArrayList<Integer> buildingQueue = new ArrayList<>();
     static final private ArrayList<String> log = new ArrayList<>();
@@ -157,7 +157,6 @@ public class Main {
         return 0;
     }
 
-
     // funkcja zliczająca punkty zebrane podczas całej symulacji
     public static int getScore(){
         int score = 0;
@@ -175,7 +174,11 @@ public class Main {
         return score;
     }
 
-    public static int simulation_setup(){
+    public static int simulation_setup(int target_item_id){
+
+        // Ustalamy przedmiot docelowy
+        if(target_item_id == 0) targetItem = new Item(target_item_id,0,0);
+        else targetItem = new ComponentItem(target_item_id,0,0);
 
         // Ustalamy kolejkę budowania
         log.add("Symulacja rozpoczyna się...");
@@ -312,6 +315,8 @@ public class Main {
     }
 
     private static void setBuildingOrder() {
+        if(!(targetItem instanceof ComponentItem)) return;
+
         Recipe targetItemRecipe = ((ComponentItem) targetItem).getRecipe();
 
         ArrayList<Item> relatedItems = getItemChildren(targetItemRecipe);

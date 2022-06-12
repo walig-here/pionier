@@ -7,11 +7,11 @@ import javax.swing.*;
 public class NFrame extends JFrame {
 
     Kanwa1 kanwa1;
-    public NFrame(){
+    public NFrame(int max_turns){
 //sizeOfGrid musi być <=41 dla kratki wielkości 20
         int sizeOfGrid= Main.getMap_size();
 
-        kanwa1=new Kanwa1();
+        kanwa1=new Kanwa1(max_turns);
 
         ImageIcon logo = new ImageIcon("logo.png");
         this.setTitle("Pionier w \u015Bwiecie maszyn");

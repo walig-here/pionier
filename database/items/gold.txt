@@ -1,2 +1,2 @@
-"name":Złoto
+"name":Zloto
 "production time":1

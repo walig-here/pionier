@@ -1,2 +1,2 @@
-"name":Węgiel
+"name":Wegiel
 "production time":1
