@@ -26,7 +26,7 @@ public class CentralField extends Field {
         if(move_bonus == 0.0f)
         {
             try{
-                InputStream file_stream = new FileInputStream("database\\terrain\\central.txt");
+                InputStream file_stream = new FileInputStream("database/terrain/central.txt");
                 Scanner file = new Scanner(file_stream);
 
                 while (file.hasNextLine())

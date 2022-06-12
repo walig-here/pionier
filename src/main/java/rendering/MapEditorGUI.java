@@ -16,6 +16,11 @@ public class MapEditorGUI extends JFrame implements MouseListener, ActionListene
     private static JButton continueButton;
     private static JButton saveButton;
     private static JButton[][] buttonTab;
+
+    public static int[][] getMapTab() {
+        return mapTab;
+    }
+
     private static int[][] mapTab;
     private static int currentFieldType;
     private static boolean clickState;

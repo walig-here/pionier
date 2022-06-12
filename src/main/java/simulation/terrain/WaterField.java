@@ -27,7 +27,7 @@ public class WaterField extends Field {
         if(sailing_time == -1)
         {
             try{
-                InputStream file_stream = new FileInputStream("database\\terrain\\water.txt");
+                InputStream file_stream = new FileInputStream("database/terrain/water.txt");
                 Scanner file = new Scanner(file_stream);
 
                 while (file.hasNextLine())
@@ -53,20 +53,15 @@ public class WaterField extends Field {
     }
 
     @Override
-    public boolean goInto(Pioneer pioneer)
-    {
+    public boolean goInto(Pioneer pioneer) {
         // Sprawdzamy czy pionier już odczekał odpowiednią ilość tur na tym polu, aby przejść dalej.
         // Jeżeli tak jest, zerujemy licznik i pozwalamy mu przejść na drugi brzeg.
         if(waited_rounds == sailing_time) {
             waited_rounds = 0;
+            pioneer.setMove_points(0);
 
             // Usuwamy z kolejki pioniera to pole wodne. Dzięki temu od razu przemieści się on na kolejne pole w kolejce(drugi brzeg).
-            for (int i = 0; i < pioneer.getPath().size(); i++) {
-                if (pioneer.getPath().get(i)[0].equals(coordinates[0]) && pioneer.getPath().get(i)[1].equals(coordinates[1])) {
-                    pioneer.getPath().remove(i);
-                    break;
-                }
-            }
+            pioneer.getPath().remove(0);
 
             return true;
         }
@@ -84,11 +79,16 @@ public class WaterField extends Field {
      * funkcja zwróci wartość true.
      *
      * @param pioneer wchodzący na pole wodne pionier
+     * @param starting_point określa czy pole, z którego wychodzimy jest punktym startowym marszu pioniera w tej turze
      *
      * @return Wartość boolowska określająca czy pionier może wyjść z pola wodnego.
      */
-    public boolean goOut(Pioneer pioneer) {
-        return goInto(pioneer);
+    @Override
+    public boolean goOut(Pioneer pioneer, boolean starting_point) {
+        int[] coords = {pioneer.getPath().get(0)[0], pioneer.getPath().get(0)[1]};
+        boolean wentOut = goInto(pioneer);
+        if(wentOut) pioneer.setCoordinates(coords[0], coords[1]);
+        return false;
     }
 
     // pobieranie ilości tur potrzebnych do przepłynięcia pola
