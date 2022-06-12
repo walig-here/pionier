@@ -1,2 +1,2 @@
-"name":Taśma Produkcyjna
+"name":Tasma Produkcyjna
 "production time":10

@@ -1,2 +1,2 @@
-"name":Piła Diamentowa
+"name":Pila Diamentowa
 "production time":15

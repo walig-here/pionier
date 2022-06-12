@@ -5,6 +5,9 @@ import map.*;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Scanner;
+
+import static main.Main.simulation_setup;
 
 ////////////////////////
 ///       Menu       ///

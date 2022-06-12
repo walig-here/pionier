@@ -1,2 +1,2 @@
-"name":Układ Elektroniczny
+"name":Uklad Elektroniczny
 "production time":20

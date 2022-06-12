@@ -1,2 +1,2 @@
-"name":Sztabka Żelaza
+"name":Sztabka Zelaza
 "production time":5

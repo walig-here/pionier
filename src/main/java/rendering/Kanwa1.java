@@ -10,6 +10,8 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import static main.Main.simulation_setup;
+
 public class Kanwa1 extends JPanel implements ActionListener{
 
     JLabel stats;
@@ -21,10 +23,10 @@ public class Kanwa1 extends JPanel implements ActionListener{
     int turn;
     int score = 0;
     boolean isRunning;
-    Kanwa1(){
+    Kanwa1(int max_turns){
 
         isRunning=true;
-        max_turns=1000;
+        this.max_turns=max_turns;
         turn=0;
         sizeOfGrid= Main.getMap_size();
         dimension = sizeOfGrid*25;
@@ -84,7 +86,7 @@ public class Kanwa1 extends JPanel implements ActionListener{
                                 rys1.setPaint(Color.orange);
                                 break;
                             case 1:
-                                rys1.setPaint(Color.black);
+                                rys1.setPaint(Color.DARK_GRAY);
                                 break;
                             case 5:
                                 rys1.setPaint(Color.yellow);
@@ -97,19 +99,36 @@ public class Kanwa1 extends JPanel implements ActionListener{
                                 break;
                         }
                         break;
-                    case 3:
-                        rys1.setPaint(Color.red);
-                        break;
+                    case 3: rys1.setPaint(Color.red); break;
+                    case 4: rys1.setPaint(Color.PINK); break;
 
                 }
 
                 rys1.fillRect(i*25,j*25,25,25);
-                if(i==Main.pioneer.getCoordinates()[0]&&j==Main.pioneer.getCoordinates()[1]){
-                    rys1.setPaint(Color.MAGENTA);
+
+                // wstawić renderowanie maszyn
+                if(Main.map[i][j].getMachine() != null){
+
+                    if(Main.map[i][j].getMachine().getActive() == 1) rys1.setPaint(new Color(22, 1,98));
+                    else rys1.setPaint(new Color(136, 143, 194));
+
                     rys1.setStroke(new BasicStroke(3));
                     rys1.drawLine(i*25,j*25,i*25+25,j*25+25);
                     rys1.drawLine(i*25+25,j*25,i*25,j*25+25);
                     rys1.setStroke(new BasicStroke(1));
+
+                }
+
+
+                // renderowanie pioniera
+                if(Main.pioneer != null){
+                    if(i==Main.pioneer.getCoordinates()[0]&&j==Main.pioneer.getCoordinates()[1]){
+                        rys1.setPaint(Color.MAGENTA);
+                        rys1.setStroke(new BasicStroke(3));
+                        rys1.drawLine(i*25,j*25,i*25+25,j*25+25);
+                        rys1.drawLine(i*25+25,j*25,i*25,j*25+25);
+                        rys1.setStroke(new BasicStroke(1));
+                    }
                 }
             }
         }
@@ -138,23 +157,23 @@ public class Kanwa1 extends JPanel implements ActionListener{
         if(isRunning){
             switch (Main.simulationLoop(turn, max_turns)) {
                 case -1: {
-                    System.out.println("PORAŻKA!\nPionier nie ma już gdzie zbudować niezbędnych maszyn.");
+                    System.out.println("PORA\u017BKA!\nPionier nie ma już gdzie zbudować niezbędnych maszyn.");
+                    JOptionPane.showMessageDialog(this,"PORA\u017BKA!\nPionier nie ma ju\u017C gdzie zbudowa\u0107 niezb\u0119dnych maszyn.");
                     isRunning = false;
                 } break;
                 case -2: {
-                    System.out.println("PORAŻKA!\nPionier nie zdążył wyprodukować pożądanego przedmiotu w danym mu czasie!");
+                    System.out.println("PORA\u017BKA!\nPionier nie zdążył wyprodukować pożądanego przedmiotu w danym mu czasie!");
+                    JOptionPane.showMessageDialog(this,"PORA\u017BKA!\nPionier nie zd\u0105\u017Cy\u0142 wyprodukowa\u0107 po\u017C\u0105danego przedmiotu w danym mu czasie!");
                     isRunning = false;
                 }break;
                 case -3: {
-                    System.out.println("PORAŻKA!\nPionier nie był w stanie założyć kompleksu przemysłowego!");
-                    isRunning = false;
-                }break;
-                case -4: {
-                    System.out.println("PORAŻKA!\nPionier nie był w stanie przybyć do tej okolicy!");
+                    System.out.println("PORA\u017BKA!\nPionier nie był w stanie założyć kompleksu przemysłowego!");
+                    JOptionPane.showMessageDialog(this,"PORA\u017BKA!\nPionier nie by\u0142 w stanie zało\u017Cy\u0107 kompleksu przemys\u0142owego!");
                     isRunning = false;
                 }break;
                 case 1: {
                     System.out.println("ZWYCIESTWO!");
+                    JOptionPane.showMessageDialog(this,"ZWYCI\u0118STWO!");
                     score += 10000;
                     isRunning = false;
                 }break;
