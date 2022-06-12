@@ -13,7 +13,7 @@ import java.util.Scanner;
 
 import static main.Main.simulation_setup;
 
-public class TargetItemChooser extends JFrame implements MouseListener, ActionListener {
+public class TargetItemChooser extends JFrame implements ActionListener {
 
     private static JComboBox targetItemChooser;
     private static JButton start_simulation;
@@ -61,9 +61,15 @@ public class TargetItemChooser extends JFrame implements MouseListener, ActionLi
     public void actionPerformed(ActionEvent e) {
         if (e.getSource()==start_simulation && target_item_id != -1){
 
-            String answer = JOptionPane.showInputDialog(null,"Podaj maksymalny czas trwania symulacji(w turach):");
-            Scanner answer_scanner = new Scanner(answer);
+            Scanner answer_scanner;
+            while(true) {
+                String answer= JOptionPane.showInputDialog(null, "Podaj maksymalny czas trwania symulacji(w turach):");
+                answer_scanner = new Scanner(answer);
+                if(answer_scanner.hasNextInt()) break;
+                else JOptionPane.showMessageDialog(null, "Wprowadzono nieodpowiednie dane!");
+            }
             max_turns = answer_scanner.nextInt();
+            answer_scanner.close();
             setVisible(false);
             dispose();
 
@@ -77,30 +83,5 @@ public class TargetItemChooser extends JFrame implements MouseListener, ActionLi
         else if (e.getSource()==targetItemChooser){
             target_item_id = targetItemChooser.getSelectedIndex();
         }
-    }
-
-    @Override
-    public void mouseClicked(MouseEvent e) {
-
-    }
-
-    @Override
-    public void mousePressed(MouseEvent e) {
-
-    }
-
-    @Override
-    public void mouseReleased(MouseEvent e) {
-
-    }
-
-    @Override
-    public void mouseEntered(MouseEvent e) {
-
-    }
-
-    @Override
-    public void mouseExited(MouseEvent e) {
-
     }
 }

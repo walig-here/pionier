@@ -1,5 +1,7 @@
 package rendering;
 import map.MapGenerator;
+import simulation.Item;
+import simulation.Machine;
 import simulation.terrain.*;
 
 import main.*;
@@ -10,6 +12,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import static main.Main.pioneer;
 import static main.Main.simulation_setup;
 
 public class Kanwa1 extends JPanel implements ActionListener{
@@ -23,6 +26,29 @@ public class Kanwa1 extends JPanel implements ActionListener{
     int turn;
     int score = 0;
     boolean isRunning;
+    String temp,temp2;
+    Image coal_ore;
+    Image oil_field;
+    Image iron_ore;
+    Image copper_ore;
+    Image gold_ore;
+    Image diamond_ore;
+    Image forest;
+    Image pionier;
+    Image central_field;
+    Image factory_on;
+    Image factory_off;
+    Image furnace_on;
+    Image furnace_off;
+    Image powerplant_on;
+    Image powerplant_off;
+    Image extractor_on;
+    Image extractor_off;
+    Image soil;
+    Image water;
+    Image glitch;
+
+
     Kanwa1(int max_turns){
 
         isRunning=true;
@@ -46,6 +72,27 @@ public class Kanwa1 extends JPanel implements ActionListener{
         stats.setText(text);
         stats.setBorder(border);
 
+        coal_ore =new ImageIcon("src\\textures\\coal_ore.png").getImage();
+        iron_ore =new ImageIcon("src\\textures\\iron_ore.png").getImage();
+        copper_ore =new ImageIcon("src\\textures\\copper_ore.png").getImage();
+        gold_ore =new ImageIcon("src\\textures\\gold_ore.png").getImage();
+        diamond_ore =new ImageIcon("src\\textures\\diamond_ore.png").getImage();
+        forest =new ImageIcon("src\\textures\\woods.png").getImage();
+        pionier =new ImageIcon("src\\textures\\pionier.png").getImage();
+        central_field =new ImageIcon("src\\textures\\central_field.png").getImage();
+        factory_on =new ImageIcon("src\\textures\\factory_on.png").getImage();
+        factory_off =new ImageIcon("src\\textures\\factory_off.png").getImage();
+        furnace_on =new ImageIcon("src\\textures\\furnace_on.png").getImage();
+        furnace_off =new ImageIcon("src\\textures\\furnace_off.png").getImage();
+        powerplant_on =new ImageIcon("src\\textures\\powerplant_on.png").getImage();
+        powerplant_off =new ImageIcon("src\\textures\\powerplant_off.png").getImage();
+        extractor_on =new ImageIcon("src\\textures\\extractor_on.png").getImage();
+        extractor_off =new ImageIcon("src\\textures\\extractor_off.png").getImage();
+        soil =new ImageIcon("src\\textures\\soil.png").getImage();
+        oil_field =new ImageIcon("src\\textures\\oil.png").getImage();
+        water =new ImageIcon("src\\textures\\water.png").getImage();
+        glitch =new ImageIcon("src\\textures\\glitch.png").getImage();
+
         timer=new Timer(200, this);
         timer.start();
 
@@ -65,69 +112,93 @@ public class Kanwa1 extends JPanel implements ActionListener{
         {
             for (int j=0;j<sizeOfGrid;j++)
             {
+                rys1.drawImage(soil,i*25,j*25, null);
                 switch (Main.map[i][j].getTerrainId()){
-
-                    case 0:
-                        rys1.setPaint(Color.white);
-                        break;
                     case 1:
-                        rys1.setPaint(Color.blue);
+                        rys1.drawImage(water,i*25,j*25, null);
                         break;
                     case 2:
                         switch (((DepositField)Main.map[i][j]).getItem_id()){
 
                             case 2:
-                                rys1.setPaint(Color.green);
+                                rys1.drawImage(forest,i*25,j*25, null);
                                 break;
                             case 6:
-                                rys1.setPaint(Color.lightGray);
+                                rys1.drawImage(iron_ore,i*25,j*25, null);
                                 break;
                             case 3:
-                                rys1.setPaint(Color.orange);
+                                rys1.drawImage(copper_ore,i*25,j*25, null);
                                 break;
                             case 1:
-                                rys1.setPaint(Color.DARK_GRAY);
+                                rys1.drawImage(coal_ore,i*25,j*25, null);
                                 break;
                             case 5:
-                                rys1.setPaint(Color.yellow);
+                                rys1.drawImage(gold_ore,i*25,j*25, null);
                                 break;
                             case 4:
-                                rys1.setPaint(new Color(68,57,1));
+                                rys1.drawImage(oil_field,i*25,j*25, null);
                                 break;
                             case 7:
-                                rys1.setPaint(Color.cyan);
+                                rys1.drawImage(diamond_ore,i*25,j*25, null);
                                 break;
                         }
                         break;
-                    case 3: rys1.setPaint(Color.red); break;
-                    case 4: rys1.setPaint(Color.PINK); break;
-
+                    case 3:
+                        rys1.drawImage(glitch,i*25,j*25, null);
+                        break;
+                    case 4: rys1.drawImage(central_field,i*25,j*25, null); break;
                 }
-
-                rys1.fillRect(i*25,j*25,25,25);
 
                 // wstawić renderowanie maszyn
                 if(Main.map[i][j].getMachine() != null){
 
-                    if(Main.map[i][j].getMachine().getActive() == 1) rys1.setPaint(new Color(22, 1,98));
-                    else rys1.setPaint(new Color(136, 143, 194));
+                    if(Main.map[i][j].getMachine().getActive() == 1){
+                        if(Main.map[i][j].getMachine().getID()>=5){
 
-                    rys1.setStroke(new BasicStroke(3));
-                    rys1.drawLine(i*25,j*25,i*25+25,j*25+25);
-                    rys1.drawLine(i*25+25,j*25,i*25,j*25+25);
-                    rys1.setStroke(new BasicStroke(1));
+                            rys1.drawImage(factory_on,i*25,j*25, null);
 
+                        }else{
+                            switch (Main.map[i][j].getMachine().getID()){
+
+                                case 0:
+                                    rys1.drawImage(powerplant_on,i*25,j*25, null);
+                                    break;
+                                case 3:
+                                    rys1.drawImage(furnace_on,i*25,j*25, null);
+                                    break;
+                                case 1, 2, 4:
+                                    rys1.drawImage(extractor_on,i*25,j*25, null);
+                                    break;
+                            }
+                        }
+                    }
+                    else {
+                        if(Main.map[i][j].getMachine().getID()>=5){
+
+                            rys1.drawImage(factory_off,i*25,j*25, null);
+
+                        }else{
+                            switch (Main.map[i][j].getMachine().getID()){
+
+                                case 0:
+                                    rys1.drawImage(powerplant_off,i*25,j*25, null);
+                                    break;
+                                case 3:
+                                    rys1.drawImage(furnace_off,i*25,j*25, null);
+                                    break;
+                                case 1, 2, 4:
+                                    rys1.drawImage(extractor_off,i*25,j*25, null);
+                                    break;
+                            }
+                        }
+                    }
                 }
 
 
                 // renderowanie pioniera
-                if(Main.pioneer != null){
-                    if(i==Main.pioneer.getCoordinates()[0]&&j==Main.pioneer.getCoordinates()[1]){
-                        rys1.setPaint(Color.MAGENTA);
-                        rys1.setStroke(new BasicStroke(3));
-                        rys1.drawLine(i*25,j*25,i*25+25,j*25+25);
-                        rys1.drawLine(i*25+25,j*25,i*25,j*25+25);
-                        rys1.setStroke(new BasicStroke(1));
+                if(pioneer != null){
+                    if(i== pioneer.getCoordinates()[0]&&j== pioneer.getCoordinates()[1]){
+                        rys1.drawImage(pionier,i*25,j*25, null);
                     }
                 }
             }
@@ -153,6 +224,26 @@ public class Kanwa1 extends JPanel implements ActionListener{
 
         //Main.pioneer.setCoordinates(Main.pioneer.getCoordinates()[0]+1, Main.pioneer.getCoordinates()[1]+1);
         repaint();
+
+        if(Main.buildingQueue.size()!=0){
+            Item i = new Item(Main.buildingQueue.get(0),0,0);
+            temp= "Po\u017C\u0105dany przedmiot: ";
+            temp+=i.getName();
+        }else {
+            temp="";
+        }
+        temp2="";
+        for(Item item : pioneer.getInventory()){
+            temp2 += item.getName()+ ": " +item.getAmount()+"   "+ item.getIncome()+"<br>";
+        }
+
+        String text ="<html>"+"Numer tury: "+turn+"<br>"+ "Ilo\u015B\u0107 maszyn: " + Machine.count +"(" + Machine.active_machines + " aktywnych)"+
+                "<br>"+temp+
+                "<br>"+"Ekwipunek: "+"<br>"+temp2+
+
+                "</html>";
+        stats.setText(text);
+        stats.repaint();
 
         if(isRunning){
             switch (Main.simulationLoop(turn, max_turns)) {

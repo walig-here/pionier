@@ -32,7 +32,7 @@ public class Main {
     static public Pioneer pioneer; // pionier
     static private Item targetItem; // przedmiot, ktorego zdobycie, konczy symulacje (przedmiot docelowy)
     static private ArrayList<Item> children = new ArrayList<>();
-    static private ArrayList<Integer> buildingQueue = new ArrayList<>();
+    static public ArrayList<Integer> buildingQueue = new ArrayList<>();
     static final private ArrayList<String> log = new ArrayList<>();
 
     // funkcja zapisująca dziennik w pliku tekstowym
@@ -77,10 +77,55 @@ public class Main {
         menu=new MenuGUI();
     }
 
+    private static void turnStatisticsToLog(int turn){
+        addToLog("\n\n-------------------------------------------------------------------------------------------");
+        addToLog("TURA " + turn + ":");
+        addToLog("\tIlo\u015B\u0107 maszyn: " + Machine.count + "\t\tAktywnych: " + Machine.active_machines + "\t\tZ zak\u0142\u00F3ceniami: " + Machine.glitched_machines);
+        if(pioneer.getTo_build() != -1) {
+            Item i = new Item(pioneer.getTo_build(),0,0);
+            addToLog("\tPo\u017C\u0105dany przedmiot: " + i.getName());
+        }
+        else addToLog("\tPo\u017C\u0105dany przedmiot: brak");
+        addToLog("");
+
+
+        addToLog("\tEkwipunek pioniera:");
+        for(Item eq_item : pioneer.getInventory()) {
+            if(eq_item.getName().length() > 16) addToLog("\t\tNazwa: " + eq_item.getName()  +"\tIlo\u015B\u0107: " + eq_item.getAmount() + "\t\tBilans: " + eq_item.getIncome());
+            else if(eq_item.getName().length() > 8) addToLog("\t\tNazwa: " + eq_item.getName()  +"\t\tIlo\u015B\u0107: " + eq_item.getAmount() + "\t\tBilans: " + eq_item.getIncome());
+            else if(eq_item.getName().length() > 4) addToLog("\t\tNazwa: " + eq_item.getName()  +"\t\t\t\tIlo\u015B\u0107: " + eq_item.getAmount() + "\t\tBilans: " + eq_item.getIncome());
+            else addToLog("\t\tNazwa: " + eq_item.getName()  +"\t\t\t\t\tIlo\u015B\u0107: " + eq_item.getAmount() + "\t\tBilans: " + eq_item.getIncome());
+        }
+        addToLog("");
+
+        addToLog("\tZasoby na planszy:");
+        for(int i = 1; i < 8; i++){
+            Item item = new Item(i,0,0);
+            for(Field[] row : map){
+                for(Field field : row){
+                    if(field instanceof DepositField && ((DepositField)field).getItem_id() == i){
+                        item.setAmount(item.getAmount() + ((DepositField)field).getCapacityOfDeposit());
+                        if(field.getMachine() != null && field.getMachine().getActive() == 1 ){
+                            if(field.getMachine().getID() < 3 || field.getMachine().getID() == 4 ){
+                                if(field.getMachine().getID() == 0) item.setIncome(item.getIncome() - field.getMachine().getOutput()/2);
+                                else item.setIncome(item.getIncome() - field.getMachine().getOutput());
+                            }
+                        }
+                    }
+                }
+            }
+            if(item.getName().length() > 16) addToLog("\t\tNazwa: " + item.getName()  +"\tIlo\u015B\u0107: " + item.getAmount() + "\t\tBilans: " + item.getIncome());
+            else if(item.getName().length() > 8) addToLog("\t\tNazwa: " + item.getName()  +"\t\tIlo\u015B\u0107: " + item.getAmount() + "\t\tBilans: " + item.getIncome());
+            else if(item.getName().length() > 4) addToLog("\t\tNazwa: " + item.getName()  +"\t\t\t\tIlo\u015B\u0107: " + item.getAmount() + "\t\tBilans: " + item.getIncome());
+            else addToLog("\t\tNazwa: " + item.getName()  +"\t\t\t\t\tIlo\u015B\u0107: " + item.getAmount() + "\t\tBilans: " + item.getIncome());
+        }
+        addToLog("");
+    }
+
     // pętla symulacji wykonująca się określoną ilość tur lub do osiągnięcia przez pioniera określonego celu
     public static int simulationLoop(int turn, int max_turns) {
 
-        addToLog("\n\nTURA " + turn + ":");
+        turnStatisticsToLog(turn);
 
         // w pierwszej turze pionier wybiera miejsce pod pole centralne
         if(turn == 0) if(pioneer.chooseCentral(map, buildingQueue) == -1) return -3;
@@ -148,10 +193,10 @@ public class Main {
                 // Pionier próbuje na aktualnie zajmowanym polu coś zbudować
                 if(pioneer.buildMachine(map, buildingQueue) == -1) return -1;
             }while (pioneer.getMove_points() != 0 && pioneer.getPath().size() > 0);
-            addToLog("\tPionier kończy marsz na polu (" + pioneer.getCoordinates()[0] + "," + pioneer.getCoordinates()[1] + ").");
+            addToLog("\tPionier ko\u0144czy marsz na polu (" + pioneer.getCoordinates()[0] + "," + pioneer.getCoordinates()[1] + ").");
         }
 
-        debug_simulation_preview(turn);
+        //debug_simulation_preview(turn);
 
         if(turn >= max_turns) return -2;
         return 0;
@@ -179,9 +224,13 @@ public class Main {
         // Ustalamy przedmiot docelowy
         if(target_item_id == 0) targetItem = new Item(target_item_id,0,0);
         else targetItem = new ComponentItem(target_item_id,0,0);
+        {
+            Item target = new Item(target_item_id, 0,0);
+            addToLog("Celem pioniera w tej symulacji jest wyprodukowanie " + target.getName() + ".");
+        }
 
         // Ustalamy kolejkę budowania
-        log.add("Symulacja rozpoczyna się...");
+        log.add("Symulacja rozpoczyna si\u0119...");
         setBuildingOrder();
 
         // PIONIER
@@ -211,7 +260,7 @@ public class Main {
                     ((GlitchSourceField) field).setProbabilities(map);
             }
         }
-        addToLog("Ustalono prawdopodobieństwa wystąpienia poszczególnych zakłóceń na polach.");
+        addToLog("Ustalono prawdopodobie\u0144stwa wyst\u0105pienia poszczeg\u00F3lnych zak\u0142\u00F3ce\u0144 na polach.");
         return 0;
     }
 

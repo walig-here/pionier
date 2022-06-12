@@ -1,5 +1,6 @@
 package rendering;
 
+import main.Main;
 import map.*;
 
 import javax.swing.*;
@@ -59,7 +60,19 @@ public class MenuGUI extends JFrame implements ActionListener {
 
         if(e.getSource()==button1){
 
-            String answer = JOptionPane.showInputDialog("Podaj wielko\u015B\u0107 mapy");
+            String answer;
+            Scanner answer_scanner;
+            int map_size;
+            while (true){
+                answer = JOptionPane.showInputDialog("Podaj wielko\u015B\u0107 mapy");
+                answer_scanner = new Scanner(answer);
+                if(answer_scanner.hasNextInt()) {
+                    map_size = answer_scanner.nextInt();
+                    if(map_size <= 32 && map_size >= 20) break;
+                    else JOptionPane.showMessageDialog(null, "Mapa powinna mie\u0107 wielko\u015B\u0107 mi\u0119dzy 20 a 32!");
+                }
+                else JOptionPane.showMessageDialog(null, "Wprowadzono nieodpowiednie dane!");
+            }
             try {
                 new MapEditorGUI(Integer.parseInt(answer));
             }catch (NumberFormatException ex){
