@@ -223,6 +223,7 @@ public class Kanwa1 extends JPanel implements ActionListener{
 
         //Main.pioneer.setCoordinates(Main.pioneer.getCoordinates()[0]+1, Main.pioneer.getCoordinates()[1]+1);
         repaint();
+        temp="";
         if(Main.buildingQueue.size()!=0){
             Item i = new Item(Main.buildingQueue.get(0),0,0);
             temp= "Po\u017C\u0105dany przedmiot: ";

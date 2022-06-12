@@ -13,7 +13,7 @@ public class NFrame extends JFrame {
 
         kanwa1=new Kanwa1(max_turns);
 
-        ImageIcon logo = new ImageIcon("logo.png");
+        ImageIcon logo = new ImageIcon("textures\\logo.png");
         this.setTitle("Pionier w \u015Bwiecie maszyn");
         this.setIconImage(logo.getImage());
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
