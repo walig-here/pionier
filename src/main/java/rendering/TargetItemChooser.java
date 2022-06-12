@@ -13,7 +13,7 @@ import java.util.Scanner;
 
 import static main.Main.simulation_setup;
 
-public class TargetItemChooser extends JFrame implements MouseListener, ActionListener {
+public class TargetItemChooser extends JFrame implements ActionListener {
 
     private static JComboBox targetItemChooser;
     private static JButton start_simulation;
@@ -77,30 +77,5 @@ public class TargetItemChooser extends JFrame implements MouseListener, ActionLi
         else if (e.getSource()==targetItemChooser){
             target_item_id = targetItemChooser.getSelectedIndex();
         }
-    }
-
-    @Override
-    public void mouseClicked(MouseEvent e) {
-
-    }
-
-    @Override
-    public void mousePressed(MouseEvent e) {
-
-    }
-
-    @Override
-    public void mouseReleased(MouseEvent e) {
-
-    }
-
-    @Override
-    public void mouseEntered(MouseEvent e) {
-
-    }
-
-    @Override
-    public void mouseExited(MouseEvent e) {
-
     }
 }

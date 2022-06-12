@@ -1,6 +1,5 @@
 package simulation;
 import main.Main;
-import rendering.Sprite;
 import simulation.terrain.CentralField;
 import simulation.terrain.DepositField;
 import simulation.terrain.Field;
@@ -22,10 +21,6 @@ public class Pioneer {
     private int move_points;
     /**
      * Obiekt przechowujący dane o graficznej reprezentacji pioniera w oknie symulacji.
-     * */
-    private Sprite sprite;
-    /**
-     * Zmienna zawierająca informację co do możliwości zbudowania kolejnej maszyny przez pioniera w tej turze.
      * */
     private boolean could_build;
 
