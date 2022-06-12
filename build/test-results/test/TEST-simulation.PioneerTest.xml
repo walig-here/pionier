@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="simulation.PioneerTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2022-05-29T19:55:31" hostname="DESKTOP-CSDDK9U" time="0.207">
+  <properties/>
+  <testcase name="test_findBuildingPlace()" classname="simulation.PioneerTest" time="0.207"/>
+  <system-out><![CDATA[DONE SKONCZONE!
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
