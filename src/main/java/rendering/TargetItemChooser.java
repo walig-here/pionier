@@ -61,9 +61,16 @@ public class TargetItemChooser extends JFrame implements MouseListener, ActionLi
     public void actionPerformed(ActionEvent e) {
         if (e.getSource()==start_simulation && target_item_id != -1){
 
-            String answer = JOptionPane.showInputDialog(null,"Podaj maksymalny czas trwania symulacji(w turach):");
-            Scanner answer_scanner = new Scanner(answer);
+            // Pobranie od użytkownika danych o długości symulacji
+            Scanner answer_scanner;
+            while(true) {
+                String answer= JOptionPane.showInputDialog(null, "Podaj maksymalny czas trwania symulacji(w turach):");
+                answer_scanner = new Scanner(answer);
+                if(answer_scanner.hasNextInt()) break;
+                else JOptionPane.showMessageDialog(null, "Wprowadzono nieodpowiednie dane!");
+            }
             max_turns = answer_scanner.nextInt();
+            answer_scanner.close();
             setVisible(false);
             dispose();
 

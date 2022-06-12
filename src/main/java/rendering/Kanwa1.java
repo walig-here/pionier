@@ -158,23 +158,28 @@ public class Kanwa1 extends JPanel implements ActionListener{
             switch (Main.simulationLoop(turn, max_turns)) {
                 case -1: {
                     System.out.println("PORA\u017BKA!\nPionier nie ma już gdzie zbudować niezbędnych maszyn.");
-                    JOptionPane.showMessageDialog(this,"PORA\u017BKA!\nPionier nie ma ju\u017C gdzie zbudowa\u0107 niezb\u0119dnych maszyn.");
+                    score += Main.getScore();
+                    JOptionPane.showMessageDialog(this,"PORA\u017BKA!\nPionier nie ma ju\u017C gdzie zbudowa\u0107 niezb\u0119dnych maszyn.\nPunkty: " + score);
                     isRunning = false;
                 } break;
                 case -2: {
                     System.out.println("PORA\u017BKA!\nPionier nie zdążył wyprodukować pożądanego przedmiotu w danym mu czasie!");
-                    JOptionPane.showMessageDialog(this,"PORA\u017BKA!\nPionier nie zd\u0105\u017Cy\u0142 wyprodukowa\u0107 po\u017C\u0105danego przedmiotu w danym mu czasie!");
+                    score += Main.getScore();
+                    JOptionPane.showMessageDialog(this,"PORA\u017BKA!\nPionier nie zd\u0105\u017Cy\u0142 wyprodukowa\u0107 po\u017C\u0105danego przedmiotu w danym mu czasie!\nPunkty: " + score);
                     isRunning = false;
                 }break;
                 case -3: {
                     System.out.println("PORA\u017BKA!\nPionier nie był w stanie założyć kompleksu przemysłowego!");
-                    JOptionPane.showMessageDialog(this,"PORA\u017BKA!\nPionier nie by\u0142 w stanie zało\u017Cy\u0107 kompleksu przemys\u0142owego!");
+                    score += Main.getScore();
+                    JOptionPane.showMessageDialog(this,"PORA\u017BKA!\nPionier nie by\u0142 w stanie zało\u017Cy\u0107 kompleksu przemys\u0142owego!\nPunkty: " + score);
                     isRunning = false;
                 }break;
                 case 1: {
                     System.out.println("ZWYCIESTWO!");
-                    JOptionPane.showMessageDialog(this,"ZWYCI\u0118STWO!");
                     score += 10000;
+                    score += Main.getScore();
+                    JOptionPane.showMessageDialog(this,"ZWYCI\u0118STWO!\nPunkty: " + score);
+                    Main.addToLog("ZWYCI\u0118STWO!");
                     isRunning = false;
                 }break;
             }
@@ -182,10 +187,9 @@ public class Kanwa1 extends JPanel implements ActionListener{
             turn++;
 
             if(!isRunning){
+                Main.addToLog("Punkty: " + score);
                 Main.saveLog();
-                score += Main.getScore();
                 System.out.println("PUNKTY: " + score);
-                return;
             }
         }
     }
