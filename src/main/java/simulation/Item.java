@@ -8,13 +8,35 @@ import java.util.Scanner;
 /**
  * Prymitywny rodzaj przedmiotu, który może zostac pozyskany bez użycia receptury.
  * */
+
 public class Item {
-    private final int ID; // ID przedmiotu
+    /**
+     * ID przedmiotu
+     */
+    private final int ID;
+    /**
+     * Nazwa  (w języku polskim), pobierana z bazy danych
+     */
     private String name;
-    private float amount; // ilość przedmiotu
+    /**
+     * Ilość
+     */
+    private float amount;
+    /**
+     * Przyrost  na turę
+     */
     private double income; // przyrost na turę
+    /**
+     *  Czas produkcji przedmiotu (w turach), pobierany z bazy danych
+     */
     private int productionTime; //bazowy czas produkcji przedmiotu (w turach)
 
+    /**
+     * Konstruktor klasy Item. Na podstawie ID przedmiotu, przeszukiwana jest baza danych i dobierana jest nazwa przedmiotu oraz czas jego produkcji.
+     * @param id ID przedmiotu
+     * @param amount ilość przedmiotu
+     * @param income przyrost przedmiotu na turę
+     */
     public Item(int id, int amount, double income) {
 
         // Ustalamy ilość tego przedmiotu
@@ -142,10 +164,6 @@ public class Item {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public float getAmount() {
         return amount;
     }
@@ -166,7 +184,4 @@ public class Item {
         return productionTime;
     }
 
-    public void setProductionTime(int productionTime) {
-        this.productionTime = productionTime;
-    }
 }

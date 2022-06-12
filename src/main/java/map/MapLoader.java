@@ -8,6 +8,9 @@ import java.util.Scanner;
 
 public class MapLoader {
 
+    /**
+     * Otwiera okno wyboru plików, w którym użytkownik wybiera mapę (plik z rozszerzeniem .map), na której będzie się odbywała symulacja
+     */
     public static void loadMap(){
 
         int size;

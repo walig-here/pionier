@@ -46,13 +46,14 @@ public class Pioneer {
     private boolean emergency_construction; // określa czy pionier aktualnie wykonuje prorytetową budowę
 
 
-
-
-    public int getTo_build() {
-        return to_build;
-    }
-
-    // funkcja wyboru miejsca pod pole centralne
+    /**
+     * Na podstawie odległości od pola zakłóceń, wody, potrzebnych surowców, wybiera pole, na którym będzie znajdowało się centralne pole - magazyn.
+     * Centralne pole nie może stać na potrzebnych surowcach, wodzie lub źródle zakłóceń.
+     * Jeśli nie ma odpowiedniego pola na postawienie magazynu, pionier przegrywa symulację.
+     * @param map mapa, na której odbywa się symulacja
+     * @param buildingOrder - kolejka budowania budynkow przez pioniera
+     *
+     */
     public int chooseCentral(Field[][] map, ArrayList<Integer> buildingOrder){
 
         ArrayList<Integer[]> potential_centrals = new ArrayList<>();
@@ -129,7 +130,6 @@ public class Pioneer {
         Main.addToLog("\tPionier wybra\u0142 miejsce pod budow\u0119 magazynu na polu (" + best_cental[0] + "," + best_cental[1] + ") z puli " + potential_centrals.size() + " odpowiednich pod magazyn p\u00F3l.");
         return 0;
     }
-
     public void setEmergency_construction(boolean emergency_construction) {
         this.emergency_construction = emergency_construction;
     }
@@ -173,6 +173,10 @@ public class Pioneer {
         inventory = new ArrayList<>();
     }
 
+
+    public int getTo_build() {
+        return to_build;
+    }
 
     /**
      * Setter. Ustala punkty ruchu posiadane przez pioniera w danej turze.

@@ -5,12 +5,24 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+/**
+ * Obiekty tej klasy są używane przez ComponentItem. Znajdują się tu informacje o koszcie wyprodukowania produktu i rodzaju (ID) maszyny, w której może być on produkowany.
+ */
 public class Recipe{
 
-    private final ArrayList<Item> input; // lista składników wejściowych
-    private int machine; // ID maszyny produkującej
+    /**
+     * Lista składników potrzebnych do wyprodukowania przedmiotu
+     */
+    private final ArrayList<Item> input;
+    /**
+     * Maszyna, w której przedmiiot może zostać wyprodukowany
+     */
+    private int machine;
 
-    // konstruktor
+    /**
+     * Konstruktor klasy Recipe.  Pobiera dane (listę składników i ID maszyny) z bazy danych receptur
+     * @param filename nazwa pliku z recepturą (znajdującego się w bazie danych recipe).
+     */
     Recipe(String filename){
 
         // Inicjujemy listę składników

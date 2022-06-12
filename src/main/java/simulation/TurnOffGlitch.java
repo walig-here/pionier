@@ -14,6 +14,12 @@ public class TurnOffGlitch extends Glitch {
     }
 
     // wpływ glitcha na maszyne
+
+    /**
+     *
+     * @param impacting maszyna, na którą glitch wpływa
+     * @param inventory ekwipunek pioniera
+     */
     @Override
     public void glitchImpact(Machine impacting, ArrayList<Item> inventory) {
 
