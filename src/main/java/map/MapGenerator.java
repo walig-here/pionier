@@ -21,7 +21,7 @@ public class MapGenerator {
 
 
         final int maxMapSize=32;
-        final int minMapSize=15;
+        final int minMapSize=20;
 
         Random random=new Random();
 
@@ -32,10 +32,17 @@ public class MapGenerator {
         //generator planszy
         int x,y,a,b;
 
-
-
-
-
+        //generacja ropy
+        x=random.nextInt(size);
+        y=random.nextInt(size);
+        a=random.nextInt(2)+1;
+        b=random.nextInt(2)+1;
+        for (int i =x-a;i<=x+a;i++){
+            int delta = (int)Math.sqrt(Math.abs((float)b * (float)b * (1.0f - (float)((i-x) * (i-x)) / (float)(a * a))));
+            for (int j = y-delta; j<=y+delta;j++){
+                if(i>=0&&i<=size-1&&j>=0&&j<=size-1)mapTab[i][j]=8;
+            }
+        }
 
         //generacja złota
         x=random.nextInt(size);
@@ -59,6 +66,21 @@ public class MapGenerator {
                 if(i>=0&&i<=size-1&&j>=0&&j<=size-1)mapTab[i][j]=5;
             }
         }
+        //generacja ropy
+        x=random.nextInt(size);
+        y=random.nextInt(size);
+        a=random.nextInt(2)+1;
+        b=random.nextInt(2)+1;
+        for (int i =x-a;i<=x+a;i++){
+            int delta = (int)Math.sqrt(Math.abs((float)b * (float)b * (1.0f - (float)((i-x) * (i-x)) / (float)(a * a))));
+            for (int j = y-delta; j<=y+delta;j++){
+                if(i>=0&&i<=size-1&&j>=0&&j<=size-1)mapTab[i][j]=8;
+            }
+        }
+        //generacja diamentu
+        x=random.nextInt(size);
+        y=random.nextInt(size);
+        mapTab[x][y]=9;
 
         //generacja żelaza
         x=random.nextInt(size);
@@ -94,18 +116,6 @@ public class MapGenerator {
             int delta = (int)Math.sqrt(Math.abs((float)b * (float)b * (1.0f - (float)((i-x) * (i-x)) / (float)(a * a))));
             for (int j = y-delta; j<=y+delta;j++){
                 if(i>=0&&i<=size-1&&j>=0&&j<=size-1)mapTab[i][j]=3;
-            }
-        }
-
-        //generacja ropy
-        x=random.nextInt(size);
-        y=random.nextInt(size);
-        a=random.nextInt(2)+1;
-        b=random.nextInt(2)+1;
-        for (int i =x-a;i<=x+a;i++){
-            int delta = (int)Math.sqrt(Math.abs((float)b * (float)b * (1.0f - (float)((i-x) * (i-x)) / (float)(a * a))));
-            for (int j = y-delta; j<=y+delta;j++){
-                if(i>=0&&i<=size-1&&j>=0&&j<=size-1)mapTab[i][j]=8;
             }
         }
 
