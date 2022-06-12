@@ -1,5 +1,7 @@
 package rendering;
 import map.MapGenerator;
+import simulation.Item;
+import simulation.Machine;
 import simulation.terrain.*;
 
 import main.*;
@@ -10,6 +12,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import static main.Main.pioneer;
 import static main.Main.simulation_setup;
 
 public class Kanwa1 extends JPanel implements ActionListener{
@@ -23,6 +26,7 @@ public class Kanwa1 extends JPanel implements ActionListener{
     int turn;
     int score = 0;
     boolean isRunning;
+    String temp,temp2;
 
     Image coal_ore;
     Image iron_ore;
@@ -60,8 +64,7 @@ public class Kanwa1 extends JPanel implements ActionListener{
         stats.setVerticalAlignment(JLabel.TOP);
         stats.setHorizontalAlignment(JLabel.CENTER);
 
-        String text ="<html>"+"test1"+"<br>"+"test2"+"</html>";
-        stats.setText(text);
+
         stats.setBorder(border);
 
         //ładowanie textur
@@ -195,8 +198,8 @@ public class Kanwa1 extends JPanel implements ActionListener{
 
 
                 // renderowanie pioniera
-                if(Main.pioneer != null){
-                    if(i==Main.pioneer.getCoordinates()[0]&&j==Main.pioneer.getCoordinates()[1]){
+                if(pioneer != null){
+                    if(i== pioneer.getCoordinates()[0]&&j== pioneer.getCoordinates()[1]){
                         rys1.drawImage(pionier,i*25+5,j*25+5, null);
                     }
                 }
@@ -223,7 +226,26 @@ public class Kanwa1 extends JPanel implements ActionListener{
 
         //Main.pioneer.setCoordinates(Main.pioneer.getCoordinates()[0]+1, Main.pioneer.getCoordinates()[1]+1);
         repaint();
+        if(Main.buildingQueue.size()!=0){
+            Item i = new Item(Main.buildingQueue.get(0),0,0);
+            temp= "Po\u017C\u0105dany przedmiot: ";
+            temp+=i.getName();
+        }else {
+            temp="";
+        }
 
+        temp2="";
+        for(Item item : pioneer.getInventory()){
+            temp2 += item.getName()+ ": " +item.getAmount()+"   "+ item.getIncome()+"<br>";
+        }
+
+        String text ="<html>"+"Numer tury: "+turn+"<br>"+ "Ilo\u015B\u0107 maszyn: " + Machine.count +"(" + Machine.active_machines + " aktywnych)"+
+                "<br>"+temp+
+                "<br>"+"Ekwipunek: "+"<br>"+temp2+
+
+                "</html>";
+        stats.setText(text);
+        stats.repaint();
         if(isRunning){
             switch (Main.simulationLoop(turn, max_turns)) {
                 case -1: {

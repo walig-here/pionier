@@ -21,7 +21,7 @@ public class MapGenerator {
 
 
         final int maxMapSize=32;
-        final int minMapSize=15;
+        final int minMapSize=20;
 
         Random random=new Random();
 

@@ -61,7 +61,12 @@ public class MenuGUI extends JFrame implements ActionListener {
 
             String answer = JOptionPane.showInputDialog("Podaj wielko\u015B\u0107 mapy");
             try {
-                new MapEditorGUI(Integer.parseInt(answer));
+                if (Integer.parseInt(answer)>=20&&Integer.parseInt(answer)<=32){
+                    new MapEditorGUI(Integer.parseInt(answer));
+                }else {
+                    JOptionPane.showMessageDialog(null, "Nie odpowiednia wielko\u015B\u0107 mapy");
+                }
+
             }catch (NumberFormatException ex){
                 ex.printStackTrace();
             }
