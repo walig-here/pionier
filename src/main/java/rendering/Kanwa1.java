@@ -99,8 +99,6 @@ public class Kanwa1 extends JPanel implements ActionListener{
         timer=new Timer(200, this);
         timer.start();
 
-        //this.setBorder(BorderFactory.createLineBorder(Color.blue, 3));
-        //this.setPreferredSize(new Dimension(dimension,dimension));
     }
 
 
@@ -150,7 +148,7 @@ public class Kanwa1 extends JPanel implements ActionListener{
                 }
 
 
-                // wstawić renderowanie maszyn
+                // renderowanie maszyn
                 if(Main.map[i][j].getMachine() != null){
 
                     if(Main.map[i][j].getMachine().getActive() == 1){

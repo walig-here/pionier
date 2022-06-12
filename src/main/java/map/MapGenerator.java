@@ -132,7 +132,7 @@ public class MapGenerator {
             }
         }
         //generowanie pól zakłóceń
-        for (int z=0;z<= random.nextInt(2);z++){
+        for (int z=0;z< random.nextInt(2)+1;z++){
             x=random.nextInt(size);
             y=random.nextInt(size);
             mapTab[x][y]=2;
