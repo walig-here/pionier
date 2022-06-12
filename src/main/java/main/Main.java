@@ -32,7 +32,7 @@ public class Main {
     static public Pioneer pioneer; // pionier
     static private Item targetItem; // przedmiot, ktorego zdobycie, konczy symulacje (przedmiot docelowy)
     static private ArrayList<Item> children = new ArrayList<>();
-    static private ArrayList<Integer> buildingQueue = new ArrayList<>();
+    static public ArrayList<Integer> buildingQueue = new ArrayList<>();
     static final private ArrayList<String> log = new ArrayList<>();
 
     // funkcja zapisująca dziennik w pliku tekstowym
