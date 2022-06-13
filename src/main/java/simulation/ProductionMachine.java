@@ -79,7 +79,7 @@ public class ProductionMachine extends Machine {
                 // Jeżeli nie mamy wystarczającej ilości wymaganego przedmiotu, to zatrzymujemy produkcję i nakazujemy pionierowi pozyskać przedmiot
                 if(inventoryItem.getAmount() - inputItem.getAmount()/temp.getProductionTime() < 0) {
 
-                    Main.addToLog("\tMaszyna " + getName() + " została tymczasowo wyłączona ze względu na brak " + inputItem.getName() + ".");
+                    Main.addToLog("\tMaszyna " + getName() + " zosta\u0142a tymczasowo wy\u0142\u0105czona ze wzgl\u0119du na brak " + inputItem.getName() + ".");
                     stopProduction(pioneer.getInventory());
 
                     if(inventoryItem.getIncome() < 0 && !pioneer.getEmergency_construction() && (buildingOrder.size() == 0 || buildingOrder.get(0) != inventoryItem.getID())){
@@ -95,7 +95,7 @@ public class ProductionMachine extends Machine {
             }
         }
 
-        if(super.getActive() == 0) return 0;
+        if(super.getActive() == 0 || super.getActive() == -1) return 0;
 
         // produkcja trwa kolejną turę
         production_turn++;

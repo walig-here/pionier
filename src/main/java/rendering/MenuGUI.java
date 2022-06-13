@@ -1,5 +1,6 @@
 package rendering;
 
+import main.Main;
 import map.*;
 
 import javax.swing.*;
@@ -23,19 +24,19 @@ public class MenuGUI extends JFrame implements ActionListener {
         ImageIcon logo = new ImageIcon("src\\textures\\logo.png");
 
         button1=new JButton(); //otwiera edytor map
-        button1.setBounds(100,100,180,50);
+        button1.setBounds(100,100,175,50);
         button1.addActionListener(this);
         button1.setFocusable(false);
         button1.setText("Stw\u00F3rz now\u0105 map\u0119");
 
         button2=new JButton(); //otwiera autoGenerator map
-        button2.setBounds(100,175,180,50);
+        button2.setBounds(100,175,175,50);
         button2.addActionListener(this);
         button2.setFocusable(false);
         button2.setText("Wygeneruj losow\u0105 map\u0119");
 
         button3=new JButton(); //wczytuje zapisaną mapę
-        button3.setBounds(100,250,180,50);
+        button3.setBounds(100,250,175,50);
         button3.addActionListener(this);
         button3.setFocusable(false);
         button3.setText("Wczytaj map\u0119");
@@ -59,14 +60,21 @@ public class MenuGUI extends JFrame implements ActionListener {
 
         if(e.getSource()==button1){
 
-            String answer = JOptionPane.showInputDialog("Podaj wielko\u015B\u0107 mapy");
-            try {
-                if (Integer.parseInt(answer)>=20&&Integer.parseInt(answer)<=32){
-                    new MapEditorGUI(Integer.parseInt(answer));
-                }else {
-                    JOptionPane.showMessageDialog(null, "Nie odpowiednia wielko\u015B\u0107 mapy");
+            String answer;
+            Scanner answer_scanner;
+            int map_size;
+            while (true){
+                answer = JOptionPane.showInputDialog("Podaj wielko\u015B\u0107 mapy");
+                answer_scanner = new Scanner(answer);
+                if(answer_scanner.hasNextInt()) {
+                    map_size = answer_scanner.nextInt();
+                    if(map_size <= 32 && map_size >= 20) break;
+                    else JOptionPane.showMessageDialog(null, "Mapa powinna mie\u0107 wielko\u015B\u0107 mi\u0119dzy 20 a 32!");
                 }
-
+                else JOptionPane.showMessageDialog(null, "Wprowadzono nieodpowiednie dane!");
+            }
+            try {
+                new MapEditorGUI(Integer.parseInt(answer));
             }catch (NumberFormatException ex){
                 ex.printStackTrace();
             }

@@ -214,7 +214,7 @@ public class Machine {
     }
 
     public void deactivateGlitch() {
-        Main.addToLog("\tW maszynie "+ name + " problemy spowodowane zakłóceniem " + glitch.getID() + " skończyły się.");
+        Main.addToLog("\tW maszynie "+ name + " problemy spowodowane zak\u0142\u00F3ceniem " + glitch.getID() + " sko\u0144czy\u0142y się.");
         glitch = null;
         glitched_machines--;
     }

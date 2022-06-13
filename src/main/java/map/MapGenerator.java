@@ -131,15 +131,9 @@ public class MapGenerator {
                 if(i>=0&&i<=size-1&&j>=0&&j<=size-1)mapTab[i][j]=1;
             }
         }
-        //generowanie pól zakłóceń
-        for (int z=0;z<= random.nextInt(2);z++){
-            x=random.nextInt(size);
-            y=random.nextInt(size);
-            mapTab[x][y]=2;
-        }
-
 
         generateMap(size, mapTab);
+
     }
 
     public static void generateMap(int size, int[][] mapTab){

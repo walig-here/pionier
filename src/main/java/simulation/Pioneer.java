@@ -1,5 +1,6 @@
 package simulation;
 import main.Main;
+import rendering.Sprite;
 import simulation.terrain.CentralField;
 import simulation.terrain.DepositField;
 import simulation.terrain.Field;
@@ -22,6 +23,10 @@ public class Pioneer {
     /**
      * Obiekt przechowujący dane o graficznej reprezentacji pioniera w oknie symulacji.
      * */
+    private Sprite sprite;
+    /**
+     * Zmienna zawierająca informację co do możliwości zbudowania kolejnej maszyny przez pioniera w tej turze.
+     * */
     private boolean could_build;
 
     /**
@@ -40,6 +45,12 @@ public class Pioneer {
 
     private boolean emergency_construction; // określa czy pionier aktualnie wykonuje prorytetową budowę
 
+
+
+
+    public int getTo_build() {
+        return to_build;
+    }
 
     // funkcja wyboru miejsca pod pole centralne
     public int chooseCentral(Field[][] map, ArrayList<Integer> buildingOrder){
@@ -73,7 +84,7 @@ public class Pioneer {
 
         // Jeżeli nie ma żadnych potencjalnych pól to pionier przegrywa symulacje
         if(potential_centrals.size() == 0) {
-            Main.addToLog("PORAŻKA! PIONIER NIE BYL W STANIE WYZNACZYĆ ŻADNEGO MIEJSCA POD MAGAZYN!");
+            Main.addToLog("PORA\u017BKA! PIONIER NIE BY\u0141 W STANIE WYZNACZY\u0106 \u017BADNEGO MIEJSCA POD MAGAZYN!");
             return -1;
         }
 
@@ -115,7 +126,7 @@ public class Pioneer {
             }
         }
         map[best_cental[0]][best_cental[1]] = new CentralField(best_cental[0],best_cental[1]);
-        Main.addToLog("\tPionier wybrał miejsce pod budowę magazynu na polu (" + best_cental[0] + "," + best_cental[1] + ") z puli " + potential_centrals.size() + " odpowiednich pod magazyn pól.");
+        Main.addToLog("\tPionier wybra\u0142 miejsce pod budow\u0119 magazynu na polu (" + best_cental[0] + "," + best_cental[1] + ") z puli " + potential_centrals.size() + " odpowiednich pod magazyn p\u00F3l.");
         return 0;
     }
 
@@ -282,7 +293,7 @@ public class Pioneer {
                 {
                     // Jeżeli nie ma wystarczająco itemu oraz ten item nie przyrasta to wybiera się na jego zbudowanie
                     if(item_eq.getAmount() - item_cost.getAmount() < 0) {
-                        Main.addToLog("\tPrzerwano konstrukcję " + new_building.getName() + " ze względu na brak " + item_cost.getName() + ".");
+                        Main.addToLog("\tPrzerwano konstrukcj\u0119 " + new_building.getName() + " ze wzgl\u0119du na brak " + item_cost.getName() + ".");
                         if(item_eq.getIncome() <= 0 && buildingOrder.get(0) != item_cost.getID()){
                             emergency_construction = false;
                             to_build = -1;
@@ -576,7 +587,7 @@ public class Pioneer {
         building_field[0] = min[0]; building_field[1] = min[1];
 
         Item i = new Item(to_build,0,0);
-        Main.addToLog("\tPionier postanowił zbudować maszynę produkującą " + i.getName() + " na polu (" + building_field[0] + "," + building_field[1] + "), które wybrał z puli " + potential_fields.size() + " potencjalnych pól budowlanych.");
+        Main.addToLog("\tPionier postanowi\u0142 zbudowa\u0107 maszyn\u0119 produkuj\u0105c\u0105 " + i.getName() + " na polu (" + building_field[0] + "," + building_field[1] + "), kt\u00F3re wybra\u0142 z puli " + potential_fields.size() + " potencjalnych p\u00F3l budowlanych.");
     }
 
 
@@ -627,7 +638,7 @@ public class Pioneer {
                 if(item.getID() == to_build)
                     // Jeżeli nie to pionier przegrywa symulację
                     if(item.getIncome() <= 0){
-                        Main.addToLog("PORAŻKA! PIONIER NIE BYL W STANIE ZNALEŹĆ ODPOWIEDNIEGO MIEJSCA POD BUDOWE MASZYNY PRODUKUJĄCEJ " + item.getName().toUpperCase() + "!");
+                        Main.addToLog("PORA\u017BKA! PIONIER NIE BY\u0141 W STANIE ZNALE\u0179\u0106 ODPOWIEDNIEGO MIEJSCA POD BUDOW\u0118 MASZYNY PRODUKUJ\u0104CEJ " + item.getName().toUpperCase() + "!");
                         return -1;
                     }
 

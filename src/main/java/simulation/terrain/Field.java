@@ -1,6 +1,7 @@
 package simulation.terrain;
 
 import main.Main;
+import rendering.GridSprite;
 import simulation.*;
 import simulation.Pioneer;
 import simulation.ProductionMachine;
@@ -20,6 +21,7 @@ public abstract class Field {
     private int terrain_id;  //id terenu
 
     protected Machine machine; //maszyna stojąca na polu
+    private GridSprite gridSprite; //render pola
     private int base_move_points; //punkty na początku rundy jeśli jest to pole startu
 
     private ArrayList<Byte[]> glitch_probabilities; // szanse na zakłócenie, pierwsza komórka danej pozycji to ID zakłócenia, druga to szansa na jego wystąpienie na tym polu
@@ -115,7 +117,7 @@ public abstract class Field {
             this.machine = new Machine(machine);
             this.machine.startProduction(inventory);
         }
-        Main.addToLog("\tMaszyna " + machine.getName() + " została zbudowana na polu (" + coordinates[0] + "," + coordinates[1] + ").");
+        Main.addToLog("\tMaszyna " + machine.getName() + " zosta\u0142a zbudowana na polu (" + coordinates[0] + "," + coordinates[1] + ").");
         canBuild = false;
         Machine.count++;
     }
@@ -187,7 +189,7 @@ public abstract class Field {
             // Losujemy liczbę, która zdeterminuje wystąpienie zakłócenia
             // Przy jego wystąpieniu wywołujemy w maszynie stojącej na polu zakłócenie
             if(glitch[1] >= rng.nextInt(99) + 1){
-                Main.addToLog("\tW maszynie " + machine.getName() + " wystąpiło zakłócenie " + glitch[0] + "! Szansa na pojawienie się zakłócenia wynosiła " + glitch[1] + "%.");
+                Main.addToLog("\tW maszynie " + machine.getName() + " wyst\u0105pi\u0142o zak\u0142\u00F3cenie " + glitch[0] + "! Szansa na pojawienie si\u0119 zak\u0142\u00F3cenia wynosi\u0142a " + glitch[1] + "%.");
                 machine.activateGlitch(glitch[0]);
                 break;
             }
