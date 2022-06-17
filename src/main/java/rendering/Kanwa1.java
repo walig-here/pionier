@@ -74,26 +74,26 @@ public class Kanwa1 extends JPanel implements ActionListener{
 
         //ładowanie textur
 
-        coal_ore =new ImageIcon("src\\textures\\coal_ore.png").getImage();
-        iron_ore =new ImageIcon("src\\textures\\iron_ore.png").getImage();
-        copper_ore =new ImageIcon("src\\textures\\copper_ore.png").getImage();
-        gold_ore =new ImageIcon("src\\textures\\gold_ore.png").getImage();
-        diamond_ore =new ImageIcon("src\\textures\\diamond_ore.png").getImage();
-        forest =new ImageIcon("src\\textures\\woods.png").getImage();
-        pionier =new ImageIcon("src\\textures\\pionier.png").getImage();
-        central_field =new ImageIcon("src\\textures\\central_field.png").getImage();
-        factory_on =new ImageIcon("src\\textures\\factory_on.png").getImage();
-        factory_off =new ImageIcon("src\\textures\\factory_off.png").getImage();
-        furnace_on =new ImageIcon("src\\textures\\furnace_on.png").getImage();
-        furnace_off =new ImageIcon("src\\textures\\furnace_off.png").getImage();
-        powerplant_on =new ImageIcon("src\\textures\\powerplant_on.png").getImage();
-        powerplant_off =new ImageIcon("src\\textures\\powerplant_off.png").getImage();
-        extractor_on =new ImageIcon("src\\textures\\extractor_on.png").getImage();
-        extractor_off =new ImageIcon("src\\textures\\extractor_off.png").getImage();
-        soil =new ImageIcon("src\\textures\\soil.png").getImage();
-        oil_field =new ImageIcon("src\\textures\\oil.png").getImage();
-        water =new ImageIcon("src\\textures\\water.png").getImage();
-        glitch =new ImageIcon("src\\textures\\glitch.png").getImage();
+        coal_ore =new ImageIcon("src/textures/coal_ore.png").getImage();
+        iron_ore =new ImageIcon("src/textures/iron_ore.png").getImage();
+        copper_ore =new ImageIcon("src/textures/copper_ore.png").getImage();
+        gold_ore =new ImageIcon("src/textures/gold_ore.png").getImage();
+        diamond_ore =new ImageIcon("src/textures/diamond_ore.png").getImage();
+        forest =new ImageIcon("src/textures/woods.png").getImage();
+        pionier =new ImageIcon("src/textures/pionier.png").getImage();
+        central_field =new ImageIcon("src/textures/central_field.png").getImage();
+        factory_on =new ImageIcon("src/textures/factory_on.png").getImage();
+        factory_off =new ImageIcon("src/textures/factory_off.png").getImage();
+        furnace_on =new ImageIcon("src/textures/furnace_on.png").getImage();
+        furnace_off =new ImageIcon("src/textures/furnace_off.png").getImage();
+        powerplant_on =new ImageIcon("src/textures/powerplant_on.png").getImage();
+        powerplant_off =new ImageIcon("src/textures/powerplant_off.png").getImage();
+        extractor_on =new ImageIcon("src/textures/extractor_on.png").getImage();
+        extractor_off =new ImageIcon("src/textures/extractor_off.png").getImage();
+        soil =new ImageIcon("src/textures/soil.png").getImage();
+        oil_field =new ImageIcon("src/textures/oil.png").getImage();
+        water =new ImageIcon("src/textures/water.png").getImage();
+        glitch =new ImageIcon("src/textures/glitch.png").getImage();
 
 
         timer=new Timer(200, this);
