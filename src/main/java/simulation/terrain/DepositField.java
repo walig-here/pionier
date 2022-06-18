@@ -11,15 +11,36 @@ import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Scanner;
 
+/**
+ * Dziedziczy po klasie Field. Pole zawierające surowiec (rudy, ropę, drewno itp.), które maszyna wydobywcza może wydobyć
+ */
 public class DepositField extends Field {
 
+    /**
+     * ID surowca do wydobycia na tym polu
+     */
+    private final int item_id;
+    /**
+     * Maksymalna ilość surowca do wydobycia z tego złoża
+     */
+    private int deposit_capacity;
+    /**
+     * Ilość punktów ruchy odbierana pionierowi przy wejściu na niezabudowane pole tego typu
+     */
+    private static int move_cost = -1;
+    /**
+     * Współczynnik określający, ile punktów ruchy odbierze zabudowane pole DepositField pionierowi (w stosunku do niezabudowanego pola)
+     */
+    private static float excavation_penalty=0.00f;
 
-    private final int item_id; // ID wydobywanego stąd itemu
-    private int deposit_capacity; // maksymalna ilość surowca do wydobycia
-    private static int move_cost = -1; // punkty ruchu odbierane pionierowi przy wejściu na niezabudowane pole tego typu
-    private static float excavation_penalty=0.00f; // współczynnik określający ile punktów ruchu zabudowane pole odbierze pionierowi w stosunku do swojej niezabudowanej wersji
-
-    // konstruktor
+    /**
+     * Konstruktor klasy DepositField. Rozszerza konstruktor klasy Field, dodając informacje o możliwym do wydobycia surowcu (typ surowca oraz maksymalna ilość do pozyskania z tego pola).
+     * Z bazy danych (database/terrain/deposit) dobiera parametr penalty.
+     * @param x współrzędna x pola
+     * @param y współrzędna y pola
+     * @param capacity wielkość złoża
+     * @param item_id ID przedmiotu (surowca), który można na tym polu wydobyć
+     */
     public DepositField(int x, int y, int capacity, int item_id){
         super(x,y,2);
 
@@ -67,14 +88,11 @@ public class DepositField extends Field {
         }
     }
 
-    public void setCapacityOfDeposit(int capacityOfDeposit) {
-        deposit_capacity = capacityOfDeposit;
-    }
-    public int getCapacityOfDeposit() {
-        return deposit_capacity;
-    }
 
-    // metoda uszczuplająca złoże wraz z działaniem maszyny
+    /**
+     * Metoda aktualizująca wielkość złoża, wraz z wydobyciem surowca. Jeśli wielkość złoża jest równa 0, to maszyna stojąca na nim, się zatrzymuje.
+     * @param inventory ekwipunek pioniera
+     */
     public void extract(ArrayList<Item> inventory) {
 
         // Jeżeli na polu jest maszyna wydobywająca surowiec lub generująca prąd to wyczerpuje ona zasoby.
@@ -104,11 +122,6 @@ public class DepositField extends Field {
             // Maszyna wydobywa tyle jednostek surowca ile generuje produktu wyjściowego
         else deposit_capacity -= machine.getOutput();
     }
-
-    public int getItem_id() {
-        return item_id;
-    }
-
     /**
      * Spowalnia znacząco bardziej pioniera, jeżeli na polu prowadzone prace wydobywcze(na polu stoi maszyna).
      * W przeciwnym wypadku pionier przemieszcza się po polu jak po zwykłym polu z ziemią.
@@ -133,5 +146,13 @@ public class DepositField extends Field {
         // Jeżeli wystarczy mu punktów ruchu to pole odbiera mu ich odpowiednią ilosć i pozwala wkroczyć na swój teren.
         pioneer.setMove_points(pioneer.getMove_points() - move_cost);
         return true;
+    }
+
+    public int getItem_id() {
+        return item_id;
+    }
+
+    public int getCapacityOfDeposit() {
+        return deposit_capacity;
     }
 }

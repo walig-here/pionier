@@ -11,19 +11,40 @@ import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
 
-
+/**
+ * Klasa abstrakcyjna.
+ */
 public abstract class Field {
 
+    /**
+     * Koordynaty pola
+     */
+    protected int[] coordinates;
 
-    protected int[] coordinates; //koordynaty pola terenu
+    /**
+     * ID typu terenu
+     */
+    private int terrain_id;
 
-    private int terrain_id;  //id terenu
-
+    /**
+     * Maszyna stojąca na polu
+     */
     protected Machine machine; //maszyna stojąca na polu
-    private int base_move_points; //punkty na początku rundy jeśli jest to pole startu
 
-    private ArrayList<Byte[]> glitch_probabilities; // szanse na zakłócenie, pierwsza komórka danej pozycji to ID zakłócenia, druga to szansa na jego wystąpienie na tym polu
-    private boolean canBuild;   //czy można na tym polu budować
+    /**
+     * Punkty ruchu otrzymywane przez pioniera na danym polu, na początku tury
+     */
+    private int base_move_points;
+
+    /**
+     * Szansa na wystąpienie danego typu zakłócenia na tym polu. 1 komórka - ID zakłócenia, 2 komórka - szansa na wystąpienie.
+     */
+    private ArrayList<Byte[]> glitch_probabilities;
+
+    /**
+     * Czy można na tym polu budować (np. na wodzie nie można)
+     */
+    private boolean canBuild;
 
     /**
      * Tworzy obiekt klasy Filed, znajdujący się w podanym punkcie planszy i zawierający w sobie typ terenu o określonym ID.
@@ -94,18 +115,11 @@ public abstract class Field {
         }
     }
 
-    public int getTerrain_id() {
-        return terrain_id;
-    }
-
-    public int[] getCoordinates() {
-        return coordinates;
-    }
-    public void setCoordinates(int x, int y) {
-        coordinates[0] = x;
-        coordinates[1] = y;
-    }
-
+    /**
+     * Ustawia maszynę na danym polu, zaczyna produkcję. Dodaje tą informację do dziennika symulacji. Aktualizuje liczbę działających maszyn. Sprawia, że na tym polu nie da się już niczego więcej zbudować.
+     * @param machine maszyna stawiana
+     * @param inventory ekwipunek pioniera
+     */
     public void setMachine(Machine machine, ArrayList<Item> inventory) {
         if(machine instanceof ProductionMachine) {
             this.machine = new ProductionMachine((ProductionMachine)machine);
@@ -120,29 +134,10 @@ public abstract class Field {
         Machine.count++;
     }
 
-    // pobiera listę prawdopodobieństw wystąpienia zakłóceń
-    public ArrayList<Byte[]> getGlitch_probabilities() {
-        return glitch_probabilities;
+    public Machine getMachine() {
+        return machine;
     }
 
-    public void setGlitch_probabilities(ArrayList<Byte[]> glitch_probabilities) {
-        this.glitch_probabilities = glitch_probabilities;
-    }
-
-    // ustala wpływ pola na wchodzącego na nie pioniera oraz zwraca informacje czy udało mu się wkroczyć na jego teren
-    abstract public boolean goInto(Pioneer pioneer);
-
-    public int getTerrainId() {
-        return terrain_id;
-    }
-
-    public void setTerrainId(int terrainId) {
-        terrain_id = terrainId;
-    }
-
-    public int getBase_move_points() {
-        return base_move_points;
-    }
 
     /**
      * Obsługuje mechanizm wyjścia pioniera z danego pola. Dla większości pól planszy przypisuje
@@ -159,25 +154,18 @@ public abstract class Field {
         return true;
     }
 
-    public void setBase_move_points(int base_move_points) {
-        this.base_move_points = base_move_points;
-    }
 
-    public boolean isCanBuild() {
-        return canBuild;
-    }
+    /**
+     * Odpowiada za wystąpienie zakłócenia. Jeśli na polu nie ma maszyny, lub maszyna ma już jakieś zakłócenie aktywne, nic się nie dzieje.
+     * W innym przypadku, według szansy, występuje zakłócenie na tym polu. Ta informacja jest dodawana do dziennika symulacji.
+     */
 
-    public void setCanBuild(boolean canBuild) {
-        this.canBuild = canBuild;
-    }
-
-    // odpowiada z wystąpienie glitcha
     public void activateGlitch() {
 
         // Jeżeli na polu nie ma maszyny to na pewno nie wystąpi zakłócenie
         if(machine == null) return;
 
-        // Jeżeli w maszynie aktywny jest już jakieś zakłócenie to również już nie sprawdzamy czy wystąpi kolejne
+        // Jeżeli w maszynie aktywny jest już jakieś zakłócenie to również już wystąpi
         if(machine.getGlitch() != null) return;
 
         // Sprawdzamy kolejne zakłócenia, które mogą wystąpić na tym polu
@@ -193,8 +181,53 @@ public abstract class Field {
             }
         }
     }
+    abstract public boolean goInto(Pioneer pioneer);
 
-    public Machine getMachine() {
-        return machine;
+    public int getTerrainId() {
+        return terrain_id;
+    }
+
+    public void setTerrainId(int terrainId) {
+        terrain_id = terrainId;
+    }
+
+    public int getBase_move_points() {
+        return base_move_points;
+    }
+
+    public void setBase_move_points(int base_move_points) {
+        this.base_move_points = base_move_points;
+    }
+
+    public int getTerrain_id() {
+        return terrain_id;
+    }
+
+
+    public boolean isCanBuild() {
+        return canBuild;
+    }
+
+    public void setCanBuild(boolean canBuild) {
+        this.canBuild = canBuild;
+    }
+
+    public int[] getCoordinates() {
+        return coordinates;
+    }
+
+    public void setCoordinates(int x, int y) {
+        coordinates[0] = x;
+        coordinates[1] = y;
+    }
+
+    // ustala wpływ pola na wchodzącego na nie pioniera oraz zwraca informacje czy udało mu się wkroczyć na jego teren
+    // pobiera listę prawdopodobieństw wystąpienia zakłóceń
+    public ArrayList<Byte[]> getGlitch_probabilities() {
+        return glitch_probabilities;
+    }
+
+    public void setGlitch_probabilities(ArrayList<Byte[]> glitch_probabilities) {
+        this.glitch_probabilities = glitch_probabilities;
     }
 }

@@ -7,13 +7,23 @@ import java.io.InputStream;
 import java.util.Scanner;
 
 /**
- * Pole planszy zalane wodą. Pionier musi zmarnować n-tur, aby przez nie przepłynąć.
- * */
+ * Dziedziczy po klasie Field. Pole planszy zalane wodą. Pionier musi zmarnować n-tur, aby przez nie przepłynąć.
+ */
 public class WaterField extends Field {
-    private static int sailing_time = -1; // ilość tur potrzebna do przebycia dowolnego pola wodnego(-1 do czasu wczytania)
-    private int waited_rounds; // ilość tur już przeczekanych
+    /**
+     * Ilość tur potrzebna do przebycia pola wodnego, wartość pobierana z bazy danych (database/terrain/water.txt)
+     */
+    private static int sailing_time = -1;
+    /**
+     * Ilość tur już przeczekanych na przepłynięcie
+     */
+    private int waited_rounds;
 
-    // konstruktor
+    /**
+     * Konstruktor klasy WaterField. Rozszerza konstruktor klasy Field, dodając informacje o czasie przepływania przez pole wodne (pobrane z bazy danych).
+     * @param x współrzędne x pola
+     * @param y współrzędne y pola
+     */
     public WaterField(int x, int y){
 
         // Konstruktor rodzica
@@ -23,7 +33,7 @@ public class WaterField extends Field {
         waited_rounds = 0;
 
         // Wczytujemy z pliku dane o czasie potrzebnym do przepłynięcia pola.
-        // Jeżeli te informacje zostały już cześniej wczytane do klasy(są różne od -1) to nie musimy ich wczytywać drugi raz.
+        // Jeżeli te informacje zostały już wcześniej wczytane do klasy (są różne od -1) to nie musimy ich wczytywać drugi raz.
         if(sailing_time == -1)
         {
             try{
@@ -44,7 +54,7 @@ public class WaterField extends Field {
                 }
                 file.close();
             }
-            // zwracamy wyjątek gdy pliku nie udało się otworzyć
+            // zwracamy wyjątek, gdy pliku nie udało się otworzyć
             catch (Exception e) {
                 e.printStackTrace();
                 System.out.println("Blad wczytywania danych dla pola wodnego planszy! Nie udalo sie uzyskac dostepu do pliku z danymi!");
@@ -52,15 +62,20 @@ public class WaterField extends Field {
         }
     }
 
+    /**
+     * Mechanizm przepływania przez pole. Sprawdza, czy pionier odczekał już odpowiednią ilość tur.
+     * @param pioneer pionier
+     * @return wartość boolean mówiąca o tym, czy pionier może już przejść. Jeśli może - przechodzi.
+     */
     @Override
     public boolean goInto(Pioneer pioneer) {
-        // Sprawdzamy czy pionier już odczekał odpowiednią ilość tur na tym polu, aby przejść dalej.
+        // Sprawdzamy, czy pionier już odczekał odpowiednią ilość tur na tym polu, aby przejść dalej.
         // Jeżeli tak jest, zerujemy licznik i pozwalamy mu przejść na drugi brzeg.
         if(waited_rounds == sailing_time) {
             waited_rounds = 0;
             pioneer.setMove_points(0);
 
-            // Usuwamy z kolejki pioniera to pole wodne. Dzięki temu od razu przemieści się on na kolejne pole w kolejce(drugi brzeg).
+            // Usuwamy z kolejki pioniera to pole wodne. Dzięki temu od razu przemieści się on na kolejne pole w kolejce (drugi brzeg).
             pioneer.getPath().remove(0);
 
             return true;

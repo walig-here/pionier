@@ -9,14 +9,21 @@ import java.util.Locale;
 import java.util.Scanner;
 
 /**
- * Pole zawierające centrum kompleksu przemysłowego, magazyn. Pionier porusza się po nim wolniej. Pionier musi przyjść do centrum, aby
- *  "zebrać" wszystko co będzie mu potrzebne do przyszłej budowy.
+ * Dziedziczy po Field. Pole zawierające centrum kompleksu przemysłowego, magazyn. Pionier porusza się po nim wolniej. Pionier musi przyjść do centrum, aby "zebrać" wszystko co będzie mu potrzebne do przyszłej budowy.
  * */
 public class CentralField extends Field {
 
-    private static float move_bonus = 0.0f; // bonus do punktów ruchu, nadawany przez pole centralne przy wjeściu na jego teren
+    /**
+     * Bonus do punktów ruchy, nadawany przez pole centralne przy wejściu na nie. Informacja pobierana z bazy danych (database/terrain/central.txt)
+     */
+    private static float move_bonus = 0.0f;
 
 
+    /**
+     * Konstruktor klasy CentralField. Rozszerza konstruktor klasy Field. Dodaje informację o bonusie do punktów ruchy (pobiera dane z bazy danych i aktualizuje move_bonus)
+     * @param x współrzędna x
+     * @param y współrzędna y
+     */
     public CentralField(int x, int y){
 
         super(x,y,4);

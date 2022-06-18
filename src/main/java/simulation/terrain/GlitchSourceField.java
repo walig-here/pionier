@@ -7,18 +7,39 @@ import java.io.InputStream;
 import java.util.Scanner;
 
 /**
- * Pole emitujące zakłócenie. Wypływa na inne pola w określonej odległości, zwiększając prawodpodobieństwo wystąpienia wnich zakłócenia.
+ * Dziedziczy po klasie Field. Pole emitujące zakłócenie. Wypływa na inne pola w określonej odległości, zwiększając prawdopodobieństwo wystąpienia w nich zakłócenia.
  * Pionier porusza się po nim bardzo wolno.
  */
 public class GlitchSourceField extends Field {
 
-    private final byte glitch_id; // ID zakłócenia generowanego przez pole
-    private int range; // zasięg zakłócenia
-    private static int move_cost=-1; // koszt wejścia na pole
-    private static byte generated_glitch_probability=-1; // maksymalne, generawane przez źródło prawdopodobieństwo wystąpienia generowanego przez nie zakłócenia
-    private static int distance_modifier = -1; // tempo zmniejszania generowanego prawdopodobieństwa zakłóceń wraz z odległością
+    /**
+     * ID zakłócenia generowanego przez pole
+     */
+    private final byte glitch_id;
+    /**
+     * Zasięg zakłócenia (w liczbie pól)
+     */
+    private int range;
+    /**
+     * Koszt wejścia na pole
+     */
+    private static int move_cost=-1;
+    /**
+     * Maksymalne prawdopodobieństwa wystąpienia zakłócenia generowanego przez źródło. Wartość pobierana z bazy danych (database/terrain/glitch.txt)
+     */
+    private static byte generated_glitch_probability=-1;
+    /**
+     * Tempo zmniejszania generowanego prawdopodobieństwa zakłóceń wraz z odległością. Wartość pobierana z bazy danych (database/terrain/glitch.txt)
+     */
+    private static int distance_modifier = -1;
 
-    // konstruktor
+    /**
+     * Konstruktor klasy GlitchSourceField. Rozszerza konstruktor klasy Field, dodając informację (pobrane z bazy danych) o generowanym przez to pole zakłóceniu i zasięgu glitcha
+     * @param x współrzędna x pola
+     * @param y współrzędna y pola
+     * @param range zasięg zakłóceń
+     * @param glitch_id ID glitcha emanowanego przez źródło
+     */
     public GlitchSourceField(int x, int y, int range, byte glitch_id){
         super(x,y,3);
 
@@ -65,6 +86,12 @@ public class GlitchSourceField extends Field {
     }
 
     // zmienia prawodpodobieństwa wystąpienia zakłócenia z tego pola w innych polach planszy
+
+    /**
+     * Ustawia prawdopodobieństwo wystąpienia zakłóceń na pobliskich polach w zależności od odległości od źródła (współczynnik zmniejszania prawdopodobieństwa jest zależny od parametru distance_modifier).
+     * Jeśli pole jest oddalone o więcej niż wartość parametru range, nic się z nim nie dzieje.
+     * @param map mapa, na której jest rozgrywana symulacja, w formie dwuwymiarowej tablicy pól
+     */
     public void setProbabilities(Field[][] map) {
         int distance; // dystans między źródłem a analizowanym polem plnaszy
 

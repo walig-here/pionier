@@ -7,13 +7,20 @@ import java.io.InputStream;
 import java.util.Scanner;
 
 /**
- * Standardowe i najpowszechniejsze pole na planszy.
+ * Dziedziczy po klasie Field. Standardowe i najpowszechniejsze pole na planszy (ziemia).
  * */
 public class SoilField extends Field {
 
-    static private int move_cost = 0; // koszt przemarszu przez pola ziemi(0 do czasu wczytania danych z pliku)
+    /**
+     * Koszt przemarszu przez pole typu SoilField, pobierany z bazy danych (database/terrain/soil.txt).
+     */
+    static private int move_cost = 0;
 
-    // konstruktor
+    /**
+     * Konstruktor klasy SoilField. Rozszerza konstruktor klasy Field, dodając parametr move_cost (pobierany z bazy danych)
+     * @param x współrzędna x pola
+     * @param y współrzędna y pola
+     */
     public SoilField(int x, int y){
 
         super(x,y,0);
