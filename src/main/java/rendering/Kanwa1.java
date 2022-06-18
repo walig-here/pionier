@@ -15,7 +15,7 @@ import java.text.DecimalFormat;
 import static main.Main.pioneer;
 
 /**
- * Klasa odpowiadająca za to, co widzimy. Pobiera tekstury, wyświetla i odświeża mapę.
+ * Klasa odpowiadająca za to, co widzimy; Pobiera tekstury, wyświetla i odświeża mapę.
  */
 public class Kanwa1 extends JPanel implements ActionListener{
 

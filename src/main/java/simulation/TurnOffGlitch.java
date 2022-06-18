@@ -4,7 +4,7 @@ package simulation;
 import java.util.ArrayList;
 
 /**
- * Rozszerza abstrakcyjną klasę Glitch. Może wyłączyć tymczasowo maszynę.
+ * Rozszerza abstrakcyjną klasę Glitch; Może wyłączyć tymczasowo maszynę.
  */
 public class TurnOffGlitch extends Glitch {
 

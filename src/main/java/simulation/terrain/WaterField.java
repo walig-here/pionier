@@ -7,7 +7,7 @@ import java.io.InputStream;
 import java.util.Scanner;
 
 /**
- * Dziedziczy po klasie Field. Pole planszy zalane wodą. Pionier musi zmarnować n-tur, aby przez nie przepłynąć.
+ * Dziedziczy po klasie Field; Pole planszy zalane wodą; Pionier musi zmarnować n-tur, aby przez nie przepłynąć.
  */
 public class WaterField extends Field {
     /**

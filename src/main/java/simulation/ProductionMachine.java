@@ -6,7 +6,7 @@ import simulation.terrain.Field;
 import java.util.ArrayList;
 
 /**
- * Maszyna posiadająca wejście i wyjście. Rozszerza klasę Machine, dodając parametr input mówiący o koszcie produkcji przedmiotu
+ * Maszyna posiadająca wejście i wyjście; Rozszerza klasę Machine, dodając parametr input mówiący o koszcie produkcji przedmiotu
  */
 public class ProductionMachine extends Machine {
 

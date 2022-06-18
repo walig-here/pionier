@@ -9,7 +9,7 @@ import java.util.Locale;
 import java.util.Scanner;
 
 /**
- * Dziedziczy po Field. Pole zawierające centrum kompleksu przemysłowego, magazyn. Pionier porusza się po nim wolniej. Pionier musi przyjść do centrum, aby "zebrać" wszystko co będzie mu potrzebne do przyszłej budowy.
+ * Dziedziczy po Field; Pole zawierające centrum kompleksu przemysłowego, magazyn; Pionier porusza się po nim wolniej; Pionier musi przyjść do centrum, aby "zebrać" wszystko co będzie mu potrzebne do przyszłej budowy.
  * */
 public class CentralField extends Field {
 

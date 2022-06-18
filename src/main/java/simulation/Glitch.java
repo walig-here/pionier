@@ -3,8 +3,8 @@ package simulation;
 import java.util.ArrayList;
 
 /**
- * Klasa abstrakcyjna, na podstawie której tworzone są rodzaje zakłóceń maszyn (klasy SlowGlitch, TurnOffGlitch).
- * Zakłócenia emanują z pola zakłóceń. Przeszkadzają w pracy maszynie, do której są przypisane. Mogą je spowolnić lub tymczasowo wyłączyć.
+ * Klasa abstrakcyjna, na podstawie której tworzone są rodzaje zakłóceń maszyn (klasy SlowGlitch, TurnOffGlitch);
+ * Zakłócenia emanują z pola zakłóceń; Przeszkadzają w pracy maszynie, do której są przypisane; Mogą je spowolnić lub tymczasowo wyłączyć.
  */
 public abstract class Glitch {
 

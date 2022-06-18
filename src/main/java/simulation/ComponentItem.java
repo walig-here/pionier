@@ -1,7 +1,7 @@
 package simulation;
 
 /**
- * Skomplikowany przedmiot, który może zostać pozyskany tylko z użyciem receptury. Rozszerza klasę Item, dodając do niego recepturę (Recipe)
+ * Skomplikowany przedmiot, który może zostać pozyskany tylko z użyciem receptury; Rozszerza klasę Item, dodając do niego recepturę (Recipe)
  * */
 public class ComponentItem extends Item {
 

@@ -8,7 +8,7 @@ import simulation.terrain.*;
 import java.util.Random;
 
 /**
- * Generator map. Może wygenerować mapę losowo lub na podstawie danych (rysunku) wprowadzonych przez użytkownika
+ * Generator map; Może wygenerować mapę losowo lub na podstawie danych (rysunku) wprowadzonych przez użytkownika
  */
 public class MapGenerator {
 

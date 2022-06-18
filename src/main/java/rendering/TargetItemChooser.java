@@ -32,7 +32,7 @@ public class TargetItemChooser extends JFrame implements ActionListener {
     int max_turns;
 
     /**
-     * Konstruktor klasy TargetItemChooser. Wyświetla okno z wyborem celu symulacji
+     * Konstruktor klasy TargetItemChooser; Wyświetla okno z wyborem celu symulacji
      * @param size
      * @param target_item_id - ID przedmiotu docelowego symulacji
      */

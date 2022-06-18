@@ -7,8 +7,8 @@ import java.io.InputStream;
 import java.util.Scanner;
 
 /**
- * Dziedziczy po klasie Field. Pole emitujące zakłócenie. Wypływa na inne pola w określonej odległości, zwiększając prawdopodobieństwo wystąpienia w nich zakłócenia.
- * Pionier porusza się po nim bardzo wolno.
+ * Dziedziczy po klasie Field; Pole emitujące zakłócenie; Wypływa na inne pola w określonej odległości, zwiększając prawdopodobieństwo wystąpienia w nich zakłócenia;
+ * Pionier porusza się po nim bardzo wolno;
  */
 public class GlitchSourceField extends Field {
 

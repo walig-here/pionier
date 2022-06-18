@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 
 /**
- * Rozszerza abstrakcyjną klasę Glitch. Może spowolnić tymczasowo maszynę.
+ * Rozszerza abstrakcyjną klasę Glitch; Może spowolnić tymczasowo maszynę.
  */
 public class SlowGlitch extends Glitch {
 

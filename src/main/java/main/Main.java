@@ -11,6 +11,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
 
+/**
+ * Klasa główna
+ */
 public class Main {
 
     /**
@@ -113,7 +116,7 @@ public class Main {
 
 
         addToLog("\tEkwipunek pioniera:");
-        for(Item eq_item : pioneer.getInventory()) {
+;        for(Item eq_item : pioneer.getInventory()) {
             if(eq_item.getName().length() > 16) addToLog("\t\tNazwa: " + eq_item.getName()  +"\tIlo\u015B\u0107: " + eq_item.getAmount() + "\t\tBilans: " + eq_item.getIncome());
             else if(eq_item.getName().length() > 8) addToLog("\t\tNazwa: " + eq_item.getName()  +"\t\tIlo\u015B\u0107: " + eq_item.getAmount() + "\t\tBilans: " + eq_item.getIncome());
             else if(eq_item.getName().length() > 4) addToLog("\t\tNazwa: " + eq_item.getName()  +"\t\t\t\tIlo\u015B\u0107: " + eq_item.getAmount() + "\t\tBilans: " + eq_item.getIncome());
@@ -151,11 +154,11 @@ public class Main {
      * Pętla symulacji.
      * W pierwszej turze wybierane jest pole centralne symulacji.
      * Co turę:
-     * - na każdym polu, symulacja próbuję wywołać zakłócenie (zostaje one wywołane według procentowej szansy). Jeśli zakłócenie wystąpi, wpływa ono na maszynę.
-     * - maszyny produkcyjne wytwarzają przedmioty. Na każdym polu z maszyną wydobywczą (działającą na złożu), wydobywany jest surowiec (ze złoża ubywa surowca, do ekwipunku przybywa)
-     * - pętla sprawdza, czy zdobyto już docelowy przedmiot symulacji.
-     * - pionier decyduje, co chce zbudować. Następnie, jeśli może, idzie ją zbudować. Informacja o przemieszczaniu się pioniera jest zapisywana w dzienniku symulacji.
-     * Jeśli aktualna tura jest równa maksymalnej ilości tur, pionier przegrywa symulację.
+     * - na każdym polu, symulacja próbuję wywołać zakłócenie (zostaje one wywołane według procentowej szansy); Jeśli zakłócenie wystąpi, wpływa ono na maszynę;
+     * - maszyny produkcyjne wytwarzają przedmioty; Na każdym polu z maszyną wydobywczą (działającą na złożu), wydobywany jest surowiec (ze złoża ubywa surowca, do ekwipunku przybywa);
+     * - pętla sprawdza, czy zdobyto już docelowy przedmiot symulacji;
+     * - pionier decyduje, co chce zbudować; Następnie, jeśli może, idzie ją zbudować; Informacja o przemieszczaniu się pioniera jest zapisywana w dzienniku symulacji;
+     * Jeśli aktualna tura jest równa maksymalnej ilości tur, pionier przegrywa symulację;
      * @param turn - aktualny numer tury
      * @param max_turns - maksymalna liczba tur symulacji, określona w menu, przez użytkownika
      * @return jeśli zwraca -1, to symulacja jest przegrywana ze względu na brak dostępnych miejsc pod budowę kolejnych maszyn;

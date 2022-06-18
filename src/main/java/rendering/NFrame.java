@@ -12,7 +12,7 @@ public class NFrame extends JFrame {
     Kanwa1 kanwa1;
 
     /**
-     * Konstruktor klasy NFrame. Odpowiada za wyświetlanie okien, odpowiednie rozmieszczenie kanw.
+     * Konstruktor klasy NFrame; Odpowiada za wyświetlanie okien, odpowiednie rozmieszczenie kanw.
      * @param max_turns - maksymalna liczba tur
      */
     public NFrame(int max_turns){

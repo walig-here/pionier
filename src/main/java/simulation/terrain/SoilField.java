@@ -7,7 +7,7 @@ import java.io.InputStream;
 import java.util.Scanner;
 
 /**
- * Dziedziczy po klasie Field. Standardowe i najpowszechniejsze pole na planszy (ziemia).
+ * Dziedziczy po klasie Field; Standardowe i najpowszechniejsze pole na planszy (ziemia);
  * */
 public class SoilField extends Field {
 

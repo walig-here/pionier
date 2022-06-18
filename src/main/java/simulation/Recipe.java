@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
- * Obiekty tej klasy są używane przez ComponentItem. Znajdują się tu informacje o koszcie wyprodukowania produktu i rodzaju (ID) maszyny, w której może być on produkowany.
+ * Obiekty tej klasy są używane przez ComponentItem; Znajdują się tu informacje o koszcie wyprodukowania produktu i rodzaju (ID) maszyny, w której może być on produkowany.
  */
 public class Recipe{
 

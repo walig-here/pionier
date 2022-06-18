@@ -12,7 +12,7 @@ import java.util.Locale;
 import java.util.Scanner;
 
 /**
- * Dziedziczy po klasie Field. Pole zawierające surowiec (rudy, ropę, drewno itp.), które maszyna wydobywcza może wydobyć
+ * Dziedziczy po klasie Field; Pole zawierające surowiec (rudy, ropę, drewno itp.), które maszyna wydobywcza może wydobyć
  */
 public class DepositField extends Field {
 
