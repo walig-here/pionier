@@ -1,10 +1,14 @@
 package simulation.terrain;
 
 import org.junit.jupiter.api.Test;
+import simulation.Pioneer;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class FieldTest {
+/**
+ * Testy jednostkowe klasy FieldTest
+ */
+public class FieldTest {
 
     @Test
     void activateGlitch() {

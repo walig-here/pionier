@@ -9,6 +9,9 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+/**
+ * Testy jednostkowe klasy ProductionMachine
+ */
 public class ProductionMachineTest {
     @Test
     void testConstructor() {
@@ -57,9 +60,7 @@ public class ProductionMachineTest {
         Assertions.assertEquals(22, inventory.get(0).getIncome());
         Assertions.assertEquals(21, inventory.get(1).getIncome());
         Assertions.assertEquals(20, inventory.get(2).getIncome());
-        Assertions.assertEquals(30, inventory.get(3).getIncome());
-
-
+        Assertions.assertEquals(22, inventory.get(3).getIncome());
     }
 
     @Test
@@ -75,11 +76,10 @@ public class ProductionMachineTest {
         ProductionMachine furnace = new ProductionMachine(copperIngotRecipe.getMachine(), copperIngot.getID());
         furnace.production(inventory);
 
-        //koszt sztabki miedzi to  po 1 sztuce wegla, energii i miedzi
-        Assertions.assertEquals(24, inventory.get(0).getAmount());
-        Assertions.assertEquals(24, inventory.get(1).getAmount());
-        Assertions.assertEquals(24, inventory.get(2).getAmount());
-        Assertions.assertEquals(35, inventory.get(3).getAmount());
+        Assertions.assertEquals(25, inventory.get(0).getAmount());
+        Assertions.assertEquals(25, inventory.get(1).getAmount());
+        Assertions.assertEquals(25, inventory.get(2).getAmount());
+        Assertions.assertEquals(25, inventory.get(3).getAmount());
     }
 
 }

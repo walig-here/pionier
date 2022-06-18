@@ -9,6 +9,9 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+/**
+ * Testy jednostkowe klasy Machine
+ */
 public class MachineTest {
 
     @Test
@@ -16,7 +19,7 @@ public class MachineTest {
         Machine machine = new Machine(0, 2);
         Assertions.assertEquals(0, machine.getID());
         Assertions.assertEquals(2, machine.getProduced_item());
-        Assertions.assertEquals(10, machine.getOutput());
+        Assertions.assertEquals(15, machine.getOutput());
         Assertions.assertEquals("Elektrownia", machine.getName());
     }
 
@@ -39,7 +42,7 @@ public class MachineTest {
         //output dla tej maszyny wynosi 10
         Machine machine = new Machine(0, 0);
         machine.startProduction(inventory);
-        Assertions.assertEquals(37, inventory.get(0).getIncome());
+        Assertions.assertEquals(42, inventory.get(0).getIncome());
 
     }
     @Test
@@ -49,7 +52,7 @@ public class MachineTest {
         //output dla tej maszyny wynosi 10
         Machine machine = new Machine(0, 0);
         machine.production(inventory);
-        Assertions.assertEquals(35, inventory.get(0).getAmount());
+        Assertions.assertEquals(25, inventory.get(0).getAmount());
     }
 
 }

@@ -5,10 +5,13 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class WaterFieldTest {
+/**
+ * Testy jednostkowe klasy WaterFieldTest
+ */
+public class WaterFieldTest {
 
     @Test
-    void contructor() {
+    void testConstructor() {
         final int x = 0;
         final int y = 0;
 
@@ -18,9 +21,5 @@ class WaterFieldTest {
         Assertions.assertFalse(water.getBase_move_points() != 0, "Bledne wczytanie danych wodnego pola planszy. Niepoprawna wartosc bazowych punktow ruchu!");
         Assertions.assertFalse(water.isCanBuild() != false, "Bledne wczytanie danych wodnego pola planszy. Niepoprawna wartosc wskazujaca zdatnosc pola pod zabudowe!");
         Assertions.assertFalse(WaterField.getSailing_time() != 2, "Bledne wczytanie danych wodnych pol planszy. Niepoprawna wartosc ilosci tur niezbednych do przeplyniecia pola!");
-    }
-
-    @Test
-    void goInto() {
     }
 }

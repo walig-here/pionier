@@ -1,6 +1,7 @@
 package simulation;
 
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -61,7 +62,7 @@ public class Recipe{
             file.close();
         }
         // zwracamy wyjątek, gdy pliku nie udało się otworzyć
-        catch (Exception e) {
+        catch (FileNotFoundException e) {
             e.printStackTrace();
             System.out.println("Blad wczytywania danych dla receptury '" + filename + "'! Nie udalo sie uzyskac dostepu do pliku z danymi!");
         }

@@ -1,13 +1,52 @@
 package simulation;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.util.Scanner;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class RecipeTest {
+/**
+ * Testy jednostkowe klasy Recipe
+ */
+public class RecipeTest {
 
     @Test
-    void constructor(){
+    void testConstructor() {
+        Recipe testRecipe = new Recipe("cable.txt");
+        ComponentItem testItem = new ComponentItem(12, 0, 0);
+        ComponentItem cable = new ComponentItem(14, 0, 0);
+
+        //sprawdza czy dane zgadzaja sie z tymi z bazy danych
+        Assertions.assertEquals(7, testRecipe.getMachine());
+        Assertions.assertEquals(9, testRecipe.getInput().get(1).getID());
+        Assertions.assertEquals(5, testItem.getRecipe().getMachine());
+
+        //sprawdza czy receptura wytworzona przez konsturktor jest taka sama, jak receptura uzyskana od ComponentItem
+        Assertions.assertEquals(cable.getRecipe().getMachine(), testRecipe.getMachine());
+        Assertions.assertEquals(cable.getRecipe().getInput().size(), testRecipe.getInput().size());
+        Assertions.assertEquals(cable.getRecipe().getInput().get(0).getID(), testRecipe.getInput().get(0).getID());
+        Assertions.assertEquals(cable.getRecipe().getInput().get(1).getID(), testRecipe.getInput().get(1).getID());
+        Assertions.assertEquals(cable.getRecipe().getInput().get(2).getID(), testRecipe.getInput().get(2).getID());
+    }
+
+    @Test
+    void testConstructorWhenRecipeNotExist() {
+        Recipe recipe = new Recipe("bulka.txt");
+       Assertions.assertEquals(0, recipe.getMachine());
+        Exception exception = Assertions.assertThrows(FileNotFoundException.class, () -> {
+            String path = "database/recipes/";
+            InputStream file_stream = new FileInputStream(path);
+            Scanner file = new Scanner(file_stream);
+        });
+    }
+
+    @Test
+    void printAllRecipes(){
 
         String filename = "";
         for(int i = 1; i < 24; i++){

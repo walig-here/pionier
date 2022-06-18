@@ -1,11 +1,54 @@
 package simulation.terrain;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import simulation.Pioneer;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class GlitchSourceFieldTest {
+/**
+ * Testy jednostkowe klasy GlitchSourceField
+ */
+public class GlitchSourceFieldTest {
 
+    @Test
+    void testConstructor() {
+        GlitchSourceField testField = new GlitchSourceField(1, 2, 2, (byte) 0);
+
+        Assertions.assertEquals(1, testField.coordinates[0]);
+        Assertions.assertEquals(2, testField.coordinates[1]);
+        Assertions.assertEquals((byte)0, testField.getGlitch_id());
+    }
+
+    @Test
+    void testPioneerCannotEntryWithoutMovementPoints() {
+        GlitchSourceField glitchSourceField = new GlitchSourceField(1, 2, 2, (byte) 0);
+        Pioneer pioneer= new Pioneer(glitchSourceField);
+        pioneer.setMove_points(0);
+        pioneer.setCoordinates(1, 1);
+        Assertions.assertFalse(glitchSourceField.goInto(pioneer));
+    }
+    @Test
+    void testItDecreasesMovementPointsAmountToZero() {
+        GlitchSourceField glitchSourceField = new GlitchSourceField(1, 2, 2, (byte) 0);
+        Pioneer pioneer= new Pioneer(glitchSourceField);
+        pioneer.setMove_points(100);
+        Assertions.assertTrue(glitchSourceField.goInto(pioneer));
+        Assertions.assertEquals(0, pioneer.getMove_points());
+
+    }
+
+    @Test
+    void testItGivesMovementPoints() {
+        GlitchSourceField glitchSourceField = new GlitchSourceField(1, 2, 2, (byte) 0);
+        Pioneer pioneer= new Pioneer(glitchSourceField);
+        pioneer.setMove_points(0);
+        glitchSourceField.goOut(pioneer, true);
+        //wartosc pobrana z bazy danych
+        Assertions.assertEquals(1, pioneer.getMove_points());
+    }
+
+    //pokazuje w konsoli mapę zakłóceń
     @Test
     void setProbabilities() {
 
