@@ -6,6 +6,7 @@ import simulation.terrain.Field;
 import java.util.ArrayList;
 
 public class Pioneer {
+
     /**
      * Tablica liczb całkowitych. W pierwszej komórce przechowuje pozycję x pioniera na planszy. W drugiej przechowuje pozycję y pioniera na planszy.
      * */

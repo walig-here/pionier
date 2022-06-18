@@ -6,15 +6,37 @@ import java.io.InputStream;
 import java.util.Scanner;
 
 /**
- * Prymitywny rodzaj przedmiotu, który może zostac pozyskany bez użycia receptury.
- * */
+ * Prymitywny rodzaj przedmiotu, który może zostać pozyskany bez użycia receptury.
+ */
 public class Item {
-    private final int ID; // ID przedmiotu
-    private String name;
-    private float amount; // ilość przedmiotu
-    private double income; // przyrost na turę
-    private int productionTime; //bazowy czas produkcji przedmiotu (w turach)
 
+    /**
+     * ID przedmiotu
+     */
+    private final int ID;
+    /**
+     * Nazwa  (w języku polskim), pobierana z bazy danych
+     */
+    private String name;
+    /**
+     * Ilość przedmiotu
+     */
+    private float amount;
+    /**
+     * Przyrost na turę
+     */
+    private double income;
+    /**
+     *  Bazowy czas produkcji przedmiotu (w turach), pobierany z bazy danych
+     */
+    private int productionTime;
+
+    /**
+     * Konstruktor klasy Item. Na podstawie ID przedmiotu, przeszukiwana jest baza danych (database/items) i dobierana jest nazwa przedmiotu oraz czas jego produkcji.
+     * @param id ID przedmiotu
+     * @param amount ilość przedmiotu
+     * @param income przyrost przedmiotu na turę
+     */
     public Item(int id, int amount, double income) {
 
         // Ustalamy ilość tego przedmiotu
@@ -127,7 +149,7 @@ public class Item {
             }
             file.close();
         }
-        // zwracamy wyjątek gdy pliku nie udało się otworzyć
+        // zwracamy wyjątek, gdy pliku nie udało się otworzyć
         catch (Exception e) {
             e.printStackTrace();
             System.out.println("Blad wczytywania danych dla przedmiotu o ID " + ID + "! Nie udalo sie uzyskac dostepu do pliku z danymi!");
@@ -140,10 +162,6 @@ public class Item {
 
     public String getName() {
         return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public float getAmount() {
@@ -166,7 +184,4 @@ public class Item {
         return productionTime;
     }
 
-    public void setProductionTime(int productionTime) {
-        this.productionTime = productionTime;
-    }
 }

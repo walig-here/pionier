@@ -1,12 +1,22 @@
 package simulation;
 
 /**
- * Skomplikowany przedmiot, który może zostac pozyskany tylko z użyciem receptury.
+ * Skomplikowany przedmiot, który może zostać pozyskany tylko z użyciem receptury. Rozszerza klasę Item, dodając do niego recepturę (Recipe)
  * */
 public class ComponentItem extends Item {
 
-    private Recipe recipe; // receptura, którą trzeba wykonać, aby otrzymać ten obiekt
+    /**
+     * Receptura na przedmiot — lista przedmiotów potrzebnych do wyprodukowania go i ID maszyny, w której się go produkuje
+     */
+    private final Recipe recipe; // receptura, którą trzeba wykonać, aby otrzymać ten obiekt
 
+    /**
+     * Konstruktor klasy ComponentItem. Rozszerza konstruktor klasy Item, na podstawie ID przedmiotu, dobiera odpowiednią recepturę do jego wykonania (pobiera ją z bazy danych - database/recipes).
+     *
+     * @param id id przedmiotu, na podstawie którego przeszukiwana jest baza danych receptur
+     * @param amount ilość przedmiotu
+     * @param income przyrost przedmiotu na turę
+     */
     public ComponentItem(int id, int amount, double income) {
 
         // Wywołujemy konstruktor rodzica
@@ -97,7 +107,4 @@ public class ComponentItem extends Item {
         return recipe;
     }
 
-    public void setRecipe(Recipe recipe) {
-        this.recipe = recipe;
-    }
 }

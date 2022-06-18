@@ -5,22 +5,40 @@ import simulation.terrain.Field;
 
 import java.util.ArrayList;
 
+/**
+ * Maszyna posiadająca wejście i wyjście. Rozszerza klasę Machine, dodając parametr input mówiący o koszcie produkcji przedmiotu
+ */
 public class ProductionMachine extends Machine {
 
-    private final ArrayList<Item> input; // lista obiektow potrzebnych do wytworzenia produktu wyjściowego
+    /**
+     * Lista obiektów potrzebnych do wytworzenia produktu wyjściowego — informacja brana z bazy danych recipes.
+     */
+    private final ArrayList<Item> input; // lista obiektów potrzebnych do wytworzenia produktu wyjściowego
 
+    /**
+     * Konstruktor klasy ProductionMachine. Rozszerza konstruktor klasy Machine, przeszukuje bazę danych klasy Recipe i dodaje informacje o koszcie wytworzenia produktu
+     * @param ID id maszyny
+     * @param produced_item przedmiot, który maszyna ma produkować
+     */
     public ProductionMachine(int ID, int produced_item) {
         super(ID, produced_item);
 
         //tworzy item, bierze jego nazwy i szuka takiej recepty
         input = new ComponentItem(produced_item, 0, 0.0).getRecipe().getInput();
-
     }
+
+    /**
+     * Konstruktor kopiujący
+     * @param copy obiekt klasy ProductionMachine, który zostanie skopiowany
+     */
     public ProductionMachine(ProductionMachine copy){
         this(copy.getID(),copy.produced_item);
     }
 
-    //rozpoczyna produkcję, zwieksza income produktow, zmniejsza income itemow potrzevbnych do wytworzenia produktu
+    /**
+     * Rozpoczyna produkcję, zwiększa przyrost (income) wytwarzanych produktów i ilość aktywnych maszyn. Zmniejsza przyrost produktów będących składnikami
+     * @param inventory ekwipunek pioniera
+     */
     @Override
     public void startProduction(ArrayList<Item> inventory) {
         if(super.getActive() == 1 || super.getActive() == -1) return;
@@ -41,7 +59,10 @@ public class ProductionMachine extends Machine {
         super.setActive(1);
         Machine.active_machines++;
     }
-
+    /**
+     * Zatrzymuje produkcję, zwiększa przyrost (income) składników. Zmniejsza przyrost wytwarzanego produktu i ilość aktywnych maszyn
+     * @param inventory ekwipunek pioniera
+     */
     @Override
     public void stopProduction(ArrayList<Item> inventory){
         if(super.getActive() == 0 || super.getActive() == -1) return;
@@ -63,13 +84,18 @@ public class ProductionMachine extends Machine {
         Machine.active_machines--;
     }
 
-    // zmiana ilości przedmitów (amount) wynikła z produkcji
+    /**
+     * Metoda odpowiedzialna za produkcję. Jeśli maszyna nie ma aktywnego glitcha i w ekwipunku pioniera znajduje się dostateczna ilość składników — zwiększa ilość produkowanego przedmiotu w ekwipunku pioniera i zmniejsza ilość składników.
+     * @param buildingOrder kolejka budowania budynków
+     * @param pioneer pionier
+     * @param map mapa
+     */
     public int production(ArrayList<Integer> buildingOrder, Pioneer pioneer, Field[][] map) {
 
-        // sprawdzamy czy nie ma glitcha wyłączającego w maszynie
+        // sprawdzamy, czy nie ma glitcha wyłączającego w maszynie
         if(super.glitch != null && super.glitch.getID() == 0) return 0;
 
-        // sprawdzamy czy mamy wystarczająco przedmiotów do kontynuacji produkcji
+        // sprawdzamy, czy mamy wystarczająco przedmiotów do kontynuacji produkcji
         Item temp = new Item(produced_item, 0,0);
         startProduction(pioneer.getInventory());
         for (Item inputItem : input) {
@@ -100,7 +126,7 @@ public class ProductionMachine extends Machine {
         // produkcja trwa kolejną turę
         production_turn++;
 
-        //przeszukuje ekwipunek w poszukiwaniu przedmiotow potrzebnych do wyprodukowania produktu i zmniejsza ich ilosc
+        //przeszukuje ekwipunek w poszukiwaniu przedmiotów potrzebnych do wyprodukowania produktu i zmniejsza ich ilość
         for (Item inputItem : input) {
             for (Item inventoryItem : pioneer.getInventory()) {
                 if (inputItem.getID() != inventoryItem.getID()) continue;
@@ -109,8 +135,8 @@ public class ProductionMachine extends Machine {
             }
         }
 
-        // sprawdzamy czy minęła już odpowiednia ilość tur, niezbędnych do wyprodukowania przedmiotu
-        // jeżeli taka ilość czasu jeszcze nie minęła to produkcja trwa dalej
+        // sprawdzamy, czy minęła już odpowiednia ilość tur, niezbędnych do wyprodukowania przedmiotu;
+        // jeżeli taka ilość czasu jeszcze nie minęła, to produkcja trwa;
         if(temp.getProductionTime() > production_turn) return 0;
 
         // jeżeli taka ilość czasu już minęła to resetujemy timer produkcji

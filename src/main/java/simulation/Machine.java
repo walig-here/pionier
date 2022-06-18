@@ -13,25 +13,52 @@ import java.util.Scanner;
  */
 public class Machine {
 
-    private String name; // nazwa
+    /**
+     * ID maszyny
+     */
+    private final int ID;
 
-    protected int produced_item; // ID produkowanego przedmiotu
+    /**
+     * Nazwa maszyny, pobierana z bazy danych
+     */
+    private String name;
+    /**
+     * ID produkowanego przedmiotu
+     */
+    protected int produced_item;
+    /**
+     * Ilość przedmiotów produkowanych na turę, pobierana z bazy danych
+     */
+    private float output;
+    /**
+     * Lista przedmiotów potrzebnych do wybudowania maszyny
+     */
+    private final ArrayList<Item> cost;
+    /**
+     * Zakłócenie obecne w maszynie
+     */
+    protected Glitch glitch;
+    /**
+     * Informacja o ilości tur liczonych od startu produkcji
+     */
+    protected int production_turn;
 
-    private float output; // ilość przedmiotów produkowanych na turę
-
-    private final ArrayList<Item> cost; // lista obiektów potrzebnych do wybudowania/ulepszenia
-
-    protected Glitch glitch; // zakłócenie obecne w maszynie
-
-    private final int ID; // ID maszyny
-
-    protected int production_turn; // ile tur minęło od rozpoczęcia produkcji
-
-    static public int count = 0; // ilość maszyn
-    static public int active_machines = 0; // ilość aktywnych maszyn
-    static public int glitched_machines = 0; // ilość zglitchowanych maszyn
-
-    private int active; // 1 - działa, 0 - nie działa, -1 - nie działa i nigdy już się nie włączy
+    /**
+     * Ilość istniejących maszyn
+     */
+    static public int count = 0;
+    /**
+     * Ilość aktywnych maszyn
+     */
+    static public int active_machines = 0;
+    /**
+     * Ilość zglitchowanych maszyn
+     */
+    static public int glitched_machines = 0;
+    /**
+     * Informacja o stanie maszyny (1 - działa; 0 - tymczasowo nie działa; -1 - permanentnie nie działa)
+     */
+    private int active;
 
 
 
@@ -46,6 +73,11 @@ public class Machine {
         return active;
     }
 
+    /**
+     * Konstruktor klasy Machine. Na podstawie ID maszyny, przeszukuje bazę danych i ustawia parametry name, output i cost
+     * @param ID ID maszyny, potrzebne do przeszukania bazy danych w poszukiwaniu reszty informacji
+     * @param produced_item ID produkowanego przedmiotu
+     */
     public Machine(int ID, int produced_item) {
         cost = new ArrayList<>();
         active = 0;
@@ -106,17 +138,17 @@ public class Machine {
 
                 // linia zawierająca informację o nazwie przedmiotu
                 if(line.contains("\"name\":") && line_scanner.hasNext()) name = line_scanner.next();
-                    // linia zawierająca informację na temat ilosci produkowanych przedmiotow na ture
+                    // linia zawierająca informację na temat ilości produkowanych przedmiotów na ture
                 else if(line.contains("\"output\":") && line_scanner.hasNextInt()) output = line_scanner.nextInt();
 
                 else if(line.contains("\"cost\":") && line_scanner.hasNextInt()) {
                     // Wczytujemy ID składnika
                     int productID = line_scanner.nextInt();
 
-                    // Sprawdzamy czy można wczytać z pliku ilość przedmiotu.
-                    // Jeżeli można to dodajemy składnik do receptury.
-                    // Jeżeli nie można to pomijamy składnik
-                    // Jeśli itemem jest energia, jest tworzony item. Jak cos innego to componentitem
+                    // Sprawdzamy, czy można wczytać z pliku ilość przedmiotu;
+                    // Jeżeli można to dodajemy składnik do receptury;
+                    // Jeżeli nie można, to pomijamy składnik;
+                    // Jeśli itemem jest energia, jest tworzony item. Jak cos innego to componentitem;
                     if(line_scanner.hasNextInt() && productID != 0) cost.add(new ComponentItem(productID,line_scanner.nextInt(),0));
                     else if(line_scanner.hasNextInt()) cost.add(new Item(productID,line_scanner.nextInt(),0));
                 }
@@ -124,7 +156,7 @@ public class Machine {
             }
             file.close();
         }
-        // zwracamy wyjątek gdy pliku nie udało się otworzyć
+        // zwracamy wyjątek, gdy pliku nie udało się otworzyć
         catch (FileNotFoundException e) {
             e.printStackTrace();
             System.out.println("Blad wczytywania danych dla maszyny o ID " + ID + "! Nie udalo sie uzyskac dostepu do pliku z danymi!");
@@ -147,7 +179,10 @@ public class Machine {
         return glitch;
     }
 
-    //rozpoczyna produkcję, zwieksza income produktow
+    /**
+     * Rozpoczyna produkcję, zwiększa przyrost (income) produktów i ilość aktywnych maszyn.
+     * @param inventory ekwipunek pioniera
+     */
     public void startProduction(ArrayList<Item> inventory) {
         if(active == 1 || active == -1) return;
 
@@ -162,7 +197,10 @@ public class Machine {
         active = 1;
         active_machines++;
     }
-
+    /**
+     * Zatrzymuje produkcję, zmniejsza income zatrzymanej maszyny do 0. Na tej podstawie, aktualizuje ekwipunek i ilość aktywnych maszyn.
+     * @param inventory ekwipunek pioniera
+     */
     public void stopProduction(ArrayList<Item> inventory){
         if(active == 0 || active == -1) return;
 
@@ -175,18 +213,22 @@ public class Machine {
         active_machines--;
     }
 
-    // zmiana ilości przedmitów wynikła z produkcji
+    /**
+     * Metoda odpowiedzialna za produkcję.
+     * Jeśli maszyna nie ma aktywnego glitcha i minęła odpowiednia ilość tur od poprzedniego wyprodukowanego przedmiotu (productionTime) - dodaje wyprodukowany przedmiot do ekwipunku
+     * @param inventory ekwipunek pioniera
+     */
     public void production(ArrayList<Item> inventory) {
         if(active == 0 || active == -1) return;
 
         // produkcja trwa kolejną turę
         production_turn++;
 
-        // sprawdzamy czy minęła już odpowiednia ilość tur, niezbędnych do wyprodukowania przedmiotu
+        // sprawdzamy, czy minęła już odpowiednia ilość tur, niezbędnych do wyprodukowania przedmiotu
         {
             Item temp = new Item(produced_item, 0,0);
 
-            // jeżeli taka ilość czasu jeszcze nie minęła to produkcja trwa dalej
+            // jeżeli taka ilość czasu jeszcze nie minęła, to produkcja trwa
             if(temp.getProductionTime() > production_turn) return;
 
             // jeżeli taka ilość czasu już minęła to resetujemy timer produkcji
@@ -205,14 +247,19 @@ public class Machine {
         return ID;
     }
 
-    // włączenie gitcha w maszynie
+    /**
+     * Aktywuje podanego glitcha w maszynie. Aktualizuje informację o ilości zglitchowanych maszyn
+     * @param glitchID id glitcha
+     */
     public void activateGlitch(int glitchID) {
         if(glitchID == 0)
             glitch = new TurnOffGlitch(glitchID, 10);
         else glitch = new SlowGlitch(glitchID, 0.1f);
         glitched_machines++;
     }
-
+    /**
+     * Deaktywuje glitcha, dodaje tę informację do logów, aktualizuje informację o ilości zglitchowanych maszyn
+     */
     public void deactivateGlitch() {
         Main.addToLog("\tW maszynie "+ name + " problemy spowodowane zak\u0142\u00F3ceniem " + glitch.getID() + " sko\u0144czy\u0142y się.");
         glitch = null;

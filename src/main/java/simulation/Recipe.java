@@ -5,12 +5,24 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+/**
+ * Obiekty tej klasy są używane przez ComponentItem. Znajdują się tu informacje o koszcie wyprodukowania produktu i rodzaju (ID) maszyny, w której może być on produkowany.
+ */
 public class Recipe{
 
-    private final ArrayList<Item> input; // lista składników wejściowych
-    private int machine; // ID maszyny produkującej
+    /**
+     * Lista składników potrzebnych do wyprodukowania przedmiotu
+     */
+    private final ArrayList<Item> input;
+    /**
+     * Maszyna, w której przedmiot może zostać wyprodukowany
+     */
+    private int machine;
 
-    // konstruktor
+    /**
+     * Konstruktor klasy Recipe.  Pobiera dane (listę składników i ID maszyny) z bazy danych receptur (database/recipes)
+     * @param filename nazwa pliku z recepturą (znajdującego się w bazie danych recipe).
+     */
     Recipe(String filename){
 
         // Inicjujemy listę składników
@@ -34,10 +46,10 @@ public class Recipe{
                     // Wczytujemy ID składnika
                     int ID = line_scanner.nextInt();
 
-                    // Sprawdzamy czy można wczytać z pliku ilość przedmiotu.
-                    // Jeżeli można to dodajemy składnik do receptury.
-                    // Jeżeli nie można to pomijamy składnik
-                    // Jeśli itemem jest energia, jest tworzony item. Jak cos innego to componentitem
+                    // Sprawdzamy, czy można wczytać z pliku ilość przedmiotu;
+                    // Jeżeli można to dodajemy składnik do receptury;
+                    // Jeżeli nie można, to pomijamy składnik;
+                    // Jeśli itemem jest energia, jest tworzony item. Jak cos innego to componentitem;
                     if(line_scanner.hasNextInt() && ID != 0) input.add(new ComponentItem(ID,line_scanner.nextInt(),0));
                     else if(line_scanner.hasNextInt()) input.add(new Item(ID,line_scanner.nextInt(),0));
                 }
@@ -48,7 +60,7 @@ public class Recipe{
             }
             file.close();
         }
-        // zwracamy wyjątek gdy pliku nie udało się otworzyć
+        // zwracamy wyjątek, gdy pliku nie udało się otworzyć
         catch (Exception e) {
             e.printStackTrace();
             System.out.println("Blad wczytywania danych dla receptury '" + filename + "'! Nie udalo sie uzyskac dostepu do pliku z danymi!");

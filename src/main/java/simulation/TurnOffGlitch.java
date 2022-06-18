@@ -3,17 +3,31 @@ package simulation;
 
 import java.util.ArrayList;
 
+/**
+ * Rozszerza abstrakcyjną klasę Glitch. Może wyłączyć tymczasowo maszynę.
+ */
 public class TurnOffGlitch extends Glitch {
 
-    private int turns_left; // na ile tur jeszcze zostało do ponownego włączenia maszyny
+    /**
+     * Informacja o ilości tur, po których maszyna się ponownie włączy (glitch przestanie działać)
+     */
+    private int turns_left;
 
+    /**
+     * Konstruktor klasy TurnOffGlitch.
+     * @param ID id glitcha
+     * @param duration czas trwania glitcha
+     */
     public TurnOffGlitch(int ID, int duration) {
         super(ID);
         this.turns_left = duration;
-
     }
 
-    // wpływ glitcha na maszyne
+    /**
+     * Wyłącza tymczasowo maszynę. Maszyna jest włączana, gdy parametr turns_left jest równy 0.
+     * @param impacting maszyna, na którą glitch wpływa
+     * @param inventory ekwipunek pioniera
+     */
     @Override
     public void glitchImpact(Machine impacting, ArrayList<Item> inventory) {
 
@@ -28,8 +42,5 @@ public class TurnOffGlitch extends Glitch {
             else impacting.stopProduction(inventory);
             turns_left--;
         }
-    }
-    public int getTurns_left() {
-        return turns_left;
     }
 }
