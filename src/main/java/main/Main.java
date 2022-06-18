@@ -12,30 +12,49 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class Main {
-    public static void setMap_size(int map_size) {
-        Main.map_size = map_size;
-    }
 
-    public static int getMap_size() {
-        return map_size;
-    }
+    /**
+     * Rozmiar planszy (w polach)
+     */
+    static private int map_size;
 
-    static private int map_size; // rozmiar planszy(w polach)
-    static public Field[][] map; // plansza na której odbywa
+    /**
+     * Plansza, na której symulacja się odbywa (dwuwymiarowa tablica obiektów klasy Field)
+     */
+    static public Field[][] map;
+    static private int[][] mapTab;
 
-    public static void setMapTab(int[][] mapTab) {
-        Main.mapTab = mapTab;
-    }
-
-    static private int[][] mapTab;// się symulacja
     static private MenuGUI menu;
+
+    /**
+     * Obiekt pioniera
+     */
     static public Pioneer pioneer; // pionier
-    static private Item targetItem; // przedmiot, ktorego zdobycie, konczy symulacje (przedmiot docelowy)
-    static private ArrayList<Item> children = new ArrayList<>();
+    /**
+     * Przedmiot, którego zdobycie kończy symulację (przedmiot docelowy)
+     */
+    static private Item targetItem;
+    /**
+     * Lista (kolejka) ID przedmiotów do zdobycia (na jej podstawie, pionier buduje kolejne budynki)
+     */
     static public ArrayList<Integer> buildingQueue = new ArrayList<>();
+
+    /**
+     * Tablica zawierająca logi symulacji
+     */
     static final private ArrayList<String> log = new ArrayList<>();
 
-    // funkcja zapisująca dziennik w pliku tekstowym
+    /**
+     * Funkcja main — tutaj otwierane jest menu i tworzony jest generator map.
+     */
+    public static void main(String[] args) {
+        MapGenerator generator=new MapGenerator();
+        menu=new MenuGUI();
+    }
+
+    /**
+     * Zapisuje dziennik symulacji w pliku tekstowym — usuwa plik ze starej symulacji, tworzy nowy i zapisuje tam logi.
+     */
     public static void saveLog(){
 
         // usuwamy poprzedni dziennik
@@ -68,15 +87,19 @@ public class Main {
     }
 
     // funkcja tworząca wpis do dziennika symulacji
+
+    /**
+     * Metoda pomocnicza — dodaje do logów kolejną linijkę
+     * @param new_log_line - linia tekstu do zapisania
+     */
     public static void addToLog(String new_log_line){
         log.add(new_log_line);
     }
 
-    public static void main(String[] args) {
-        MapGenerator generator=new MapGenerator();
-        menu=new MenuGUI();
-    }
-
+    /**
+     * Metoda wywoływana co turę — zapisuje do dziennika symulacji aktualny stan ekwipunku, zasobów na planszy, oraz ilość istniejących, aktywnych i zglitchowanych maszyn
+     * @param turn numer aktualnej tury
+     */
     private static void turnStatisticsToLog(int turn){
         addToLog("\n\n-------------------------------------------------------------------------------------------");
         addToLog("TURA " + turn + ":");
@@ -123,6 +146,23 @@ public class Main {
     }
 
     // pętla symulacji wykonująca się określoną ilość tur lub do osiągnięcia przez pioniera określonego celu
+
+    /**
+     * Pętla symulacji.
+     * W pierwszej turze wybierane jest pole centralne symulacji.
+     * Co turę:
+     * - na każdym polu, symulacja próbuję wywołać zakłócenie (zostaje one wywołane według procentowej szansy). Jeśli zakłócenie wystąpi, wpływa ono na maszynę.
+     * - maszyny produkcyjne wytwarzają przedmioty. Na każdym polu z maszyną wydobywczą (działającą na złożu), wydobywany jest surowiec (ze złoża ubywa surowca, do ekwipunku przybywa)
+     * - pętla sprawdza, czy zdobyto już docelowy przedmiot symulacji.
+     * - pionier decyduje, co chce zbudować. Następnie, jeśli może, idzie ją zbudować. Informacja o przemieszczaniu się pioniera jest zapisywana w dzienniku symulacji.
+     * Jeśli aktualna tura jest równa maksymalnej ilości tur, pionier przegrywa symulację.
+     * @param turn - aktualny numer tury
+     * @param max_turns - maksymalna liczba tur symulacji, określona w menu, przez użytkownika
+     * @return jeśli zwraca -1, to symulacja jest przegrywana ze względu na brak dostępnych miejsc pod budowę kolejnych maszyn;
+     * jeśli -2, to symulacja jest przegrywana z powodu osiągnięcia maksymalnej liczby tur symulacji;
+     * jeśli -3, to symulacja jest przegrywana z powodu braku możliwości postawienia pola centralnego na mapie
+     * jeśli 1 - pionier zdobył przedmiot docelowy i wygrywa symulację
+     */
     public static int simulationLoop(int turn, int max_turns) {
 
         turnStatisticsToLog(turn);
@@ -157,7 +197,7 @@ public class Main {
                     }
                     else field.getMachine().production(pioneer.getInventory());
 
-                    // Sprawdzamy czy wyprodukowano przedmiot docelowy
+                    // Sprawdzamy, czy wyprodukowano przedmiot docelowy
                     for(Item item : pioneer.getInventory()){
                         if(item.getID() == targetItem.getID() && item.getAmount() >= 1){
                             if(field.getMachine() != null && field.getMachine().getProduced_item() == item.getID())
@@ -180,9 +220,9 @@ public class Main {
         }
         addToLog("");
 
-        // Pętla ruchu - wykonuje się dopóki pionierowi starcza punktów ruchu lub aż dotrze do celu
+        // Pętla ruchu — wykonuje się, dopóki pionierowi starcza punktów ruchu lub aż dotrze do celu
         {
-            boolean starting = true; // true - jest to pierwszy ruch pioniera w tej turze
+            boolean starting = true; // true — jest to pierwszy ruch pioniera w tej turze
             addToLog("\tPionier rozpoczyna marsz z pola (" + pioneer.getCoordinates()[0] + "," + pioneer.getCoordinates()[1] + ").");
             do{
 
@@ -202,11 +242,14 @@ public class Main {
         return 0;
     }
 
-    // funkcja zliczająca punkty zebrane podczas całej symulacji
+    /**
+     * Zlicza punkty uzyskane podczas całej symulacji. Zależą one od ilości posiadanych przedmiotów w ekwipunku i ilości zbudowanych maszyn (za działające maszyny, przyznawana jest premia)
+     * @return liczba punktów
+     */
     public static int getScore(){
         int score = 0;
 
-        // punkty przyznaje się za ilośc przedmiotu w ekwipunku
+        // punkty przyznaje się za ilość przedmiotu w ekwipunku
         for(Item eq_item : pioneer.getInventory())
             score += eq_item.getAmount();
 
@@ -219,6 +262,15 @@ public class Main {
         return score;
     }
 
+    /**
+     * Wywoływana na początku symulacji. Ustalany jest przedmiot docelowy — informacja ta jest zapisywana w dzienniku symulacji.
+     * Następnie, zapisujemy do dziennika informację o starcie symulacji i ustalamy kolejkę budowania.
+     * Na mapie pojawia się pionier. Do kolejki budowania dodawana jest elektrownia — bez niej, nie da się rozegrać symulacji.
+     * Następnie, ustalane są przedmioty startowe (pionier zaczyna symulację z nimi w ekwipunku).
+     * Na koniec, na każdym polu zostaje ustalona szansa na wystąpienie zakłócenia. Informacja ta zostaje zapisana w dzienniku symulacji
+     * @param target_item_id id przedmiotu docelowego
+     * @return jeśli metoda zwraca wartość -1, to symulacja jest przegrywana, ponieważ nie ma dostępnego pola na postawienie pioniera
+     */
     public static int simulation_setup(int target_item_id){
 
         // Ustalamy przedmiot docelowy
@@ -264,7 +316,12 @@ public class Main {
         return 0;
     }
 
-    // funkcja wybierająca miejsce spawnu pioniera
+    /**
+     * Wybiera miejsce, na którym pojawi się pionier. Zostaje losowane miejsce na mapie, do momentu, gdy będzie one odpowiednie (pionier nie może zacząć na wodzie lub polu zakłóceń).
+     * Następnie, ustawia pioniera na wybranym polu.
+     * @return jeśli zwraca wartość -1, to nie ma odpowiedniego miejsca na postawienie pioniera
+     */
+
     private static int spawn_pioneer(){
 
         // Tworzymy maszynę losującą
@@ -284,53 +341,11 @@ public class Main {
         return 0;
     }
 
+    /**
+     * Wyświetla w konsoli następujące informacje: aktualny numer tury, ilość wszystkich maszyn, ilość aktywnych maszyn, pożądany przedmiot, stan ekwipunku oraz stan zasobów na mapie
+     * @param turns aktualny numer tury
+     */
     private static void debug_simulation_preview(int turns){
-        /*System.out.println("MAPA:");
-        for(int x = 0; x < map.length; x++){
-            for(int y = 0; y < map[x].length; y++){
-
-                //TEREN
-                String tile_fx;
-                if(map[x][y] instanceof WaterField)  tile_fx = "~~~~~~";
-                else if(map[x][y] instanceof CentralField) tile_fx = "[   ] ";
-                else if(map[x][y] instanceof GlitchSourceField) tile_fx = "*****" + ((GlitchSourceField)map[x][y]).getGlitch_id();
-                else if(map[x][y] instanceof DepositField) tile_fx = "=====" + ((DepositField)map[x][y]).getItem_id();
-                else tile_fx= "------";
-                char[] tile = tile_fx.toCharArray();
-
-                // PIONIER
-                if(x == pioneer.getCoordinates()[0] && y == pioneer.getCoordinates()[1])
-                    tile[2] = 'P';
-
-                // ŚCIEŻKA
-                for(Integer[] filed : pioneer.getPath()) {
-                    if (x == filed[0] && y == filed[1]) {
-                        tile[2] = 'x';
-                        break;
-                    }
-                }
-
-                // MASZYNA
-
-                if(map[x][y].getMachine() != null) {
-                    Integer machine = map[x][y].getMachine().getID();
-                    tile[0] = machine.toString().charAt(0);
-                    if(machine > 9) tile[1] = machine.toString().charAt(1);
-
-                    if(map[x][y].getMachine().getGlitch() != null) {
-                        Integer i = map[x][y].getMachine().getGlitch().getID();
-                        tile[tile.length-2] = i.toString().charAt(0);
-                    }
-                }
-
-                // KONIEC
-                tile_fx = "";
-                for (char c : tile) tile_fx += c;
-                tile_fx += "  ";
-                System.out.print(tile_fx);
-            }
-            System.out.println();
-        }*/
         System.out.println("Numer tury: " + turns);
         System.out.println("Ilosc maszyn: " + Machine.count + "(" + Machine.active_machines + " aktywnych)");
         if(buildingQueue.size() != 0) {
@@ -363,6 +378,9 @@ public class Main {
         }
     }
 
+    /**
+     * Ustala początkową kolejkę symulacji na podstawie przedmiotu docelowego.
+     */
     private static void setBuildingOrder() {
         if(!(targetItem instanceof ComponentItem)) return;
 
@@ -376,7 +394,13 @@ public class Main {
         }
     }
 
-    //Rekurencyjnie zaczyna od docelowego przedmiotu, "rozwija" jego recepty i tak dochodzi do podstawowych przedmiotów
+    static private ArrayList<Item> children = new ArrayList<>();
+
+    /**
+     * Metoda wywoływana w metodzie setBuildingOrder. Rekurencyjnie zaczyna od docelowego przedmiotu, "rozwija" jego recepty i tak dochodzi do podstawowych przedmiotów
+     * @param recipe receptura na przedmiot docelowy symulacji
+     * @return lista wszystkich przedmiotów biorących udział w produkcji przedmiotu docelowego
+     */
     private static ArrayList<Item> getItemChildren(Recipe recipe) {
         for (int i=0; i < recipe.getInput().size(); i++) {
             Item childItem = recipe.getInput().get(i);
@@ -388,5 +412,16 @@ public class Main {
         }
 
         return children;
+    }
+
+    public static void setMap_size(int map_size) {
+        Main.map_size = map_size;
+    }
+    public static int getMap_size() {
+        return map_size;
+    }
+
+    public static void setMapTab(int[][] mapTab) {
+        Main.mapTab = mapTab;
     }
 }
