@@ -14,13 +14,13 @@ import java.util.Scanner;
 public class CentralField extends Field {
 
     /**
-     * Bonus do punktów ruchy, nadawany przez pole centralne przy wejściu na nie. Informacja pobierana z bazy danych (database/terrain/central.txt)
+     * Bonus do punktów ruchy, nadawany przez pole centralne przy wejściu na nie; Informacja pobierana z bazy danych (database/terrain/central.txt)
      */
     private static float move_bonus = 0.0f;
 
 
     /**
-     * Konstruktor klasy CentralField. Rozszerza konstruktor klasy Field. Dodaje informację o bonusie do punktów ruchy (pobiera dane z bazy danych i aktualizuje move_bonus)
+     * Konstruktor klasy CentralField; Rozszerza konstruktor klasy Field; Dodaje informację o bonusie do punktów ruchy (pobiera dane z bazy danych i aktualizuje move_bonus)
      * @param x współrzędna x
      * @param y współrzędna y
      */

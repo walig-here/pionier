@@ -74,7 +74,7 @@ public class Machine {
     }
 
     /**
-     * Konstruktor klasy Machine. Na podstawie ID maszyny, przeszukuje bazę danych i ustawia parametry name, output i cost
+     * Konstruktor klasy Machine; Na podstawie ID maszyny, przeszukuje bazę danych i ustawia parametry name, output i cost
      * @param ID ID maszyny, potrzebne do przeszukania bazy danych w poszukiwaniu reszty informacji
      * @param produced_item ID produkowanego przedmiotu
      */
@@ -198,7 +198,7 @@ public class Machine {
         active_machines++;
     }
     /**
-     * Zatrzymuje produkcję, zmniejsza income zatrzymanej maszyny do 0. Na tej podstawie, aktualizuje ekwipunek i ilość aktywnych maszyn.
+     * Zatrzymuje produkcję, zmniejsza income zatrzymanej maszyny do 0; Na tej podstawie, aktualizuje ekwipunek i ilość aktywnych maszyn.
      * @param inventory ekwipunek pioniera
      */
     public void stopProduction(ArrayList<Item> inventory){
@@ -214,7 +214,7 @@ public class Machine {
     }
 
     /**
-     * Metoda odpowiedzialna za produkcję.
+     * Metoda odpowiedzialna za produkcję;
      * Jeśli maszyna nie ma aktywnego glitcha i minęła odpowiednia ilość tur od poprzedniego wyprodukowanego przedmiotu (productionTime) - dodaje wyprodukowany przedmiot do ekwipunku
      * @param inventory ekwipunek pioniera
      */

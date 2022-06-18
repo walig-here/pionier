@@ -32,7 +32,7 @@ public class Item {
     private int productionTime;
 
     /**
-     * Konstruktor klasy Item. Na podstawie ID przedmiotu, przeszukiwana jest baza danych (database/items) i dobierana jest nazwa przedmiotu oraz czas jego produkcji.
+     * Konstruktor klasy Item; Na podstawie ID przedmiotu, przeszukiwana jest baza danych (database/items) i dobierana jest nazwa przedmiotu oraz czas jego produkcji.
      * @param id ID przedmiotu
      * @param amount ilość przedmiotu
      * @param income przyrost przedmiotu na turę

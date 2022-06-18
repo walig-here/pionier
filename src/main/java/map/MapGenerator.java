@@ -142,7 +142,7 @@ public class MapGenerator {
     }
 
     /**
-     * Mapa generowana na podstawie danych wprowadzonych przez użytkownika w edytorze map. Użytkownik wybiera wielkość mapy, następnie może dowolnie rozmieścić pola dostępne w symulacji.
+     * Mapa generowana na podstawie danych wprowadzonych przez użytkownika w edytorze map; Użytkownik wybiera wielkość mapy, następnie może dowolnie rozmieścić pola dostępne w symulacji;
      * @param size wielkość mapy podana przez użytkownika
      * @param mapTab zawiera dane wprowadzone przez użytkownika w edytorze mapy — dwuwymiarowa tablica (współrzędne X, Y) ID pól
      */

@@ -156,7 +156,7 @@ public class GlitchSourceField extends Field {
     }
 
     /**
-     * Odejmuje pionierowi punkty ruchu potrzebne do wjeścia na pole.
+     * Odejmuje pionierowi punkty ruchu potrzebne do wejścia na pole.
      * W wypadku, gdy pionierowi uda się wejść na pole, to w wyniku bardzo silnych zakłóceń traci on wszystkie punkty ruchu.
      *
      * @param pioneer wchodzący na pole pionier

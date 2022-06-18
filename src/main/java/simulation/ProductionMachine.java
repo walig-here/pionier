@@ -16,7 +16,7 @@ public class ProductionMachine extends Machine {
     private final ArrayList<Item> input; // lista obiektów potrzebnych do wytworzenia produktu wyjściowego
 
     /**
-     * Konstruktor klasy ProductionMachine. Rozszerza konstruktor klasy Machine, przeszukuje bazę danych klasy Recipe i dodaje informacje o koszcie wytworzenia produktu
+     * Konstruktor klasy ProductionMachine; Rozszerza konstruktor klasy Machine, przeszukuje bazę danych klasy Recipe i dodaje informacje o koszcie wytworzenia produktu
      * @param ID id maszyny
      * @param produced_item przedmiot, który maszyna ma produkować
      */
@@ -36,7 +36,7 @@ public class ProductionMachine extends Machine {
     }
 
     /**
-     * Rozpoczyna produkcję, zwiększa przyrost (income) wytwarzanych produktów i ilość aktywnych maszyn. Zmniejsza przyrost produktów będących składnikami
+     * Rozpoczyna produkcję, zwiększa przyrost (income) wytwarzanych produktów i ilość aktywnych maszyn; Zmniejsza przyrost produktów będących składnikami
      * @param inventory ekwipunek pioniera
      */
     @Override
@@ -60,7 +60,7 @@ public class ProductionMachine extends Machine {
         Machine.active_machines++;
     }
     /**
-     * Zatrzymuje produkcję, zwiększa przyrost (income) składników. Zmniejsza przyrost wytwarzanego produktu i ilość aktywnych maszyn
+     * Zatrzymuje produkcję, zwiększa przyrost (income) składników; Zmniejsza przyrost wytwarzanego produktu i ilość aktywnych maszyn
      * @param inventory ekwipunek pioniera
      */
     @Override
@@ -85,7 +85,7 @@ public class ProductionMachine extends Machine {
     }
 
     /**
-     * Metoda odpowiedzialna za produkcję. Jeśli maszyna nie ma aktywnego glitcha i w ekwipunku pioniera znajduje się dostateczna ilość składników — zwiększa ilość produkowanego przedmiotu w ekwipunku pioniera i zmniejsza ilość składników.
+     * Metoda odpowiedzialna za produkcję; Jeśli maszyna nie ma aktywnego glitcha i w ekwipunku pioniera znajduje się dostateczna ilość składników — zwiększa ilość produkowanego przedmiotu w ekwipunku pioniera i zmniejsza ilość składników.
      * @param buildingOrder kolejka budowania budynków
      * @param pioneer pionier
      * @param map mapa

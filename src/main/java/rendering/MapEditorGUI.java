@@ -26,7 +26,7 @@ public class MapEditorGUI extends JFrame implements MouseListener, ActionListene
     private static int size;
 
     /**
-     * Konstruktor klasy MapEditorGUI. Wyświetla kanwę, na której można narysować mapę do przeprowadzenia symulacji, wygenerować ją lub zapisać.
+     * Konstruktor klasy MapEditorGUI; Wyświetla kanwę, na której można narysować mapę do przeprowadzenia symulacji, wygenerować ją lub zapisać;
      * @param size rozmiar mapy
      */
     MapEditorGUI(int size)
@@ -104,7 +104,7 @@ public class MapEditorGUI extends JFrame implements MouseListener, ActionListene
     }
 
     /**
-     * Odpowiada za rysowanie - po kliknięciu, pobiera informacje, które pole ma pobierać (do wyboru w rozwijanym menu), przypisuje do niego odpowiedni kolor i koloruje pole.
+     * Odpowiada za rysowanie - po kliknięciu, pobiera informacje, które pole ma pobierać (do wyboru w rozwijanym menu), przypisuje do niego odpowiedni kolor i koloruje pole;
      * Koloruje tylko pole, które klikamy
      * @param e the event to be processed
      */
@@ -166,8 +166,8 @@ public class MapEditorGUI extends JFrame implements MouseListener, ActionListene
     }
 
     /**
-     * Odpowiada za rysowanie - po kliknięciu, pobiera informacje, które pole ma pobierać (do wyboru w rozwijanym menu), przypisuje do niego odpowiedni kolor i koloruje pole.
-     * Koloruje pola, przez które przeciągamy kursor myszy.
+     * Odpowiada za rysowanie - po kliknięciu, pobiera informacje, które pole ma pobierać (do wyboru w rozwijanym menu), przypisuje do niego odpowiedni kolor i koloruje pole;
+     * Koloruje pola, przez które przeciągamy kursor myszy;
      * @param e the event to be processed
      */
     @Override

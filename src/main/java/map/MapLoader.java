@@ -7,12 +7,12 @@ import java.io.FileNotFoundException;
 import java.util.Scanner;
 
 /**
- * Wczytuje mapę przechowywaną na dysku i umożliwia przeprowadzenie na niej symulacji.
+ * Wczytuje mapę przechowywaną na dysku i umożliwia przeprowadzenie na niej symulacji;
  */
 public class MapLoader {
 
     /**
-     * Otwiera przeglądarkę plików, użytkownik może w niej wybrać mapę.
+     * Otwiera przeglądarkę plików, użytkownik może w niej wybrać mapę (plik z rozszerzeniem .map);
      */
     public static void loadMap(){
 

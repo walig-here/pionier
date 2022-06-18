@@ -52,7 +52,7 @@ public class Kanwa1 extends JPanel implements ActionListener{
     Image glitch;
 
     /**
-     * Konstruktor klasy Kanwa1. Pobiera dane (wielkość mapy, tekstury)
+     * Konstruktor klasy Kanwa1; Pobiera dane (wielkość mapy, tekstury)
      * @param max_turns maksymalna liczba tur symulacji
      */
     Kanwa1(int max_turns){
@@ -108,7 +108,7 @@ public class Kanwa1 extends JPanel implements ActionListener{
 
 
     /**
-     * Wizualizuje dwuwymiarową tablicę (mapę) z ID pól. Przypisuje odpowiednie tekstury do danych z tablicy i wyświetla je.
+     * Wizualizuje dwuwymiarową tablicę (mapę) z ID pól; Przypisuje odpowiednie tekstury do danych z tablicy i wyświetla je;
      * @param g  the <code>Graphics</code> context in which to paint
      */
     public void paint(Graphics g) {
@@ -227,9 +227,10 @@ public class Kanwa1 extends JPanel implements ActionListener{
     }
 
     /**
-     * Odpowiada za prawą część okna - panel statystyk. Wyświetla informacje takie, jak:
-     * pożądany przedmiot, numer tury, ilość wszystkich maszyn, ilość aktywnych maszyn, stan ekwipunku pioniera.
+     * Odpowiada za wyświetlanie kanwy - mapy oraz panelu statystyk; Wyświetla informacje takie, jak:
+     * pożądany przedmiot, numer tury, ilość wszystkich maszyn, ilość aktywnych maszyn, stan ekwipunku pioniera;
      * Gdy symulacja dobiegnie końca - wyświetla okienko z statusem symulacji (wygrana/przegrana, powód, liczba punktów uzyskanych przez pioniera)
+     * Jest wywoływana co rundę, aktualizując dane.
      * @param e the event to be processed
      */
     @Override

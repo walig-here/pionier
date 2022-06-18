@@ -34,7 +34,7 @@ public class DepositField extends Field {
     private static float excavation_penalty=0.00f;
 
     /**
-     * Konstruktor klasy DepositField. Rozszerza konstruktor klasy Field, dodając informacje o możliwym do wydobycia surowcu (typ surowca oraz maksymalna ilość do pozyskania z tego pola).
+     * Konstruktor klasy DepositField; Rozszerza konstruktor klasy Field, dodając informacje o możliwym do wydobycia surowcu (typ surowca oraz maksymalna ilość do pozyskania z tego pola).
      * Z bazy danych (database/terrain/deposit) dobiera parametr penalty.
      * @param x współrzędna x pola
      * @param y współrzędna y pola
@@ -123,6 +123,7 @@ public class DepositField extends Field {
         else deposit_capacity -= machine.getOutput();
     }
     /**
+     * Metoda odpowiedzialna za zachowanie się pioniera po wejściu na pole.
      * Spowalnia znacząco bardziej pioniera, jeżeli na polu prowadzone prace wydobywcze(na polu stoi maszyna).
      * W przeciwnym wypadku pionier przemieszcza się po polu jak po zwykłym polu z ziemią.
      *

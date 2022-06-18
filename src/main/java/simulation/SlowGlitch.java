@@ -24,7 +24,7 @@ public class SlowGlitch extends Glitch {
     }
 
     /**
-     * Spowalnia tymczasowo maszynę — odejmuje z ekwipunku pioniera procent przedmiotów wynikający z parametru output_loss. Następnie, zmienia parametr glitch_ended na true.
+     * Spowalnia tymczasowo maszynę — odejmuje z ekwipunku pioniera procent przedmiotów wynikający z parametru output_loss; Następnie, zmienia parametr glitch_ended na true.
      * @param impacting maszyna, na którą glitch wpływa
      * @param inventory ekwipunek pioniera
      */

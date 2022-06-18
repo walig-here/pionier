@@ -11,7 +11,7 @@ public class ComponentItem extends Item {
     private final Recipe recipe; // receptura, którą trzeba wykonać, aby otrzymać ten obiekt
 
     /**
-     * Konstruktor klasy ComponentItem. Rozszerza konstruktor klasy Item, na podstawie ID przedmiotu, dobiera odpowiednią recepturę do jego wykonania (pobiera ją z bazy danych - database/recipes).
+     * Konstruktor klasy ComponentItem; Rozszerza konstruktor klasy Item, na podstawie ID przedmiotu, dobiera odpowiednią recepturę do jego wykonania (pobiera ją z bazy danych - database/recipes).
      *
      * @param id id przedmiotu, na podstawie którego przeszukiwana jest baza danych receptur
      * @param amount ilość przedmiotu

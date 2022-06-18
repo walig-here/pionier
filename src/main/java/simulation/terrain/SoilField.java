@@ -17,7 +17,7 @@ public class SoilField extends Field {
     static private int move_cost = 0;
 
     /**
-     * Konstruktor klasy SoilField. Rozszerza konstruktor klasy Field, dodając parametr move_cost (pobierany z bazy danych)
+     * Konstruktor klasy SoilField; Rozszerza konstruktor klasy Field, dodając parametr move_cost (pobierany z bazy danych)
      * @param x współrzędna x pola
      * @param y współrzędna y pola
      */

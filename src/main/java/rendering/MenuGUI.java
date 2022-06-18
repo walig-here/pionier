@@ -56,7 +56,8 @@ public class MenuGUI extends JFrame implements ActionListener {
     }
 
     /**
-     * Jeśli wciśnięto przycisk na samej górze (edytor map)- wyświetla okno z zapytaniem o podanie wielkości mapy (jeśli wartość jest nieprawidłowa - waliduje), następnie przechodzi do edytora mapy.
+     * Odpowiada za wywolanie odpowiedniej akcji po przycisnieciu przycisku.
+     * Jeśli wciśnięto przycisk na samej górze (edytor map)- wyświetla okno z zapytaniem o podanie wielkości mapy (jeśli wartość jest nieprawidłowa - waliduje), następnie przechodzi do edytora mapy;
      * Jeśli wciśnięto przycisk odpowiadających za autogenerowanie mapy - wyświetla odpowiednie okno (przekierowuje do MapGeneratora)
      * Jeśli wciśnięto przycisk odpowiadający za wczytywanie mapy  - przekierowuje do MapLoadera
      * @param e the event to be processed

@@ -20,7 +20,7 @@ public class WaterField extends Field {
     private int waited_rounds;
 
     /**
-     * Konstruktor klasy WaterField. Rozszerza konstruktor klasy Field, dodając informacje o czasie przepływania przez pole wodne (pobrane z bazy danych).
+     * Konstruktor klasy WaterField; Rozszerza konstruktor klasy Field, dodając informacje o czasie przepływania przez pole wodne (pobrane z bazy danych).
      * @param x współrzędne x pola
      * @param y współrzędne y pola
      */
@@ -63,7 +63,7 @@ public class WaterField extends Field {
     }
 
     /**
-     * Mechanizm przepływania przez pole. Sprawdza, czy pionier odczekał już odpowiednią ilość tur.
+     * Mechanizm przepływania przez pole. Sprawdza, czy pionier odczekał już odpowiednią ilość tur. Jeśli tak - przechodzi.
      * @param pioneer pionier
      * @return wartość boolean mówiąca o tym, czy pionier może już przejść. Jeśli może - przechodzi.
      */

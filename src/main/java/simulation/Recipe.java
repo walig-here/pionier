@@ -21,7 +21,7 @@ public class Recipe{
     private int machine;
 
     /**
-     * Konstruktor klasy Recipe.  Pobiera dane (listę składników i ID maszyny) z bazy danych receptur (database/recipes)
+     * Konstruktor klasy Recipe;  Pobiera dane (listę składników i ID maszyny) z bazy danych receptur (database/recipes)
      * @param filename nazwa pliku z recepturą (znajdującego się w bazie danych recipe).
      */
     Recipe(String filename){
