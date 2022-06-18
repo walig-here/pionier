@@ -1,7 +1,7 @@
 package rendering;
 
-import main.Main;
-import map.*;
+import map.MapGenerator;
+import map.MapSaver;
 
 import javax.swing.*;
 import java.awt.*;
@@ -10,6 +10,9 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
+/**
+ * Klasa odpowiadająca za edytor map.
+ */
 public class MapEditorGUI extends JFrame implements MouseListener, ActionListener {
 
     private static JComboBox currentFieldTypeChooser;
@@ -17,15 +20,15 @@ public class MapEditorGUI extends JFrame implements MouseListener, ActionListene
     private static JButton saveButton;
     private static JButton[][] buttonTab;
 
-    public static int[][] getMapTab() {
-        return mapTab;
-    }
-
     private static int[][] mapTab;
     private static int currentFieldType;
     private static boolean clickState;
     private static int size;
 
+    /**
+     * Konstruktor klasy MapEditorGUI. Wyświetla kanwę, na której można narysować mapę do przeprowadzenia symulacji, wygenerować ją lub zapisać.
+     * @param size rozmiar mapy
+     */
     MapEditorGUI(int size)
     {
 
@@ -100,6 +103,11 @@ public class MapEditorGUI extends JFrame implements MouseListener, ActionListene
 
     }
 
+    /**
+     * Odpowiada za rysowanie - po kliknięciu, pobiera informacje, które pole ma pobierać (do wyboru w rozwijanym menu), przypisuje do niego odpowiedni kolor i koloruje pole.
+     * Koloruje tylko pole, które klikamy
+     * @param e the event to be processed
+     */
     @Override
     public void mousePressed(MouseEvent e) {
 
@@ -157,6 +165,11 @@ public class MapEditorGUI extends JFrame implements MouseListener, ActionListene
         clickState=false;
     }
 
+    /**
+     * Odpowiada za rysowanie - po kliknięciu, pobiera informacje, które pole ma pobierać (do wyboru w rozwijanym menu), przypisuje do niego odpowiedni kolor i koloruje pole.
+     * Koloruje pola, przez które przeciągamy kursor myszy.
+     * @param e the event to be processed
+     */
     @Override
     public void mouseEntered(MouseEvent e) {
 

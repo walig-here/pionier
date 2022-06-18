@@ -1,19 +1,20 @@
 package rendering;
 
-import map.*;
+import map.MapGenerator;
+import map.MapLoader;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Scanner;
 
-import static main.Main.simulation_setup;
-
 ////////////////////////
 ///       Menu       ///
 ////////////////////////
 
-
+/**
+ * Odpowiada za początkowe menu programu
+ */
 public class MenuGUI extends JFrame implements ActionListener {
 
     JButton button1, button2, button3;
@@ -54,6 +55,12 @@ public class MenuGUI extends JFrame implements ActionListener {
 
     }
 
+    /**
+     * Jeśli wciśnięto przycisk na samej górze (edytor map)- wyświetla okno z zapytaniem o podanie wielkości mapy (jeśli wartość jest nieprawidłowa - waliduje), następnie przechodzi do edytora mapy.
+     * Jeśli wciśnięto przycisk odpowiadających za autogenerowanie mapy - wyświetla odpowiednie okno (przekierowuje do MapGeneratora)
+     * Jeśli wciśnięto przycisk odpowiadający za wczytywanie mapy  - przekierowuje do MapLoadera
+     * @param e the event to be processed
+     */
     @Override
     public void actionPerformed(ActionEvent e) {
 

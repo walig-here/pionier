@@ -1,10 +1,9 @@
 package rendering;
-import map.MapGenerator;
+
+import main.Main;
 import simulation.Item;
 import simulation.Machine;
-import simulation.terrain.*;
-
-import main.*;
+import simulation.terrain.DepositField;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -14,8 +13,10 @@ import java.awt.event.ActionListener;
 import java.text.DecimalFormat;
 
 import static main.Main.pioneer;
-import static main.Main.simulation_setup;
 
+/**
+ * Klasa odpowiadająca za to, co widzimy. Pobiera tekstury, wyświetla i odświeża mapę.
+ */
 public class Kanwa1 extends JPanel implements ActionListener{
 
     JLabel stats;
@@ -50,6 +51,10 @@ public class Kanwa1 extends JPanel implements ActionListener{
     Image water;
     Image glitch;
 
+    /**
+     * Konstruktor klasy Kanwa1. Pobiera dane (wielkość mapy, tekstury)
+     * @param max_turns maksymalna liczba tur symulacji
+     */
     Kanwa1(int max_turns){
 
         isRunning=true;
@@ -102,7 +107,10 @@ public class Kanwa1 extends JPanel implements ActionListener{
     }
 
 
-
+    /**
+     * Wizualizuje dwuwymiarową tablicę (mapę) z ID pól. Przypisuje odpowiednie tekstury do danych z tablicy i wyświetla je.
+     * @param g  the <code>Graphics</code> context in which to paint
+     */
     public void paint(Graphics g) {
 
         Graphics2D rys1 = (Graphics2D) g;
@@ -218,6 +226,12 @@ public class Kanwa1 extends JPanel implements ActionListener{
 
     }
 
+    /**
+     * Odpowiada za prawą część okna - panel statystyk. Wyświetla informacje takie, jak:
+     * pożądany przedmiot, numer tury, ilość wszystkich maszyn, ilość aktywnych maszyn, stan ekwipunku pioniera.
+     * Gdy symulacja dobiegnie końca - wyświetla okienko z statusem symulacji (wygrana/przegrana, powód, liczba punktów uzyskanych przez pioniera)
+     * @param e the event to be processed
+     */
     @Override
     public void actionPerformed(ActionEvent e) {
 

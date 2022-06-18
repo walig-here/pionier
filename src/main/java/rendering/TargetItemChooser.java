@@ -5,24 +5,37 @@ import simulation.Item;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Scanner;
 
 import static main.Main.simulation_setup;
 
+/**
+ * Odpowiada za wyświetlanie ona wyboru przedmiotu docelowego symulacji
+ */
 public class TargetItemChooser extends JFrame implements ActionListener {
 
     private static JComboBox targetItemChooser;
+    /**
+     * Przycisk startujący symulację
+     */
     private static JButton start_simulation;
     private static JButton[][] buttonTab;
     private static int size;
+    /**
+     * ID przedmiotu docelowego
+     */
     private static int target_item_id;
-
+    /**
+     * Maksymalna liczba tur symulacji
+     */
     int max_turns;
 
+    /**
+     * Konstruktor klasy TargetItemChooser. Wyświetla okno z wyborem celu symulacji
+     * @param size
+     * @param target_item_id - ID przedmiotu docelowego symulacji
+     */
     public TargetItemChooser(int size, int target_item_id)
     {
         ImageIcon logo = new ImageIcon("logo.png");
@@ -57,6 +70,10 @@ public class TargetItemChooser extends JFrame implements ActionListener {
         buttonTab = new JButton[size][size];
     }
 
+    /**
+     * Wyświetla okno pytające o maksymalny czas symulacji - waliduje, gdy wprowadzono nieprawidłowe dane. Jeśli z jakichś powodów symulacja nie może wystartować, wyświetla informację o przegranej.
+     * @param e the event to be processed
+     */
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource()==start_simulation && target_item_id != -1){
