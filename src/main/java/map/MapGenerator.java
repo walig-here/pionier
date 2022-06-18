@@ -1,21 +1,20 @@
 package map;
 
 
-import rendering.NFrame;
+import main.Main;
 import rendering.TargetItemChooser;
 import simulation.terrain.*;
-import main.*;
 
-import javax.swing.*;
 import java.util.Random;
-import java.lang.Math;
-import java.util.Scanner;
 
-import static main.Main.simulation_setup;
-
+/**
+ * Generator map. Może wygenerować mapę losowo lub na podstawie danych (rysunku) wprowadzonych przez użytkownika
+ */
 public class MapGenerator {
 
-
+    /**
+     * Losuje wielkość mapy (między 20 a 32), następnie w losowych miejscach stawia wszystkie możliwe złoża, wodę i pola zakłóceń
+     */
     public static void generateMap(){
         //generuje losową mapę
 
@@ -142,6 +141,11 @@ public class MapGenerator {
         generateMap(size, mapTab);
     }
 
+    /**
+     * Mapa generowana na podstawie danych wprowadzonych przez użytkownika w edytorze map. Użytkownik wybiera wielkość mapy, następnie może dowolnie rozmieścić pola dostępne w symulacji.
+     * @param size wielkość mapy podana przez użytkownika
+     * @param mapTab zawiera dane wprowadzone przez użytkownika w edytorze mapy — dwuwymiarowa tablica (współrzędne X, Y) ID pól
+     */
     public static void generateMap(int size, int[][] mapTab){
         //generuje mapę z edytora
 
@@ -198,7 +202,6 @@ public class MapGenerator {
 
 
         int target_item_id = 0;
-        int max_turns=0;
         TargetItemChooser win = new TargetItemChooser(size, target_item_id);
     }
 }

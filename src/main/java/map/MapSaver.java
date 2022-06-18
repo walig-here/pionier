@@ -1,16 +1,21 @@
 package map;
 
-import rendering.MapEditorGUI;
-import simulation.terrain.Field;
-
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 
+/**
+ * Umożliwia zapisanie na dysku mapy stworzonej przez użytkownika w edytorze map
+ */
 public class MapSaver {
 
+    /**
+     * Otwiera systemowe okno przeglądarki plików, w której użytkownik może zapisać mapę
+     * @param size wielkość mapy
+     * @param mapTab mapa w postaci dwuwymiarowej tablicy (współrzędne X, Y) ID pól
+     */
     public static void saveMap(int size, int[][] mapTab)
     {
         JFileChooser fileChooser=new JFileChooser();
@@ -41,10 +46,6 @@ public class MapSaver {
         }
 
 
-    }
-    public static void saveSimulation(Field[][] map)
-    {
-        //wywołuje wszystkie gettery i zapisuje razem z mapą do pliku
     }
 
 }

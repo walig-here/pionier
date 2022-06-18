@@ -6,8 +6,14 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 
+/**
+ * Wczytuje mapę przechowywaną na dysku i umożliwia przeprowadzenie na niej symulacji.
+ */
 public class MapLoader {
 
+    /**
+     * Otwiera przeglądarkę plików, użytkownik może w niej wybrać mapę.
+     */
     public static void loadMap(){
 
         int size;
@@ -45,8 +51,4 @@ public class MapLoader {
 
     }
 
-    public static void loadSimulation(){
-
-
-    }
 }
