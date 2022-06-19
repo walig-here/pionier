@@ -36,7 +36,7 @@ public class Main {
     /**
      * Przedmiot, którego zdobycie kończy symulację (przedmiot docelowy)
      */
-    static private Item targetItem;
+    static public Item targetItem;
     /**
      * Lista (kolejka) ID przedmiotów do zdobycia (na jej podstawie, pionier buduje kolejne budynki)
      */
