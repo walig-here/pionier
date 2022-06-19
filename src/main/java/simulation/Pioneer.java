@@ -615,9 +615,12 @@ public class Pioneer {
         // Pobieramy ID produkowanego przez następną potrzebną maszynę przedmiotu
         to_build = buildingOrder.get(0);
 
+
         // Jeżeli danego zasobu jest aż nadmiar to nie będziemy dostawiać jego fabryki
         for(Item item : inventory) {
-            if(item.getID() == to_build && item.getAmount() > 1000) {
+            if(Main.targetItem.getIncome() > 0) continue;
+
+            if(item.getID() == to_build && item.getAmount() > 100) {
                 buildingOrder.remove(0);
                 to_build = -1;
                 return 2;
